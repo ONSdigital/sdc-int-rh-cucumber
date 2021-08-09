@@ -18,6 +18,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 public abstract class StepsBase {
   static final String RABBIT_EXCHANGE = "events";
   static final int RABBIT_TIMEOUT = 2000;
+  static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired RhStepsContext context;
   @Autowired RespondentDataRepository dataRepo;

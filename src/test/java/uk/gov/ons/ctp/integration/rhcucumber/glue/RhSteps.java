@@ -37,7 +37,6 @@ import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
 import uk.gov.ons.ctp.common.event.EventPublisher.Source;
 import uk.gov.ons.ctp.common.event.model.Address;
-import uk.gov.ons.ctp.common.event.model.AddressCompact;
 import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
 import uk.gov.ons.ctp.common.event.model.Contact;
 import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
@@ -111,7 +110,6 @@ public class RhSteps extends StepsBase {
     context.caseCollection = "case";
     context.caseKey = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
     context.uacCollection = "uac";
-    context.timeout = 20000L;
   }
 
   @Before("@SetUpRHEng")
@@ -222,13 +220,8 @@ public class RhSteps extends StepsBase {
 
   @Then("a valid uac exists in Firestore ready for use by a respondent")
   public void a_valid_uac_exists_in_Firestore_ready_for_use_by_a_respondent() throws Exception {
-    context.caseFoundInFirestore =
-        dataRepo.waitForObject(context.caseCollection, context.caseKey, context.timeout);
-    context.uacFoundInFirestore =
-        dataRepo.waitForObject(context.uacCollection, context.uacKey, context.timeout);
-
-    assertTrue(context.caseFoundInFirestore);
-    assertTrue(context.uacFoundInFirestore);
+    assertTrue(dataRepo.waitForObject(context.caseCollection, context.caseKey, WAIT_TIMEOUT));
+    assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
   }
 
   @Given("I am a respondent and I am on the RH Start Page")
@@ -734,23 +727,6 @@ public class RhSteps extends StepsBase {
     assertNewEventHasFired(EventType.ADDRESS_MODIFIED);
   }
 
-  @Then("it contains the changes that I made")
-  public void it_contains_the_changes_that_I_made() {
-    String expectedText;
-    switch (country) {
-      case WALES:
-        expectedText = "Wales House in the middle of our Welsh street";
-        break;
-      default:
-        expectedText = "England House in the middle of our street";
-    }
-    context.addressModification = context.addressModifiedPayload.getAddressModification();
-    assertNotNull(context.addressModification);
-    AddressCompact addressModified = context.addressModification.getNewAddress();
-    assertEquals(
-        "The new address should be different", expectedText, addressModified.getAddressLine1());
-  }
-
   @When("I select the ‘YES, This address is correct’ option and click continue")
   public void i_select_the_YES_This_address_is_correct_option_and_click_continue() {
     ConfirmAddressForNewUac confirmAddressForNewUac = pages.getConfirmAddressForNewUac(country);
@@ -1029,9 +1005,7 @@ public class RhSteps extends StepsBase {
   @Then("a valid uac exists in Firestore but there is no associated case in Firestore")
   public void a_valid_uac_exists_in_Firestore_but_there_is_no_associated_case_in_Firestore()
       throws Exception {
-    context.uacFoundInFirestore =
-        dataRepo.waitForObject(context.uacCollection, context.uacKey, context.timeout);
-    assertTrue(context.uacFoundInFirestore);
+    assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
     assertNull(context.uacPayload.getCaseId());
   }
 
@@ -1114,11 +1088,7 @@ public class RhSteps extends StepsBase {
     }
     UAC uac = uacOptional.get();
     assertNotNull(uac.getCaseId());
-
-    context.caseFoundInFirestore =
-        dataRepo.waitForObject(context.caseCollection, uac.getCaseId(), context.timeout);
-
-    assertTrue(context.caseFoundInFirestore);
+    assertTrue(dataRepo.waitForObject(context.caseCollection, uac.getCaseId(), WAIT_TIMEOUT));
   }
 
   @Then(
@@ -1450,8 +1420,8 @@ public class RhSteps extends StepsBase {
   }
 
   private void emptyEventQueue(EventType eventType) throws Exception {
-    context.queueName = rabbit.createQueue(eventType);
-    rabbit.flushQueue(context.queueName);
+    String queueName = rabbit.createQueue(eventType);
+    rabbit.flushQueue(queueName);
   }
 
   private void assertNewEventHasFired(EventType eventType) throws Exception {
@@ -1471,19 +1441,19 @@ public class RhSteps extends StepsBase {
 
     EventType eventType = EventType.RESPONDENT_AUTHENTICATED;
 
-    context.respondentAuthenticatedEvent =
+    RespondentAuthenticatedEvent event =
         (RespondentAuthenticatedEvent)
             rabbit.getMessage(
                 EventPublisher.RoutingKey.forType(eventType).getKey(),
                 eventClass(eventType),
                 RABBIT_TIMEOUT);
 
-    assertNotNull(context.respondentAuthenticatedEvent);
+    assertNotNull(event);
 
-    context.respondentAuthenticatedHeader = context.respondentAuthenticatedEvent.getEvent();
+    context.respondentAuthenticatedHeader = event.getEvent();
     assertNotNull(context.respondentAuthenticatedHeader);
 
-    context.respondentAuthenticatedPayload = context.respondentAuthenticatedEvent.getPayload();
+    context.respondentAuthenticatedPayload = event.getPayload();
     assertNotNull(context.respondentAuthenticatedPayload);
   }
 
