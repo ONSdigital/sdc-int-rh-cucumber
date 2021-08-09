@@ -6,5 +6,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GlueConst {
   public static final String COMMON_TAGS = "not @ignore";
-  public static final boolean STRICTNESS = true;
 }

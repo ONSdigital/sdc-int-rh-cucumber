@@ -16,7 +16,8 @@
   </parent>
 
   <properties>
-    <common.version>1.0.26</common.version>
+    <cucumber.version>6.10.4</cucumber.version>
+    <!-- <cucumber.version>5.4.0</cucumber.version> -->
   </properties>
 
   <scm>
@@ -33,28 +34,34 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>25.0-jre</version><!--$NO-MVN-MAN-VER$ -->
+    </dependency>
+
+    <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>5.4.0</version>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
-      <version>5.4.0</version>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-spring</artifactId>
-      <version>5.4.0</version>
+      <version>${cucumber.version}</version>
     </dependency>
 
-   <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -71,6 +78,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>test</scope>
     </dependency>
 
@@ -91,25 +104,25 @@
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>eq-launcher</artifactId>
-      <version>${common.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>event-publisher</artifactId>
-      <version>${common.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>framework</artifactId>
-      <version>${common.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>test-framework</artifactId>
-      <version>${common.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <!-- ONS dependencies end -->
 
