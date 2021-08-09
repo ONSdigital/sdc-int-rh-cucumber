@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.rhcucumber.steps;
+package uk.gov.ons.ctp.integration.rhcucumber.glue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DefaultDataTableCellTransformer;

@@ -1,6 +1,5 @@
-package uk.gov.ons.ctp.integration.rhcucumber.steps;
+package uk.gov.ons.ctp.integration.rhcucumber.glue;
 
-import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +22,4 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
       FirestoreDataStore.class,
       RateLimiterMock.class
     })
-public class RhSpringRunner {
-  @Before(order = 0)
-  public void init() {}
-}
+public class CucumberSpringConfiguration {}
