@@ -30,7 +30,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourPostcode;
 
-public class SingleCaseReturn extends StepsBase {
+public class SingleCaseReturnSteps extends StepsBase {
   private final EventType caseEventType = EventType.CASE_CREATED;
   private final EventType uacEventType = EventType.UAC_CREATED;
   private String eventQueueName;
