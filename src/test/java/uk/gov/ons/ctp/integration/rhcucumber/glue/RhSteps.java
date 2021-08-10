@@ -142,11 +142,6 @@ public class RhSteps extends StepsBase {
     super.closeDriver();
   }
 
-  @After("@TearDownRH2")
-  public void deleteDriverRH2() {
-    super.closeDriver();
-  }
-
   @After("@DisableRateLimit")
   public void disableRateLimit() throws Exception {
     callRateLimiterMock(false);
@@ -1294,7 +1289,6 @@ public class RhSteps extends StepsBase {
     the_respondentAuthenticatedHeader_contains_a_TransactionId_value_that_is_not_null();
     the_respondentAuthenticatedPayload_contains_a_Response();
     the_respondentAuthenticatedResponse_contains_a_QuestionnaireId_value_that_is_not_null();
-    // the_respondentAuthenticatedResponse_contains_a_CaseId_value_that_may_be_null();
   }
 
   @And("the surveyLaunchedHeader contains the correct values")

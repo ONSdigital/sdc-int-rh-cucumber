@@ -142,7 +142,7 @@ public class SingleCaseReturnSteps extends StepsBase {
     try {
       confirmAddress.clickContinueButton();
     } catch (WebDriverException e) {
-      System.out.println("EQ Not available");
+      // tolerate no EQ deployment for testing
     }
     currentURL = driver.getCurrentUrl();
   }
