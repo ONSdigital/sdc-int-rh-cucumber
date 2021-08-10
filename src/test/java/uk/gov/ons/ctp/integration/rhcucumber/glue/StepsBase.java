@@ -7,6 +7,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import uk.gov.ons.ctp.common.event.EventPublisher;
+import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
+import uk.gov.ons.ctp.common.event.model.Address;
+import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
+import uk.gov.ons.ctp.common.event.model.Contact;
+import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
+import uk.gov.ons.ctp.common.event.model.GenericEvent;
+import uk.gov.ons.ctp.common.event.model.NewAddressReportedEvent;
+import uk.gov.ons.ctp.common.event.model.QuestionnaireLinkedEvent;
+import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedEvent;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
 import uk.gov.ons.ctp.common.rabbit.RabbitHelper;
 import uk.gov.ons.ctp.common.util.UacUtil;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
@@ -79,5 +90,139 @@ public abstract class StepsBase {
     context.uac = validUac();
     context.uacKey = uacHash(context.uac);
     context.uacPayload = ExampleData.createUac(context.uacKey, context.caseKey);
+  }
+
+  // - event validation helpers ...
+
+  void emptyEventQueue(EventType eventType) throws Exception {
+    String queueName = rabbit.createQueue(eventType);
+    rabbit.flushQueue(queueName);
+  }
+
+  void assertNewEventHasFired(EventType eventType) throws Exception {
+
+    final GenericEvent event =
+        (GenericEvent)
+            rabbit.getMessage(
+                EventPublisher.RoutingKey.forType(eventType).getKey(),
+                eventClass(eventType),
+                RABBIT_TIMEOUT);
+
+    assertNotNull(event);
+    assertNotNull(event.getEvent());
+  }
+
+  void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
+
+    EventType eventType = EventType.RESPONDENT_AUTHENTICATED;
+
+    RespondentAuthenticatedEvent event =
+        (RespondentAuthenticatedEvent)
+            rabbit.getMessage(
+                EventPublisher.RoutingKey.forType(eventType).getKey(),
+                eventClass(eventType),
+                RABBIT_TIMEOUT);
+
+    assertNotNull(event);
+
+    context.respondentAuthenticatedHeader = event.getEvent();
+    assertNotNull(context.respondentAuthenticatedHeader);
+
+    context.respondentAuthenticatedPayload = event.getPayload();
+    assertNotNull(context.respondentAuthenticatedPayload);
+  }
+
+  void assertNewSurveyLaunchedEventHasFired() throws Exception {
+    EventType eventType = EventType.SURVEY_LAUNCHED;
+
+    context.surveyLaunchedEvent =
+        (SurveyLaunchedEvent)
+            rabbit.getMessage(
+                EventPublisher.RoutingKey.forType(eventType).getKey(),
+                eventClass(eventType),
+                RABBIT_TIMEOUT);
+
+    assertNotNull(context.surveyLaunchedEvent);
+
+    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getEvent();
+    assertNotNull(context.surveyLaunchedHeader);
+
+    context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
+    assertNotNull(context.surveyLaunchedPayload);
+  }
+
+  void assertNewFulfilmentEventHasFired() throws Exception {
+    EventType eventType = EventType.FULFILMENT_REQUESTED;
+
+    FulfilmentRequestedEvent fulfilmentRequestedEvent =
+        (FulfilmentRequestedEvent)
+            rabbit.getMessage(
+                EventPublisher.RoutingKey.forType(eventType).getKey(),
+                eventClass(eventType),
+                RABBIT_TIMEOUT);
+
+    context.fulfilmentRequestedCode =
+        fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
+
+    assertNotNull(fulfilmentRequestedEvent);
+    assertNotNull(fulfilmentRequestedEvent.getEvent());
+    assertNotNull(fulfilmentRequestedEvent.getPayload());
+    assertNotNull(context.fulfilmentRequestedCode);
+  }
+
+  Class<?> eventClass(EventType eventType) {
+    switch (eventType) {
+      case FULFILMENT_REQUESTED:
+        return FulfilmentRequestedEvent.class;
+      case NEW_ADDRESS_REPORTED:
+        return NewAddressReportedEvent.class;
+      case RESPONDENT_AUTHENTICATED:
+        return RespondentAuthenticatedEvent.class;
+      case SURVEY_LAUNCHED:
+        return SurveyLaunchedEvent.class;
+      case ADDRESS_MODIFIED:
+        return AddressModifiedEvent.class;
+      case QUESTIONNAIRE_LINKED:
+        return QuestionnaireLinkedEvent.class;
+      default:
+        throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
+    }
+  }
+
+  // ---- data setup helpers ...
+
+  void constructCaseCreatedEvent() {
+    Address address = ExampleData.createNimrodAddress();
+    Contact contact = ExampleData.createLadySallyContact();
+    context.caseCreatedPayload =
+        ExampleData.createCollectionCase(address, contact, context.caseKey);
+  }
+
+  void constructCaseCreatedEventWales() {
+    Address address = ExampleData.createNimrodAddressWales();
+    Contact contact = ExampleData.createLadySallyContact();
+    context.caseCreatedPayload =
+        ExampleData.createCollectionCase(address, contact, context.caseKey);
+  }
+
+  void constructCaseCreatedEventWithDifferentAddress() {
+    Address address = ExampleData.createMyHouseAddress();
+    Contact contact = ExampleData.createSirLanceContact();
+    context.caseCreatedPayload =
+        ExampleData.createCollectionCase(address, contact, context.caseKey);
+  }
+
+  void constructCaseCreatedEventWithDifferentAddressWales() {
+    Address address = ExampleData.createMyHouseAddressWales();
+    Contact contact = ExampleData.createSirLanceContact();
+    context.caseCreatedPayload =
+        ExampleData.createCollectionCase(address, contact, context.caseKey);
+  }
+
+  void constructUacEventWithNoCaseId(final String formType) {
+    context.uacPayload.setUacHash(context.uacKey);
+    context.uacPayload.setActive("true");
+    context.uacPayload.setQuestionnaireId("3110000010");
+    context.uacPayload.setFormType(formType);
   }
 }

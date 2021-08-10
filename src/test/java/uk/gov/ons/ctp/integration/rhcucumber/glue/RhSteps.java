@@ -32,25 +32,14 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
 import uk.gov.ons.ctp.common.event.EventPublisher.Source;
-import uk.gov.ons.ctp.common.event.model.Address;
-import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
-import uk.gov.ons.ctp.common.event.model.Contact;
-import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
-import uk.gov.ons.ctp.common.event.model.GenericEvent;
-import uk.gov.ons.ctp.common.event.model.NewAddressReportedEvent;
-import uk.gov.ons.ctp.common.event.model.QuestionnaireLinkedEvent;
-import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedEvent;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedPayload;
 import uk.gov.ons.ctp.common.event.model.UAC;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.JweDecryptor;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.KeyStore;
-import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.CensusQuestionnaire;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WouldYouLikeToCompleteCensusInEnglish;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ChangeYourAddress;
@@ -230,7 +219,7 @@ public class RhSteps extends StepsBase {
     this.country = country;
     StartPage startPage = pages.getStartPage(country);
     startPage.clickRequestNewCodeLink();
-    confirm_your_address(country, postCode);
+    confirmYourAddress(country, postCode);
   }
 
   @And("the respondent selects the delivery channel as \"Text message\"")
@@ -407,7 +396,7 @@ public class RhSteps extends StepsBase {
 
   @Then("I am directed to the Census Questionnaire")
   public void i_am_directed_to_the_Census_Questionnaire() {
-    context.eqExists = eqExists(context);
+    context.eqExists = eqExists();
   }
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
@@ -884,41 +873,6 @@ public class RhSteps extends StepsBase {
         whatIsYourMobile.getInvalidMobileErrorText());
   }
 
-  private void constructCaseCreatedEvent() {
-    Address address = ExampleData.createNimrodAddress();
-    Contact contact = ExampleData.createLadySallyContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  private void constructCaseCreatedEventWales() {
-    Address address = ExampleData.createNimrodAddressWales();
-    Contact contact = ExampleData.createLadySallyContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  private void constructCaseCreatedEventWithDifferentAddress() {
-    Address address = ExampleData.createMyHouseAddress();
-    Contact contact = ExampleData.createSirLanceContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  private void constructCaseCreatedEventWithDifferentAddressWales() {
-    Address address = ExampleData.createMyHouseAddressWales();
-    Contact contact = ExampleData.createSirLanceContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  private void constructUacEventWithNoCaseId(final String formType) {
-    context.uacPayload.setUacHash(context.uacKey);
-    context.uacPayload.setActive("true");
-    context.uacPayload.setQuestionnaireId("3110000010");
-    context.uacPayload.setFormType(formType);
-  }
-
   @And("The Token Is Successfully Decrypted")
   public void the_token_is_successfully_decrypted() throws IOException, Exception {
     String returnURL;
@@ -1221,7 +1175,7 @@ public class RhSteps extends StepsBase {
     startPage.clickRequestNewCodeLink();
   }
 
-  public static boolean eqExists(final RhStepsContext context) {
+  private boolean eqExists() {
     boolean eqExists = false;
     if (context.errorMessageContainingCallToEQ == null) {
       try {
@@ -1397,7 +1351,7 @@ public class RhSteps extends StepsBase {
         limitExceedPage.getMessage());
   }
 
-  private void confirm_your_address(Country country, String postCode) throws Exception {
+  private void confirmYourAddress(Country country, String postCode) throws Exception {
     emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
 
@@ -1412,100 +1366,5 @@ public class RhSteps extends StepsBase {
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     confirmAddress.clickOptionYes();
     confirmAddress.clickContinueButton();
-  }
-
-  private void emptyEventQueue(EventType eventType) throws Exception {
-    String queueName = rabbit.createQueue(eventType);
-    rabbit.flushQueue(queueName);
-  }
-
-  private void assertNewEventHasFired(EventType eventType) throws Exception {
-
-    final GenericEvent event =
-        (GenericEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(event);
-    assertNotNull(event.getEvent());
-  }
-
-  private void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
-
-    EventType eventType = EventType.RESPONDENT_AUTHENTICATED;
-
-    RespondentAuthenticatedEvent event =
-        (RespondentAuthenticatedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(event);
-
-    context.respondentAuthenticatedHeader = event.getEvent();
-    assertNotNull(context.respondentAuthenticatedHeader);
-
-    context.respondentAuthenticatedPayload = event.getPayload();
-    assertNotNull(context.respondentAuthenticatedPayload);
-  }
-
-  private void assertNewSurveyLaunchedEventHasFired() throws Exception {
-    EventType eventType = EventType.SURVEY_LAUNCHED;
-
-    context.surveyLaunchedEvent =
-        (SurveyLaunchedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(context.surveyLaunchedEvent);
-
-    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getEvent();
-    assertNotNull(context.surveyLaunchedHeader);
-
-    context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
-    assertNotNull(context.surveyLaunchedPayload);
-  }
-
-  private void assertNewFulfilmentEventHasFired() throws Exception {
-    EventType eventType = EventType.FULFILMENT_REQUESTED;
-
-    FulfilmentRequestedEvent fulfilmentRequestedEvent =
-        (FulfilmentRequestedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    context.fulfilmentRequestedCode =
-        fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
-
-    assertNotNull(fulfilmentRequestedEvent);
-    assertNotNull(fulfilmentRequestedEvent.getEvent());
-    assertNotNull(fulfilmentRequestedEvent.getPayload());
-    assertNotNull(context.fulfilmentRequestedCode);
-  }
-
-  private Class<?> eventClass(EventType eventType) {
-    switch (eventType) {
-      case FULFILMENT_REQUESTED:
-        return FulfilmentRequestedEvent.class;
-      case NEW_ADDRESS_REPORTED:
-        return NewAddressReportedEvent.class;
-      case RESPONDENT_AUTHENTICATED:
-        return RespondentAuthenticatedEvent.class;
-      case SURVEY_LAUNCHED:
-        return SurveyLaunchedEvent.class;
-      case ADDRESS_MODIFIED:
-        return AddressModifiedEvent.class;
-      case QUESTIONNAIRE_LINKED:
-        return QuestionnaireLinkedEvent.class;
-      default:
-        throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
-    }
   }
 }
