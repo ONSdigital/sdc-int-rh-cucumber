@@ -19,7 +19,7 @@ public class WebPageConstants {
 
   static final String XPATH_PARAGRAPH_ADDRESS = "//main//h1/following-sibling::p";
   public static final String XPATH_HIGHLIGHTED_ERROR_NO1 =
-      "//main//div[@class='panel panel--error']//li/a";
+      "//div[@class='panel__body']/p[@class='panel__error']";
   static final String XPATH_SAVE_AND_CONTINUE_BUTTON =
       "//form//button[@name='action[save_continue]']";
   static final String XPATH_LINK_REQUEST_A_NEW_CODE =

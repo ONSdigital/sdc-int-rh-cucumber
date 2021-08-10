@@ -7,7 +7,6 @@
 #Scenario: [CR-T167, CR-T168] Unhappy path – Invalid UAC entered - Wales
 ## (Comments)
 
-@ignore
 Feature:  UAC-Authentication-Failure
 
   ## this test only covers scenario for caseType = HH & individual flag = false
