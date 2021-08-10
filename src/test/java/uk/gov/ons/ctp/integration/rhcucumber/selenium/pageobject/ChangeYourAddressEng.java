@@ -32,7 +32,7 @@ public class ChangeYourAddressEng extends PageObjectBase implements ChangeYourAd
   @FindBy(xpath = WebPageConstants.XPATH_SAVE_AND_CONTINUE_BUTTON)
   private WebElement saveAndContinueButton;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_POSTCODE)
+  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ADDRESS)
   private WebElement postcodeTextBox;
 
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)

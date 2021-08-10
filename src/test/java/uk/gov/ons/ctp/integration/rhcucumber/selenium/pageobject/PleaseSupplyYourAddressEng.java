@@ -35,7 +35,7 @@ public class PleaseSupplyYourAddressEng extends PageObjectBase implements Please
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_POSTCODE)
+  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ADDRESS)
   private WebElement postcodeTextBox;
 
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)

@@ -69,9 +69,9 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WebFormPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourName;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourPostcode;
 
 public class RhSteps extends StepsBase {
   private Wait wait;
@@ -576,29 +576,30 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page to enter my postcode on")
   public void i_am_presented_with_a_page_to_enter_my_postcode_on() {
-    WhatIsYourPostcode whatIsYourPostcode = pages.getWhatIsYourPostcode(country);
-    WebElement logo = whatIsYourPostcode.getOnsLogo();
+    WhatIsYourAddress page = pages.getWhatIsYourAddress(country);
+    WebElement logo = page.getOnsLogo();
+
     verifyCorrectOnsLogoUsed(logo, country);
 
     assertEquals(
         "What is your postcode - title has incorrect text",
-        whatIsYourPostcode.getExpectedPostcodeText(),
-        whatIsYourPostcode.getwhatIsYourPostcodeTitleText());
+        page.getExpectedTitleText(),
+        page.getwhatIsYourAddressTitleText());
   }
 
   @Given("I enter the valid UK postcode {string}")
   public void i_enter_the_valid_UK_postcode(String validPostcode) {
-    pages.getWhatIsYourPostcode().addTextToPostcodeTextBox(validPostcode);
+    pages.getWhatIsYourAddress().addTextToAddressTextBox(validPostcode);
   }
 
   @Given("select Continue")
   public void select_Continue() {
-    pages.getWhatIsYourPostcode().clickContinueButton();
+    pages.getWhatIsYourAddress().clickContinueButton();
   }
 
   @Given("I enter the invalid UK postcode {string} into the postcode textbox")
   public void i_enter_the_invalid_UK_postcode_into_the_postcode_textbox(String invalidPostcode) {
-    pages.getWhatIsYourPostcode().addTextToPostcodeTextBox(invalidPostcode);
+    pages.getWhatIsYourAddress().addTextToAddressTextBox(invalidPostcode);
   }
 
   @Then("an invalid postcode error {string} appears")
@@ -606,7 +607,7 @@ public class RhSteps extends StepsBase {
     assertEquals(
         "The invalid postcode error message shown has incorrect text",
         errorMessage,
-        pages.getWhatIsYourPostcode(country).getErrorEnterValidPostcodeText());
+        pages.getWhatIsYourAddress(country).getErrorEnterValidPostcodeText());
   }
 
   @Then("I am presented with a page to select an address from")
@@ -1400,8 +1401,8 @@ public class RhSteps extends StepsBase {
     emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
 
-    WhatIsYourPostcode whatIsYourPostcode = pages.getWhatIsYourPostcode(country);
-    whatIsYourPostcode.addTextToPostcodeTextBox(postCode);
+    WhatIsYourAddress whatIsYourPostcode = pages.getWhatIsYourAddress(country);
+    whatIsYourPostcode.addTextToAddressTextBox(postCode);
     whatIsYourPostcode.clickContinueButton();
 
     SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);

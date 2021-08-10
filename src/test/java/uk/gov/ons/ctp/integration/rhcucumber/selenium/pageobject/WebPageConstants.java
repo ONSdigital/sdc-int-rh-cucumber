@@ -15,8 +15,8 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
  * expression: '//form//main//a[@href='/webchat']'
  */
 public class WebPageConstants {
-  // Generic items which appear on multiple pages
-  public static final String XPATH_LOGO = "//header//img[@class='header__logo']";
+  public static final String XPATH_LOGO = "//*[text() = 'Office for National Statistics logo']";
+
   static final String XPATH_PARAGRAPH_ADDRESS = "//main//h1/following-sibling::p";
   public static final String XPATH_HIGHLIGHTED_ERROR_NO1 =
       "//main//div[@class='panel panel--error']//li/a";
@@ -24,11 +24,12 @@ public class WebPageConstants {
       "//form//button[@name='action[save_continue]']";
   static final String XPATH_LINK_REQUEST_A_NEW_CODE =
       "//main//a[text()='request a new access code']";
-  static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE =
-      "//main//a[text()='ofyn am god mynediad newydd']";
+  static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE = XPATH_LINK_REQUEST_A_NEW_CODE;
+  // "//main//a[text()='ofyn am god mynediad newydd']";     // TODO: Welsh translation when RHUI
+  // ready
   static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE_SENT =
       "//main//a[text()='ofyn am god mynediad newydd']";
-  static final String XPATH_TEXTBOX_POSTCODE = "//main//input[@id='postcode']";
+  static final String XPATH_TEXTBOX_ADDRESS = "//main//input[@id='address-autosuggest']";
 
   // For the Start page
   static final String XPATH_BUTTON_ACCESS_CENSUS = "//form//button[@name='action[save_continue]']";

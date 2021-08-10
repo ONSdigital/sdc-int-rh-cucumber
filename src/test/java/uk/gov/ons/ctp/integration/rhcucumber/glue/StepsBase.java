@@ -50,22 +50,23 @@ public abstract class StepsBase {
   }
 
   void verifyCorrectOnsLogoUsed(WebElement logo, Country country) {
-    String expectedLogoText;
+    String expectedLogoTextId;
     switch (country) {
       case WALES:
-        expectedLogoText = "ons-logo-pos-cy.svg";
+        expectedLogoTextId = "ons-logo-cy-alt";
         break;
       case ENG:
-        expectedLogoText = "ons-logo-pos-en.svg";
+        expectedLogoTextId = "ons-logo-en-alt";
         break;
       default:
-        expectedLogoText = "";
+        expectedLogoTextId = "";
     }
     assertNotNull(logo);
-    String fullLogoName = logo.getAttribute("src");
-    String actualLogoName = extractLogoName(fullLogoName);
+    String actualLogoTextId = extractLogoName(logo.getAttribute("id"));
     assertEquals(
-        "name found for logo is incorrect - " + country.name(), expectedLogoText, actualLogoName);
+        "name found for logo is incorrect - " + country.name(),
+        expectedLogoTextId,
+        actualLogoTextId);
   }
 
   String extractLogoName(String sourceFound) {

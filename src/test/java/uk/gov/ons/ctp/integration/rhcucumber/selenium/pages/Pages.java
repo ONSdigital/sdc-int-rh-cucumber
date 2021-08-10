@@ -26,7 +26,7 @@ public class Pages {
   private WebFormPage webFormPage = null;
   private LimitExceedPage limitExceedPage = null;
   private ConfirmAddress confirmAddress = null;
-  private WhatIsYourPostcode whatIsYourPostcode = null;
+  private WhatIsYourAddress whatIsYourAddress;
   private SelectDeliveryMethodTextOrPost selectDeliveryMethodTextOrPost = null;
   private IsThisMobileNumCorrect isThisMobileNumCorrect = null;
   private SelectYourAddress selectYourAddress = null;
@@ -145,13 +145,13 @@ public class Pages {
     return WhatIsYourMobile.getWhatIsYourMobile(webDriver, country);
   }
 
-  public WhatIsYourPostcode getWhatIsYourPostcode(final Country country) {
-    whatIsYourPostcode = WhatIsYourPostcode.getWhatIsYourPostcode(webDriver, country);
-    return whatIsYourPostcode;
+  public WhatIsYourAddress getWhatIsYourAddress(final Country country) {
+    whatIsYourAddress = WhatIsYourAddress.getWhatIsYourAddress(webDriver, country);
+    return whatIsYourAddress;
   }
 
-  public WhatIsYourPostcode getWhatIsYourPostcode() {
-    return whatIsYourPostcode;
+  public WhatIsYourAddress getWhatIsYourAddress() {
+    return whatIsYourAddress;
   }
 
   public WouldYouLikeToCompleteCensusInEnglish getWouldYouLikeToCompleteCensusInEnglish() {

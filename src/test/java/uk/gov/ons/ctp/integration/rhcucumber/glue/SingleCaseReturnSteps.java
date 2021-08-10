@@ -28,7 +28,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourPostcode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
 
 public class SingleCaseReturnSteps extends StepsBase {
   private final EventType caseEventType = EventType.CASE_CREATED;
@@ -114,10 +114,10 @@ public class SingleCaseReturnSteps extends StepsBase {
   @And("A valid postcode is entered")
   public void aValidPostcodeIsEntered() {
 
-    final WhatIsYourPostcode postcodePage = pages.getWhatIsYourPostcode(Country.ENG);
+    final WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(Country.ENG);
 
     // enter postcode
-    postcodePage.addTextToPostcodeTextBox(postcode);
+    postcodePage.addTextToAddressTextBox(postcode);
     postcodePage.clickContinueButton();
   }
 

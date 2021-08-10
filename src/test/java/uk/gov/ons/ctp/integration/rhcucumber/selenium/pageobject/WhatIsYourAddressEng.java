@@ -8,17 +8,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourPostcode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WhatIsYourPostcodeEng extends PageObjectBase implements WhatIsYourPostcode {
+public class WhatIsYourAddressEng extends PageObjectBase implements WhatIsYourAddress {
 
-  private String expectedPostcodeText = "What is your postcode?";
+  private String expectedTitleText = "What is your address?";
 
-  public WhatIsYourPostcodeEng(WebDriver driver) {
+  public WhatIsYourAddressEng(WebDriver driver) {
     super(driver);
     classPrefix = "WhatIsYourPostcode:";
     waitForLoading();
@@ -34,14 +34,14 @@ public class WhatIsYourPostcodeEng extends PageObjectBase implements WhatIsYourP
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_POSTCODE)
-  private WebElement postcodeTextBox;
+  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ADDRESS)
+  private WebElement addressTextBox;
 
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
   private WebElement errorEnterValidPostcode;
 
   @Override
-  public String getwhatIsYourPostcodeTitleText() {
+  public String getwhatIsYourAddressTitleText() {
     return whatIsYourPostcodeTitle.getText();
   }
 
@@ -52,9 +52,9 @@ public class WhatIsYourPostcodeEng extends PageObjectBase implements WhatIsYourP
   }
 
   @Override
-  public void addTextToPostcodeTextBox(String txtToAdd) {
-    waitForElement(postcodeTextBox, classPrefix + "postcodeTextBox");
-    postcodeTextBox.sendKeys(txtToAdd);
+  public void addTextToAddressTextBox(String txtToAdd) {
+    waitForElement(addressTextBox, classPrefix + "addressTextBox");
+    addressTextBox.sendKeys(txtToAdd);
   }
 
   @Override

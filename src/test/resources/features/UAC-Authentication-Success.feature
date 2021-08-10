@@ -8,6 +8,7 @@
 #Scenario  [CR-T163, CR-T164, CR-T165, CR-T166] Check a Survey Launched event is sent to RM after address confirmed
 
 
+@ignore
 Feature:  UAC-Authentication-Success
 
   ##SETUP calls the following steps...
@@ -36,7 +37,7 @@ Feature:  UAC-Authentication-Success
   ##  When RM sends the case_created and a uac_updated events to RH via RabbitMQ
   ##  Then a valid uac exists in Firestore ready for use by a respondent
   @UAC-Authentication-Success-WalesTestT167 @Setup @TearDown
-  @igore
+  @ignore
   Scenario: [CR-T167] The Happy Path - Access the Census Questionnaire - Wales
     Given SETUP-4 - a valid uac and associated case exist in Firestore with region WALES
     Given I am a respondent and I am on the RH Start Page

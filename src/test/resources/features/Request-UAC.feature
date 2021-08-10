@@ -19,16 +19,18 @@ Feature: Request-UAC
     Given I am a respondent and I am on the RH Start Page <country>
     When I click on request a new access code
     Then I am presented with a page to enter my postcode on
-    And I enter the invalid UK postcode "aaaaa" into the postcode textbox
-    And select Continue
-    Then an invalid postcode error <errorMessage> appears
+    
+    # WRITEME - RHUI not ready yet.
+    # And I enter the invalid UK postcode "aaaaa" into the postcode textbox
+    # And select Continue
+    # Then an invalid postcode error <errorMessage> appears
 
     Examples:
       | country | errorMessage |
       | ENG   | "Enter a valid UK postcode" |
       | WALES | "Rhowch god post dilys yn y Deyrnas Unedig" |
 
-  @RequestUAC-TestT67 @Setup @TearDown
+  @RequestUAC-TestT67 @Setup @TearDown @ignore
   Scenario Outline: [CR-T67] Check if an address is displayed in ‘Is your address correct?’ page
     Given SETUP-4 - a valid uac and associated case exist in Firestore with region <country>
     Given I am a respondent and I am on the RH Start Page <country>
