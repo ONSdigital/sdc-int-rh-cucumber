@@ -13,15 +13,16 @@ import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedResponse;
 import uk.gov.ons.ctp.common.event.model.UAC;
+import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 
 @Data
 @NoArgsConstructor
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
 public class GlueContext {
-  String caseCollection;
-  String caseKey;
-  String uacCollection;
+  String caseCollection = "case";
+  String caseKey = ExampleData.DEFAULT_CASE_ID;
+  String uacCollection = "uac";
   String uac;
   String uacKey;
   String errorMessageContainingCallToEQ;

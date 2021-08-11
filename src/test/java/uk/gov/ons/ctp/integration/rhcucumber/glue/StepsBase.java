@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
-import uk.gov.ons.ctp.common.event.model.Address;
 import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
-import uk.gov.ons.ctp.common.event.model.Contact;
 import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
 import uk.gov.ons.ctp.common.event.model.NewAddressReportedEvent;
@@ -187,21 +185,5 @@ public abstract class StepsBase {
       default:
         throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }
-  }
-
-  // ---- data setup helpers ...
-
-  void constructCaseCreatedEvent() {
-    Address address = ExampleData.createNimrodAddress();
-    Contact contact = ExampleData.createLadySallyContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  void constructCaseCreatedEventWales() {
-    Address address = ExampleData.createNimrodAddressWales();
-    Contact contact = ExampleData.createLadySallyContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
   }
 }

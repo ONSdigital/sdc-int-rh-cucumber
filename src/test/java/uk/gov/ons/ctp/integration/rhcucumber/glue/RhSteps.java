@@ -19,6 +19,7 @@ import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
 import uk.gov.ons.ctp.common.event.EventPublisher.Source;
 import uk.gov.ons.ctp.common.util.Wait;
+import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -42,9 +43,6 @@ public class RhSteps extends StepsBase {
   public void setupNoCountry() throws Exception {
     super.setupForAll();
     wait = new Wait(driver);
-    context.caseCollection = "case";
-    context.caseKey = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
-    context.uacCollection = "uac";
   }
 
   @Before("@SetUpRHEng")
@@ -513,7 +511,7 @@ public class RhSteps extends StepsBase {
       Country country, String uacEventType) throws Exception {
     setupTest(country);
     prepareCaseAndUacEvents();
-    inboundCaseAndUacEvents(uacEventType);
+    sendInboundCaseAndUacEvents(EventType.valueOf(uacEventType));
     verifyUacProcessed();
   }
 
@@ -526,38 +524,23 @@ public class RhSteps extends StepsBase {
     } else {
       prepareCaseAndUacEvents();
     }
-    inboundCaseAndUacEvents(EventType.UAC_UPDATED.name());
+    sendInboundCaseAndUacEvents(EventType.UAC_UPDATED);
     verifyUacProcessed();
   }
 
   private void prepareCaseAndUacEvents() {
-    constructCaseCreatedEvent();
+    context.caseCreatedPayload = ExampleData.createCollectionCase(context.caseKey);
     constructUacUpdatedEvent();
   }
 
   private void prepareWelshCaseAndUacEvents() {
-    constructCaseCreatedEventWales();
+    context.caseCreatedPayload = ExampleData.createWelshCollectionCase(context.caseKey);
     constructUacUpdatedEvent();
   }
 
-  private void inboundCaseAndUacEvents(String uacEventType) throws Exception {
-
+  private void sendInboundCaseAndUacEvents(EventType eventType) throws Exception {
     rabbit.sendEvent(
         EventType.CASE_CREATED, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
-
-    EventType eventType;
-
-    switch (uacEventType) {
-      case "UAC_CREATED":
-        eventType = EventType.UAC_CREATED;
-        break;
-      case "UAC_UPDATED":
-        eventType = EventType.UAC_UPDATED;
-        break;
-      default:
-        throw new IllegalArgumentException("Bad test passing uac event type: " + uacEventType);
-    }
-
     rabbit.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
   }
 
