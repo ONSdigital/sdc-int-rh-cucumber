@@ -19,7 +19,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
       TestCloudDataStore.class,
       FirestoreDataStore.class,
       Pages.class,
-      FirestoreDataStore.class,
-      RateLimiterMock.class
+      FirestoreDataStore.class
     })
 public class CucumberSpringConfiguration {}

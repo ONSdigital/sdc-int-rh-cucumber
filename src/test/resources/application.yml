@@ -43,8 +43,3 @@ keystore: '{
 cloudStorage:
   caseSchemaName: case
   uacSchemaName: uac
-
-envoy:
-  host: localhost
-  port: 8181
-  scheme: http

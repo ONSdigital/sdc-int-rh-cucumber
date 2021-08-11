@@ -204,25 +204,4 @@ public abstract class StepsBase {
     context.caseCreatedPayload =
         ExampleData.createCollectionCase(address, contact, context.caseKey);
   }
-
-  void constructCaseCreatedEventWithDifferentAddress() {
-    Address address = ExampleData.createMyHouseAddress();
-    Contact contact = ExampleData.createSirLanceContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  void constructCaseCreatedEventWithDifferentAddressWales() {
-    Address address = ExampleData.createMyHouseAddressWales();
-    Contact contact = ExampleData.createSirLanceContact();
-    context.caseCreatedPayload =
-        ExampleData.createCollectionCase(address, contact, context.caseKey);
-  }
-
-  void constructUacEventWithNoCaseId(final String formType) {
-    context.uacPayload.setUacHash(context.uacKey);
-    context.uacPayload.setActive("true");
-    context.uacPayload.setQuestionnaireId("3110000010");
-    context.uacPayload.setFormType(formType);
-  }
 }

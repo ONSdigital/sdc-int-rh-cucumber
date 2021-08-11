@@ -4,20 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,9 +17,13 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
 import uk.gov.ons.ctp.common.event.EventPublisher.Source;
@@ -54,8 +49,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourName;
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
-
-  @Autowired private RateLimiterMock rateLimiterMock;
 
   public static final List<String> HASH_KEYS_EXPECTED =
       Arrays.asList(
@@ -100,11 +93,6 @@ public class RhSteps extends StepsBase {
     initTest(Country.WALES);
   }
 
-  @Before("@EnableRateLimit")
-  public void enableRateLimit() throws Exception {
-    callRateLimiterMock(true);
-  }
-
   private void initTest(Country country) throws Exception {
     setupNoCountry();
     setupTest(country);
@@ -118,20 +106,6 @@ public class RhSteps extends StepsBase {
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
-  }
-
-  @After("@DisableRateLimit")
-  public void disableRateLimit() throws Exception {
-    callRateLimiterMock(false);
-  }
-
-  private void callRateLimiterMock(boolean flag) throws Exception {
-    Map<String, String> headerParams = new HashMap<>();
-    MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-    queryParams.add("enabled", Boolean.toString(flag));
-    rateLimiterMock
-        .rateLimiterMock()
-        .postResource("limit", null, String.class, headerParams, queryParams, "");
   }
 
   private void rm_constructs_a_case_created_event_and_a_uac_updated_event() {
