@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ChooseLanguageImpl;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WouldYouLikeToCompleteCensusInEnglish;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
@@ -23,8 +21,6 @@ public class Pages {
   private WebDriver webDriver;
 
   private StartPage startPage = null;
-  private WebFormPage webFormPage = null;
-  private LimitExceedPage limitExceedPage = null;
   private ConfirmAddress confirmAddress = null;
   private WhatIsYourAddress whatIsYourAddress;
   private SelectDeliveryMethodTextOrPost selectDeliveryMethodTextOrPost = null;
@@ -38,14 +34,6 @@ public class Pages {
     this.webDriver = webDriverFactory.getWebDriver();
   }
 
-  public ChooseLanguage getChooseLanguage() {
-    return new ChooseLanguageImpl(webDriver);
-  }
-
-  public ChangeYourAddress getChangeYourAddress(final Country country) {
-    return ChangeYourAddress.getChangeYourAddress(webDriver, country);
-  }
-
   public ConfirmAddress getConfirmAddress(final Country country) {
     confirmAddress = ConfirmAddress.getConfirmAddress(webDriver, country);
     return confirmAddress;
@@ -57,10 +45,6 @@ public class Pages {
 
   public ConfirmAddressForNewUac getConfirmAddressForNewUac(final Country country) {
     return ConfirmAddressForNewUac.getConfirmAddressForNewUac(webDriver, country);
-  }
-
-  public ConfirmAddressToLinkUac getConfirmAddressToLinkUac(final Country country) {
-    return ConfirmAddressToLinkUac.getConfirmAddressToLinkUac(webDriver, country);
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost(final Country country) {
@@ -120,23 +104,6 @@ public class Pages {
     return startPage;
   }
 
-  public WebFormPage getWebFormStartPage() {
-    webFormPage =
-        WebFormPage.getWebFormPage(webDriver, envBaseUrl, WebFormPage.PageType.START_PAGE);
-    return webFormPage;
-  }
-
-  public LimitExceedPage getLimitExceedPage() {
-    limitExceedPage = LimitExceedPage.getLimitExceedPage(webDriver, envBaseUrl);
-    return limitExceedPage;
-  }
-
-  public WebFormPage getWebFormSuccessPage() {
-    webFormPage =
-        WebFormPage.getWebFormPage(webDriver, envBaseUrl, WebFormPage.PageType.SUCCESS_PAGE);
-    return webFormPage;
-  }
-
   public StartPage getStartPage() {
     return startPage;
   }
@@ -152,10 +119,6 @@ public class Pages {
 
   public WhatIsYourAddress getWhatIsYourAddress() {
     return whatIsYourAddress;
-  }
-
-  public WouldYouLikeToCompleteCensusInEnglish getWouldYouLikeToCompleteCensusInEnglish() {
-    return new WouldYouLikeToCompleteCensusInEnglish(webDriver);
   }
 
   public WhatIsYourName getWhatIsYourName(final Country country) {
