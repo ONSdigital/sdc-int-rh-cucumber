@@ -4,9 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,14 +23,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
 import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
 import uk.gov.ons.ctp.common.event.EventPublisher.Source;
@@ -106,43 +105,6 @@ public class RhSteps extends StepsBase {
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
-  }
-
-  private void rm_constructs_a_case_created_event_and_a_uac_updated_event() {
-    constructCaseCreatedEvent();
-    constructUacUpdatedEvent();
-  }
-
-  private void rm_constructs_a_case_created_event_and_a_uac_updated_event_where_Region_is_W() {
-    constructCaseCreatedEventWales();
-    constructUacUpdatedEvent();
-  }
-
-  private void rm_sends_the_case_created_and_uac_events_to_RH_via_RabbitMQ(String uacEventType)
-      throws Exception {
-
-    rabbit.sendEvent(
-        EventType.CASE_CREATED, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
-
-    EventType eventType;
-
-    switch (uacEventType) {
-      case "UAC_CREATED":
-        eventType = EventType.UAC_CREATED;
-        break;
-      case "UAC_UPDATED":
-        eventType = EventType.UAC_UPDATED;
-        break;
-      default:
-        throw new IllegalArgumentException("Bad test passing uac event type: " + uacEventType);
-    }
-
-    rabbit.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
-  }
-
-  private void a_valid_uac_exists_in_Firestore_ready_for_use_by_a_respondent() throws Exception {
-    assertTrue(dataRepo.waitForObject(context.caseCollection, context.caseKey, WAIT_TIMEOUT));
-    assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
   }
 
   @Given("I am a respondent and I am on the RH Start Page")
@@ -331,101 +293,6 @@ public class RhSteps extends StepsBase {
     assertNewEventHasFired(EventType.FULFILMENT_REQUESTED);
   }
 
-  private void the_respondentAuthenticatedHeader_contains_a_Type_with_value(String expectedType) {
-    EventType type = context.respondentAuthenticatedHeader.getType();
-    String strType = type.name();
-    assertEquals(
-        "The RespondentAuthenticatedEvent contains a incorrect value of 'type'",
-        expectedType,
-        strType);
-  }
-
-  private void the_surveyLaunchedHeader_contains_a_Type_with_value(String expectedType) {
-    EventType type = context.surveyLaunchedHeader.getType();
-    String strType = type.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'type'", expectedType, strType);
-  }
-
-  private void the_respondentAuthenticatedHeader_contains_a_Source_with_value(
-      String expectedSource) {
-    Source source = context.respondentAuthenticatedHeader.getSource();
-    String strSource = source.name();
-    assertEquals(
-        "The RespondentAuthenticatedEvent contains a incorrect value of 'source'",
-        expectedSource,
-        strSource);
-  }
-
-  private void the_surveyLaunchedHeader_contains_a_Source_with_value(String expectedSource) {
-    Source source = context.surveyLaunchedHeader.getSource();
-    String strSource = source.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'source'",
-        expectedSource,
-        strSource);
-  }
-
-  private void the_respondentAuthenticatedHeader_contains_a_Channel_with_value(
-      String expectedChannel) {
-    Channel channel = context.respondentAuthenticatedHeader.getChannel();
-    String strChannel = channel.name();
-    assertEquals(
-        "The ResondentAuthenticatedEvent contains a incorrect value of 'channel'",
-        expectedChannel,
-        strChannel);
-  }
-
-  private void the_surveyLaunchedHeader_contains_a_Channel_with_value(String expectedChannel) {
-    Channel channel = context.surveyLaunchedHeader.getChannel();
-    String strChannel = channel.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'channel'",
-        expectedChannel,
-        strChannel);
-  }
-
-  private void the_respondentAuthenticatedHeader_contains_a_DateTime_value_that_is_not_null() {
-    Date dateTime = context.respondentAuthenticatedHeader.getDateTime();
-    assertNotNull(dateTime);
-  }
-
-  private void the_surveyLaunchedHeader_contains_a_DateTime_value_that_is_not_null() {
-    Date dateTime = context.surveyLaunchedHeader.getDateTime();
-    assertNotNull(dateTime);
-  }
-
-  private void the_respondentAuthenticatedHeader_contains_a_TransactionId_value_that_is_not_null() {
-    String transactionId = context.respondentAuthenticatedHeader.getTransactionId();
-    assertNotNull(transactionId);
-  }
-
-  private void the_surveyLaunchedHeader_contains_a_TransactionId_value_that_is_not_null() {
-    String transactionId = context.surveyLaunchedHeader.getTransactionId();
-    assertNotNull(transactionId);
-  }
-
-  private void the_respondentAuthenticatedPayload_contains_a_Response() {
-    context.respondentAuthenticatedResponse = context.respondentAuthenticatedPayload.getResponse();
-    assertNotNull(context.respondentAuthenticatedResponse);
-  }
-
-  private void the_surveyLaunchedPayload_contains_a_Response() {
-    context.surveyLaunchedResponse = context.surveyLaunchedPayload.getResponse();
-    assertNotNull(context.surveyLaunchedResponse);
-  }
-
-  private void
-      the_respondentAuthenticatedResponse_contains_a_QuestionnaireId_value_that_is_not_null() {
-    String questionnaireId = context.respondentAuthenticatedResponse.getQuestionnaireId();
-    assertNotNull(questionnaireId);
-  }
-
-  private void the_surveyLaunchedResponse_contains_a_QuestionnaireId_value_that_is_not_null() {
-    String questionnaireId = context.surveyLaunchedResponse.getQuestionnaireId();
-    assertNotNull(questionnaireId);
-  }
-
   @Given("I click on request a new access code")
   public void i_click_on_request_a_new_access_code() {
     pages.getStartPage().clickRequestNewCodeLink();
@@ -434,10 +301,7 @@ public class RhSteps extends StepsBase {
   @Then("I am presented with a page to enter my postcode on")
   public void i_am_presented_with_a_page_to_enter_my_postcode_on() {
     WhatIsYourAddress page = pages.getWhatIsYourAddress(country);
-    WebElement logo = page.getOnsLogo();
-
-    verifyCorrectOnsLogoUsed(logo, country);
-
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
         "What is your postcode - title has incorrect text",
         page.getExpectedTitleText(),
@@ -456,11 +320,9 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page to select an address from")
   public void i_am_presented_with_a_page_to_select_an_address_from() {
-
     SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
     wait.forLoading();
     verifyCorrectOnsLogoUsed(selectYourAddress.getOnsLogo(), country);
-
     assertEquals(
         "Select Your Address - title has incorrect text",
         selectYourAddress.getExpectedSelectionText(),
@@ -500,9 +362,9 @@ public class RhSteps extends StepsBase {
 
   @Given("I select the address {string} and click continue")
   public void i_select_the_address_and_click_continue(final String address) {
-    SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
-    selectYourAddress.selectFirstBulletPoint();
-    selectYourAddress.clickContinueButton();
+    SelectYourAddress page = pages.getSelectYourAddress(country);
+    page.selectFirstBulletPoint();
+    page.clickContinueButton();
   }
 
   @Then("I am presented with a page displaying the address {string}")
@@ -524,9 +386,9 @@ public class RhSteps extends StepsBase {
 
   @When("I select the ‘YES, This address is correct’ option and click continue")
   public void i_select_the_YES_This_address_is_correct_option_and_click_continue() {
-    ConfirmAddressForNewUac confirmAddressForNewUac = pages.getConfirmAddressForNewUac(country);
-    confirmAddressForNewUac.clickOptionYes();
-    confirmAddressForNewUac.clickContinueButton();
+    ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
+    page.clickOptionYes();
+    page.clickContinueButton();
   }
 
   @Then("I am presented with a page asking for my mobile number")
@@ -534,7 +396,6 @@ public class RhSteps extends StepsBase {
     wait.forLoading();
     WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
     verifyCorrectOnsLogoUsed(whatIsYourMobile.getOnsLogo(), country);
-
     assertEquals(
         "What is Your Mobile - title has incorrect text - " + country.name(),
         whatIsYourMobile.getExpectedText(),
@@ -543,85 +404,85 @@ public class RhSteps extends StepsBase {
 
   @When("I select the ‘No, I need to change the address’ option and click continue")
   public void i_select_the_No_I_need_to_change_the_address_option_and_click_continue() {
-    ConfirmAddressForNewUac confirmAddressForNewUac = pages.getConfirmAddressForNewUac(country);
-    confirmAddressForNewUac.clickOptionNo();
-    confirmAddressForNewUac.clickContinueButton();
+    ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
+    page.clickOptionNo();
+    page.clickContinueButton();
   }
 
   @Given("I enter my mobile number and click continue")
   public void i_enter_my_mobile_number_and_click_continue() {
-    WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
-    whatIsYourMobile.addTextToMobileNumBox("07700 900345");
-    whatIsYourMobile.clickContinueButton();
+    WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
+    page.addTextToMobileNumBox("07700 900345");
+    page.clickContinueButton();
   }
 
   @Given("I am presented with a page to confirm my mobile number on")
   public void i_am_presented_with_a_page_to_confirm_my_mobile_number_on() {
-    IsThisMobileNumCorrect isThisMobileNumCorrect = pages.getIsThisMobileNumCorrect(country);
-    verifyCorrectOnsLogoUsed(isThisMobileNumCorrect.getOnsLogo(), country);
+    IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect(country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
 
     assertEquals(
         "Is this mobile number correct - title has incorrect text",
-        isThisMobileNumCorrect.getExpectedText(),
-        isThisMobileNumCorrect.getIsMobileCorrectTitleText());
+        page.getExpectedText(),
+        page.getIsMobileCorrectTitleText());
   }
 
   @When("I select the Yes option to send the text now")
   public void i_select_the_Yes_option_to_send_the_text_now() {
-    IsThisMobileNumCorrect isThisMobileNumCorrect = pages.getIsThisMobileNumCorrect();
-    isThisMobileNumCorrect.clickOptionYes();
-    isThisMobileNumCorrect.clickContinueButton();
+    IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect();
+    page.clickOptionYes();
+    page.clickContinueButton();
   }
 
   @When("I select the No option \\(because the number displayed is not correct)")
   public void i_select_the_No_option_because_the_number_displayed_is_not_correct() {
-    IsThisMobileNumCorrect isThisMobileNumCorrect = pages.getIsThisMobileNumCorrect();
-    isThisMobileNumCorrect.clickOptionNo();
-    isThisMobileNumCorrect.clickContinueButton();
+    IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect();
+    page.clickOptionNo();
+    page.clickContinueButton();
   }
 
   @Then("I am presented with a message saying that I have been sent an access code")
   public void i_am_presented_with_a_message_saying_that_I_have_been_sent_an_access_code() {
-    SentAccessCode sentAccessCode = pages.getSentAccessCode(country);
+    SentAccessCode page = pages.getSentAccessCode(country);
 
-    verifyCorrectOnsLogoUsed(sentAccessCode.getOnsLogo(), country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
         "Sent Access Code - title has incorrect text - " + country.name(),
-        sentAccessCode.getExpectedText(),
-        sentAccessCode.getSentAccessCodeTitleText());
+        page.getExpectedText(),
+        page.getSentAccessCodeTitleText());
   }
 
   @Then("I am presented with a button {string}")
   public void i_am_presented_with_a_button(String expectedLabel) {
-    SentAccessCode sentAccessCode = pages.getSentAccessCode(country);
-    String buttonLabelFound = sentAccessCode.getStartSurveyButtonText();
+    SentAccessCode page = pages.getSentAccessCode(country);
+    String buttonLabelFound = page.getStartSurveyButtonText();
     assertEquals(
         "button label found is incorrect - " + country.name(), expectedLabel, buttonLabelFound);
   }
 
   @Then("I am also presented with a link to request a new access code")
   public void i_am_also_presented_with_a_link_to_request_a_new_code() {
-    SentAccessCode sentAccessCode = pages.getSentAccessCode();
+    SentAccessCode page = pages.getSentAccessCode();
     assertEquals(
         "link text found is incorrect",
-        sentAccessCode.getExpectedRequestCodeText(),
-        sentAccessCode.getRequestNewCodeLinkText());
+        page.getExpectedRequestCodeText(),
+        page.getRequestNewCodeLinkText());
   }
 
   @When("I enter an invalid mobile number and click continue")
   public void i_enter_an_invalid_mobile_number_and_click_continue() {
-    WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
-    whatIsYourMobile.addTextToMobileNumBox("1234567");
-    whatIsYourMobile.clickContinueButton();
+    WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
+    page.addTextToMobileNumBox("1234567");
+    page.clickContinueButton();
   }
 
   @Then("an invalid mobile number error message is displayed")
   public void an_invalid_mobile_number_error_message_is_displayed() {
-    WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
+    WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
     assertEquals(
         "invalid mobile error message found is incorrect",
-        whatIsYourMobile.getExpectedErrorText(),
-        whatIsYourMobile.getInvalidMobileErrorText());
+        page.getExpectedErrorText(),
+        page.getInvalidMobileErrorText());
   }
 
   @And("The Token Is Successfully Decrypted")
@@ -681,48 +542,46 @@ public class RhSteps extends StepsBase {
   @And("the respondent sees the Household Interstitial page and clicks continue")
   public void the_respondent_sees_the_household_interstitial_page_and_clicks_continue() {
     wait.forLoading();
-    HouseholdInterstitial householdInterstitial = pages.getHouseholdInterstitial(country);
-
-    verifyCorrectOnsLogoUsed(householdInterstitial.getOnsLogo(), country);
-
+    HouseholdInterstitial page = pages.getHouseholdInterstitial(country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
         "Request a new household access code - title has incorrect text",
-        householdInterstitial.getExpectedText(),
-        householdInterstitial.getHouseholdInterstitialTitleText());
+        page.getExpectedText(),
+        page.getHouseholdInterstitialTitleText());
 
     pages.getHouseholdInterstitial(country).clickContinueButton();
   }
 
   @And("I enter a postcode {string}")
   public void i_enter_postcode(String postcode) {
-    PleaseSupplyYourAddress pleaseSupplyYourAddress = pages.getPleaseSupplyYourAddress(country);
-    pleaseSupplyYourAddress.addTextToPostcodeTextBox(postcode);
-    pleaseSupplyYourAddress.clickContinueButton();
+    PleaseSupplyYourAddress page = pages.getPleaseSupplyYourAddress(country);
+    page.addTextToPostcodeTextBox(postcode);
+    page.clickContinueButton();
   }
 
   @And("select \"I can't find my address\", and click \"Continue\"")
   public void select_cant_find_my_address_and_confirm_it() {
-    SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
-    selectYourAddress.selectCannotFindAddressBulletPoint();
-    selectYourAddress.clickContinueButton();
+    SelectYourAddress page = pages.getSelectYourAddress(country);
+    page.selectCannotFindAddressBulletPoint();
+    page.clickContinueButton();
   }
 
   @Then(
       "I am presented with a page to call the Census Customer Contact Centre with the correct telephone number")
   public void i_am_presented_with_a_page_telling_me_to_call_Census_Customer_Contact_centre() {
-    RegisterYourAddress registerYourAddress = pages.getRegisterYourAddress(country);
-    String pageTitle = registerYourAddress.getTitleText();
-    String textWithPhoneNumber = registerYourAddress.getTextWithPhoneNumber();
+    RegisterYourAddress page = pages.getRegisterYourAddress(country);
+    String pageTitle = page.getTitleText();
+    String textWithPhoneNumber = page.getTextWithPhoneNumber();
 
-    assertEquals(registerYourAddress.getExpectedTitleText(), pageTitle);
-    assertEquals(registerYourAddress.getExpectedTextWithPhoneNumber(), textWithPhoneNumber);
+    assertEquals(page.getExpectedTitleText(), pageTitle);
+    assertEquals(page.getExpectedTextWithPhoneNumber(), textWithPhoneNumber);
   }
 
   @Given("I click on \"request a new access code\" in the start page {}")
   public void i_click_onrequest_a_new_access_code_in_the_start_page(Country country) {
     this.country = country;
-    StartPage startPage = pages.getStartPage(country);
-    startPage.clickRequestNewCodeLink();
+    StartPage page = pages.getStartPage(country);
+    page.clickRequestNewCodeLink();
   }
 
   private boolean eqExists() {
@@ -757,9 +616,9 @@ public class RhSteps extends StepsBase {
   public void setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(
       Country country, String uacEventType) throws Exception {
     setupTest(country);
-    rm_constructs_a_case_created_event_and_a_uac_updated_event();
-    rm_sends_the_case_created_and_uac_events_to_RH_via_RabbitMQ(uacEventType);
-    a_valid_uac_exists_in_Firestore_ready_for_use_by_a_respondent();
+    prepareCaseAndUacEvents();
+    inboundCaseAndUacEvents(uacEventType);
+    verifyUacProcessed();
   }
 
   @Given("SETUP-4 - a valid uac and associated case exist in Firestore with region {}")
@@ -767,34 +626,132 @@ public class RhSteps extends StepsBase {
       Country country) throws Exception {
     setupTest(country);
     if (country == Country.WALES) {
-      rm_constructs_a_case_created_event_and_a_uac_updated_event_where_Region_is_W();
+      prepareWelshCaseAndUacEvents();
     } else {
-      rm_constructs_a_case_created_event_and_a_uac_updated_event();
+      prepareCaseAndUacEvents();
     }
-    rm_sends_the_case_created_and_uac_events_to_RH_via_RabbitMQ(EventType.UAC_UPDATED.name());
-    a_valid_uac_exists_in_Firestore_ready_for_use_by_a_respondent();
+    inboundCaseAndUacEvents(EventType.UAC_UPDATED.name());
+    verifyUacProcessed();
+  }
+
+  private void prepareCaseAndUacEvents() {
+    constructCaseCreatedEvent();
+    constructUacUpdatedEvent();
+  }
+
+  private void prepareWelshCaseAndUacEvents() {
+    constructCaseCreatedEventWales();
+    constructUacUpdatedEvent();
+  }
+
+  private void inboundCaseAndUacEvents(String uacEventType) throws Exception {
+
+    rabbit.sendEvent(
+        EventType.CASE_CREATED, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
+
+    EventType eventType;
+
+    switch (uacEventType) {
+      case "UAC_CREATED":
+        eventType = EventType.UAC_CREATED;
+        break;
+      case "UAC_UPDATED":
+        eventType = EventType.UAC_UPDATED;
+        break;
+      default:
+        throw new IllegalArgumentException("Bad test passing uac event type: " + uacEventType);
+    }
+
+    rabbit.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
+  }
+
+  private void verifyUacProcessed() throws Exception {
+    assertTrue(dataRepo.waitForObject(context.caseCollection, context.caseKey, WAIT_TIMEOUT));
+    assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
   }
 
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    the_respondentAuthenticatedHeader_contains_a_Type_with_value("RESPONDENT_AUTHENTICATED");
-    the_respondentAuthenticatedHeader_contains_a_Source_with_value("RESPONDENT_HOME");
-    the_respondentAuthenticatedHeader_contains_a_Channel_with_value("RH");
-    the_respondentAuthenticatedHeader_contains_a_DateTime_value_that_is_not_null();
-    the_respondentAuthenticatedHeader_contains_a_TransactionId_value_that_is_not_null();
-    the_respondentAuthenticatedPayload_contains_a_Response();
-    the_respondentAuthenticatedResponse_contains_a_QuestionnaireId_value_that_is_not_null();
+    respondentAuthenticatedHeaderContainsType("RESPONDENT_AUTHENTICATED");
+    respondentAuthenticatedHeaderContainsSource("RESPONDENT_HOME");
+    respondentAuthenticatedHeaderContainsChannel("RH");
+    assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
+    assertNotNull(context.respondentAuthenticatedHeader.getTransactionId());
+    respondentAuthenticatedPayloadHasResponse();
+    assertNotNull(context.respondentAuthenticatedResponse.getQuestionnaireId());
   }
 
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    the_surveyLaunchedHeader_contains_a_Type_with_value("SURVEY_LAUNCHED");
-    the_surveyLaunchedHeader_contains_a_Source_with_value("RESPONDENT_HOME");
-    the_surveyLaunchedHeader_contains_a_Channel_with_value("RH");
-    the_surveyLaunchedHeader_contains_a_DateTime_value_that_is_not_null();
-    the_surveyLaunchedHeader_contains_a_TransactionId_value_that_is_not_null();
-    the_surveyLaunchedPayload_contains_a_Response();
-    the_surveyLaunchedResponse_contains_a_QuestionnaireId_value_that_is_not_null();
+    surveyLaunchedHeaderContainsType("SURVEY_LAUNCHED");
+    surveyLaunchedHeaderContainsSource("RESPONDENT_HOME");
+    surveyLaunchedHeaderContainsChannel("RH");
+    assertNotNull(context.surveyLaunchedHeader.getDateTime());
+    assertNotNull(context.surveyLaunchedHeader.getTransactionId());
+    surveyLaunchedPayloadHasResponse();
+    assertNotNull(context.surveyLaunchedResponse.getQuestionnaireId());
+  }
+
+  private void respondentAuthenticatedHeaderContainsType(String expectedType) {
+    EventType type = context.respondentAuthenticatedHeader.getType();
+    String strType = type.name();
+    assertEquals(
+        "The RespondentAuthenticatedEvent contains a incorrect value of 'type'",
+        expectedType,
+        strType);
+  }
+
+  private void surveyLaunchedHeaderContainsType(String expectedType) {
+    EventType type = context.surveyLaunchedHeader.getType();
+    String strType = type.name();
+    assertEquals(
+        "The SurveyLaunchedEvent contains a incorrect value of 'type'", expectedType, strType);
+  }
+
+  private void respondentAuthenticatedHeaderContainsSource(String expectedSource) {
+    Source source = context.respondentAuthenticatedHeader.getSource();
+    String strSource = source.name();
+    assertEquals(
+        "The RespondentAuthenticatedEvent contains a incorrect value of 'source'",
+        expectedSource,
+        strSource);
+  }
+
+  private void surveyLaunchedHeaderContainsSource(String expectedSource) {
+    Source source = context.surveyLaunchedHeader.getSource();
+    String strSource = source.name();
+    assertEquals(
+        "The SurveyLaunchedEvent contains a incorrect value of 'source'",
+        expectedSource,
+        strSource);
+  }
+
+  private void respondentAuthenticatedHeaderContainsChannel(String expectedChannel) {
+    Channel channel = context.respondentAuthenticatedHeader.getChannel();
+    String strChannel = channel.name();
+    assertEquals(
+        "The ResondentAuthenticatedEvent contains a incorrect value of 'channel'",
+        expectedChannel,
+        strChannel);
+  }
+
+  private void surveyLaunchedHeaderContainsChannel(String expectedChannel) {
+    Channel channel = context.surveyLaunchedHeader.getChannel();
+    String strChannel = channel.name();
+    assertEquals(
+        "The SurveyLaunchedEvent contains a incorrect value of 'channel'",
+        expectedChannel,
+        strChannel);
+  }
+
+  private void respondentAuthenticatedPayloadHasResponse() {
+    context.respondentAuthenticatedResponse = context.respondentAuthenticatedPayload.getResponse();
+    assertNotNull(context.respondentAuthenticatedResponse);
+  }
+
+  private void surveyLaunchedPayloadHasResponse() {
+    context.surveyLaunchedResponse = context.surveyLaunchedPayload.getResponse();
+    assertNotNull(context.surveyLaunchedResponse);
   }
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")

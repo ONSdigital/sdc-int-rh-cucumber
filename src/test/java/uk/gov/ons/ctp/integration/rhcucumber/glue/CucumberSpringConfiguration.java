@@ -13,7 +13,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 @EnableConfigurationProperties
 @SpringBootTest(
     classes = {
-      RhStepsContext.class,
+      GlueContext.class,
       WebDriverFactory.class,
       RespondentDataRepository.class,
       TestCloudDataStore.class,

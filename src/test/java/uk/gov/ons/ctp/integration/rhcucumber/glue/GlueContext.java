@@ -19,7 +19,7 @@ import uk.gov.ons.ctp.common.event.model.UAC;
 @NoArgsConstructor
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
-public class RhStepsContext {
+public class GlueContext {
   String caseCollection;
   String caseKey;
   String uacCollection;

@@ -31,7 +31,7 @@ public abstract class StepsBase {
   static final int RABBIT_TIMEOUT = 2000;
   static final long WAIT_TIMEOUT = 20_000L;
 
-  @Autowired RhStepsContext context;
+  @Autowired GlueContext context;
   @Autowired RespondentDataRepository dataRepo;
   @Autowired WebDriverFactory webDriverFactory;
   @Autowired Pages pages;
