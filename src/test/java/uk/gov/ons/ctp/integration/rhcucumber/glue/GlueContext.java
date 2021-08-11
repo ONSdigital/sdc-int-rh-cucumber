@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CollectionCase;
 import uk.gov.ons.ctp.common.event.model.Header;
 import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedPayload;
-import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedResponse;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchedResponse;
@@ -31,7 +30,6 @@ public class GlueContext {
   String fulfilmentRequestedCode;
   Header respondentAuthenticatedHeader;
   RespondentAuthenticatedPayload respondentAuthenticatedPayload;
-  RespondentAuthenticatedResponse respondentAuthenticatedResponse;
   SurveyLaunchedEvent surveyLaunchedEvent;
   Header surveyLaunchedHeader;
   SurveyLaunchedPayload surveyLaunchedPayload;

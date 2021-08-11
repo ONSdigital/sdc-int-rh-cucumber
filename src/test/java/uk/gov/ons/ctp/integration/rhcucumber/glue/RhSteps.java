@@ -78,8 +78,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("The respondent confirms a valid {} address {string}")
-  public void the_respondent_confirms_the_address(Country country, final String postCode)
-      throws Exception {
+  public void confirmAddress(Country country, final String postCode) throws Exception {
     this.country = country;
     StartPage startPage = pages.getStartPage(country);
     startPage.clickRequestNewCodeLink();
@@ -87,37 +86,37 @@ public class RhSteps extends StepsBase {
   }
 
   @And("the respondent selects the delivery channel as \"Text message\"")
-  public void the_respondent_selects_the_delivery_channel_as_Text_message() {
+  public void selectTextMessageOption() {
     pages.getSelectDeliveryMethodTextOrPost(country).clickOptionText();
     pages.getSelectDeliveryMethodTextOrPost(country).clickContinueButton();
   }
 
   @And("the respondents enters their valid UK mobile telephone number")
-  public void the_respondent_enters_their_valid_UK_mobile_telephone_number() {
+  public void enterValidMobilePhoneNumber() {
     WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
     whatIsYourMobile.addTextToMobileNumBox("07700 900345");
     whatIsYourMobile.clickContinueButton();
   }
 
   @When("the respondents selects continue \"text\"")
-  public void the_respondents_selects_continue_text() {
+  public void selectContinueWithText() {
     IsThisMobileNumCorrect isThisMobileNumCorrect = pages.getIsThisMobileNumCorrect(country);
     isThisMobileNumCorrect.clickOptionYes();
     isThisMobileNumCorrect.clickContinueButton();
   }
 
   @Then("RHSVC publishes a new address event")
-  public void RHSVC_publishes_a_new_address_event() throws Exception {
+  public void verifyNewAddressEventPublished() throws Exception {
     assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
   @And("RHSVC publishes a UAC fulfilment request")
-  public void RHSVC_publishes_a_UAC_fulfilment_request() throws Exception {
+  public void verifyUacFulfimentRequestPublished() throws Exception {
     assertNewEventHasFired(EventType.FULFILMENT_REQUESTED);
   }
 
   @And("the respondent selects the delivery channel as \"Post\"")
-  public void the_respondent_selects_the_delivery_channel_as_Post() {
+  public void selectPostOption() {
     SelectDeliveryMethodTextOrPost selectDeliveryMethodTextOrPost =
         pages.getSelectDeliveryMethodTextOrPost(country);
     selectDeliveryMethodTextOrPost.clickOptionPost();
@@ -125,7 +124,7 @@ public class RhSteps extends StepsBase {
   }
 
   @And("the respondent enters their first and last name")
-  public void the_respondent_enters_their_first_and_last_name() {
+  public void enterFullName() {
     WhatIsYourName whatIsYourName = pages.getWhatIsYourName(country);
     whatIsYourName.addTextToFirstNameTextBox("ray");
     whatIsYourName.addTextToLastNameTextBox("vis");
@@ -133,32 +132,32 @@ public class RhSteps extends StepsBase {
   }
 
   @When("the respondent confirms the address by selecting \"Yes, send the access code by post\"")
-  public void the_respondent_confirms_the_address_by_selecting_Yes_send_the_access_code_by_post() {
+  public void confirmSendByPost() {
     pages.getNewHouseholdAccessCode(country).selectYesSendByPost();
   }
 
   @And("selects continue")
-  public void selects_continue() {
+  public void selectContinueToGetHouseholdAccessCode() {
     pages.getNewHouseholdAccessCode(country).clickContinueButton();
   }
 
   @Given("I am a respondent and I am on the RH Start Page {}")
-  public void i_am_a_respondent_and_I_am_on_the_RH_Start_Page(Country country) {
+  public void selectTheStartPage(Country country) {
     setupTest(country);
   }
 
   @Given("I enter the valid UAC into the text box")
-  public void i_enter_the_valid_UAC_into_the_text_box() {
+  public void enterValidUac() {
     pages.getStartPage().enterUac(context.uac);
   }
 
   @Given("I click the “Access survey” button")
-  public void i_click_the_Access_survey_button() {
+  public void clickAccessSurveyButton() {
     pages.getStartPage().clickAccessSurveyButton();
   }
 
   @Then("I am presented with a page to confirm my address")
-  public void i_am_presented_with_a_page_to_confirm_my_address() {
+  public void verifyConfirmMyAddress() {
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     verifyCorrectOnsLogoUsed(confirmAddress.getOnsLogo(), country);
 
@@ -169,7 +168,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Then("a blank uac error {string} appears")
-  public void a_blank_uac_error_appears(String errorMessage) {
+  public void verifyBlankUacError(String errorMessage) {
     assertEquals(
         "The error message shown has incorrect text",
         errorMessage,
@@ -177,12 +176,12 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I enter an invalid UAC {string} into the text box")
-  public void i_enter_an_invalid_UAC_into_the_text_box(String uac) {
+  public void enterInvalidUac(String uac) {
     pages.getStartPage().enterUac(uac);
   }
 
   @Then("an invalid uac error {string} appears")
-  public void an_invalid_uac_error_appears(String errorMessage) {
+  public void verifyInvalidUacError(String errorMessage) {
     assertEquals(
         "The error message shown has incorrect text",
         errorMessage,
@@ -190,12 +189,12 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I select the “Yes, this address is correct” option")
-  public void i_select_the_Yes_this_address_is_correct_option() {
+  public void confirmAddressIsCorrect() {
     pages.getConfirmAddress(country).clickOptionYes();
   }
 
   @Given("I click the “Continue” button")
-  public void i_click_the_Continue_button() {
+  public void clickContinueAfterConfirmAddress() {
     wait.forLoading(1);
     try {
       pages.getConfirmAddress(country).clickContinueButton();
@@ -206,7 +205,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Then("I am presented with a page asking text or post")
-  public void i_am_presented_with_a_page_asking_text_or_post() {
+  public void pageAsksForTextOrPost() {
     SelectDeliveryMethodTextOrPost selectDeliveryMethodTextOrPost =
         pages.getSelectDeliveryMethodTextOrPost(country);
     verifyCorrectOnsLogoUsed(selectDeliveryMethodTextOrPost.getOnsLogo(), country);
@@ -218,53 +217,53 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I select 'Text message' and click 'Continue'")
-  public void i_select_the_text_message_option() {
+  public void selectTextMessage() {
     pages.getSelectDeliveryMethodTextOrPost(country).clickOptionText();
     pages.getSelectDeliveryMethodTextOrPost(country).clickContinueButton();
   }
 
   @Then("I am directed to the Questionnaire")
-  public void i_am_directed_to_the_Questionnaire() {
+  public void clickForQuestionnaire() {
     EqValidator.clickThoughToEq(context);
   }
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
-  public void an_empty_queue_exists_for_sending_Respondent_Authenticated_events() throws Exception {
+  public void emptyEventQueueForRespondentAuthenticated() throws Exception {
     emptyEventQueue(EventType.RESPONDENT_AUTHENTICATED);
   }
 
   @Given("an empty queue exists for sending Survey Launched events")
-  public void an_empty_queue_exists_for_sending_Survey_Launched_events() throws Exception {
+  public void emptyEventQueuForSurveyLaunched() throws Exception {
     emptyEventQueue(EventType.SURVEY_LAUNCHED);
   }
 
   @Given("an empty queue exists for sending Fulfilment Requested events")
-  public void an_empty_queue_exists_for_sending_Fulfilment_Requested_events() throws Exception {
+  public void emptyEventQueueForFulfilmentRequested() throws Exception {
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
   }
 
   @Then("a Respondent Authenticated event is sent to RM")
-  public void a_Respondent_Authenticated_event_is_sent_to_RM() throws Exception {
+  public void verifyRespondentAuthenticatedEventSent() throws Exception {
     assertNewRespondantAuthenticatedEventHasFired();
   }
 
   @Then("a Survey Launched event is sent to RM")
-  public void a_Survey_Launched_event_is_sent_to_RM() throws Exception {
+  public void verifySurveyLaunchedEventSent() throws Exception {
     assertNewSurveyLaunchedEventHasFired();
   }
 
   @Then("a FulfilmentRequested event is sent to RM")
-  public void a_FulfilmentRequested_event_is_sent_to_RM() throws Exception {
+  public void verifyFulfilmentRequestedEventSent() throws Exception {
     assertNewEventHasFired(EventType.FULFILMENT_REQUESTED);
   }
 
   @Given("I click on request a new access code")
-  public void i_click_on_request_a_new_access_code() {
+  public void clickRequestNewAccessCode() {
     pages.getStartPage().clickRequestNewCodeLink();
   }
 
   @Then("I am presented with a page to enter my postcode on")
-  public void i_am_presented_with_a_page_to_enter_my_postcode_on() {
+  public void verifypageForPostcodeEntry() {
     WhatIsYourAddress page = pages.getWhatIsYourAddress(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
@@ -274,30 +273,30 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I enter the valid UK postcode {string}")
-  public void i_enter_the_valid_UK_postcode(String validPostcode) {
+  public void enterValidPostcode(String validPostcode) {
     pages.getWhatIsYourAddress().addTextToAddressTextBox(validPostcode);
   }
 
   @Given("select Continue")
-  public void select_Continue() {
+  public void selectContinueOnAddressPage() {
     pages.getWhatIsYourAddress().clickContinueButton();
   }
 
   @Then("I am presented with a page to select an address from")
-  public void i_am_presented_with_a_page_to_select_an_address_from() {
-    SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
+  public void verifyPageToSelectAddress() {
+    SelectYourAddress page = pages.getSelectYourAddress(country);
     wait.forLoading();
-    verifyCorrectOnsLogoUsed(selectYourAddress.getOnsLogo(), country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
         "Select Your Address - title has incorrect text",
-        selectYourAddress.getExpectedSelectionText(),
-        selectYourAddress.getSelectYourAddressTitleText());
+        page.getExpectedSelectionText(),
+        page.getSelectYourAddressTitleText());
   }
 
   @Then("a number of addresses is displayed")
-  public void a_number_of_addresses_is_displayed() {
+  public void severalAddressesAreDisplayed() {
     Document document = Jsoup.parse(pages.getWebDriver().getPageSource());
-    SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
+    SelectYourAddress page = pages.getSelectYourAddress(country);
     Elements radioButtons =
         document.body().getElementsByAttributeValue("name", "form-pick-address");
     Element lastItem = radioButtons.attr("id", "xxxx").first();
@@ -307,11 +306,11 @@ public class RhSteps extends StepsBase {
     assertTrue(radioButtons.size() > 0);
 
     String expectedSelectionListText =
-        selectYourAddress.getExpectedSelectionListText1()
+        page.getExpectedSelectionListText1()
             + numberOfAddresses
-            + selectYourAddress.getExpectedSelectionListText2()
+            + page.getExpectedSelectionListText2()
             + " "
-            + selectYourAddress.getExpectedPostcode();
+            + page.getExpectedPostcode();
 
     String pageText =
         document
@@ -326,63 +325,63 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I select the address {string} and click continue")
-  public void i_select_the_address_and_click_continue(final String address) {
+  public void selectAddressAndContinue(final String address) {
     SelectYourAddress page = pages.getSelectYourAddress(country);
     page.selectFirstBulletPoint();
     page.clickContinueButton();
   }
 
   @Then("I am presented with a page displaying the address {string}")
-  public void i_am_presented_with_a_page_displaying_the_address(String addressToBeDisplayed) {
+  public void addressIsDisplayed(String addressToBeDisplayed) {
     wait.forLoading();
-    ConfirmAddressForNewUac confirmAddressForNewUac = pages.getConfirmAddressForNewUac(country);
-    verifyCorrectOnsLogoUsed(confirmAddressForNewUac.getOnsLogo(), country);
+    ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
 
     assertEquals(
         "Address confirmation for new uac - title has incorrect text",
-        confirmAddressForNewUac.getExpectedConfirmText(),
-        confirmAddressForNewUac.getConfirmAddressTitleText());
+        page.getExpectedConfirmText(),
+        page.getConfirmAddressTitleText());
 
     assertEquals(
         "Address confirmation for new uac - address displayed is incorrect",
-        confirmAddressForNewUac.getExpectedAddress(),
-        confirmAddressForNewUac.getAddressToConfirmText());
+        page.getExpectedAddress(),
+        page.getAddressToConfirmText());
   }
 
   @When("I select the ‘YES, This address is correct’ option and click continue")
-  public void i_select_the_YES_This_address_is_correct_option_and_click_continue() {
+  public void confirmAddressAndContinue() {
     ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
     page.clickOptionYes();
     page.clickContinueButton();
   }
 
   @Then("I am presented with a page asking for my mobile number")
-  public void i_am_presented_with_a_page_asking_for_my_mobile_number() {
+  public void pageAsksForMobileNumber() {
     wait.forLoading();
-    WhatIsYourMobile whatIsYourMobile = pages.getWhatIsYourMobile(country);
-    verifyCorrectOnsLogoUsed(whatIsYourMobile.getOnsLogo(), country);
+    WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
+    verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
     assertEquals(
         "What is Your Mobile - title has incorrect text - " + country.name(),
-        whatIsYourMobile.getExpectedText(),
-        whatIsYourMobile.getWhatIsYourMobileTitleText());
+        page.getExpectedText(),
+        page.getWhatIsYourMobileTitleText());
   }
 
   @When("I select the ‘No, I need to change the address’ option and click continue")
-  public void i_select_the_No_I_need_to_change_the_address_option_and_click_continue() {
+  public void rejectAddress() {
     ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
     page.clickOptionNo();
     page.clickContinueButton();
   }
 
   @Given("I enter my mobile number and click continue")
-  public void i_enter_my_mobile_number_and_click_continue() {
+  public void enterMobileNumberAndContinue() {
     WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
     page.addTextToMobileNumBox("07700 900345");
     page.clickContinueButton();
   }
 
   @Given("I am presented with a page to confirm my mobile number on")
-  public void i_am_presented_with_a_page_to_confirm_my_mobile_number_on() {
+  public void pageRequestMobileNumber() {
     IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
 
@@ -393,21 +392,21 @@ public class RhSteps extends StepsBase {
   }
 
   @When("I select the Yes option to send the text now")
-  public void i_select_the_Yes_option_to_send_the_text_now() {
+  public void confirmCorrectMobileNumber() {
     IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect();
     page.clickOptionYes();
     page.clickContinueButton();
   }
 
   @When("I select the No option \\(because the number displayed is not correct)")
-  public void i_select_the_No_option_because_the_number_displayed_is_not_correct() {
+  public void rejectMobileNumber() {
     IsThisMobileNumCorrect page = pages.getIsThisMobileNumCorrect();
     page.clickOptionNo();
     page.clickContinueButton();
   }
 
   @Then("I am presented with a message saying that I have been sent an access code")
-  public void i_am_presented_with_a_message_saying_that_I_have_been_sent_an_access_code() {
+  public void verifyMessageThatAccessCodeIsSent() {
     SentAccessCode page = pages.getSentAccessCode(country);
 
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
@@ -418,7 +417,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Then("I am presented with a button {string}")
-  public void i_am_presented_with_a_button(String expectedLabel) {
+  public void surveyButtonPresentedAfterAccessCodeIsSent(String expectedLabel) {
     SentAccessCode page = pages.getSentAccessCode(country);
     String buttonLabelFound = page.getStartSurveyButtonText();
     assertEquals(
@@ -426,7 +425,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Then("I am also presented with a link to request a new access code")
-  public void i_am_also_presented_with_a_link_to_request_a_new_code() {
+  public void verifyLinkToRequestNewAccessCode() {
     SentAccessCode page = pages.getSentAccessCode();
     assertEquals(
         "link text found is incorrect",
@@ -435,14 +434,14 @@ public class RhSteps extends StepsBase {
   }
 
   @When("I enter an invalid mobile number and click continue")
-  public void i_enter_an_invalid_mobile_number_and_click_continue() {
+  public void invalidMobileNumberEntered() {
     WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
     page.addTextToMobileNumBox("1234567");
     page.clickContinueButton();
   }
 
   @Then("an invalid mobile number error message is displayed")
-  public void an_invalid_mobile_number_error_message_is_displayed() {
+  public void verifyErrorMessageForInvalidMobileNumber() {
     WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
     assertEquals(
         "invalid mobile error message found is incorrect",
@@ -451,12 +450,12 @@ public class RhSteps extends StepsBase {
   }
 
   @And("The Token Is Successfully Decrypted")
-  public void the_token_is_successfully_decrypted() throws Exception {
+  public void theEqTokenIsValid() throws Exception {
     EqValidator.verifyTokenSuccessfullyDecrypted(context, driver, keystore);
   }
 
   @And("the respondent sees the Household Interstitial page and clicks continue")
-  public void the_respondent_sees_the_household_interstitial_page_and_clicks_continue() {
+  public void continueFromHouseholdInterstitial() {
     wait.forLoading();
     HouseholdInterstitial page = pages.getHouseholdInterstitial(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
@@ -469,14 +468,14 @@ public class RhSteps extends StepsBase {
   }
 
   @And("I enter a postcode {string}")
-  public void i_enter_postcode(String postcode) {
+  public void enterPostcode(String postcode) {
     PleaseSupplyYourAddress page = pages.getPleaseSupplyYourAddress(country);
     page.addTextToPostcodeTextBox(postcode);
     page.clickContinueButton();
   }
 
   @And("select \"I can't find my address\", and click \"Continue\"")
-  public void select_cant_find_my_address_and_confirm_it() {
+  public void cannotFindAddress() {
     SelectYourAddress page = pages.getSelectYourAddress(country);
     page.selectCannotFindAddressBulletPoint();
     page.clickContinueButton();
@@ -484,7 +483,7 @@ public class RhSteps extends StepsBase {
 
   @Then(
       "I am presented with a page to call the Customer Contact Centre with the correct telephone number")
-  public void i_am_presented_with_a_page_telling_me_to_call_Customer_Contact_centre() {
+  public void verifyPageToCallContactCentre() {
     RegisterYourAddress page = pages.getRegisterYourAddress(country);
     String pageTitle = page.getTitleText();
     String textWithPhoneNumber = page.getTextWithPhoneNumber();
@@ -494,7 +493,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I click on \"request a new access code\" in the start page {}")
-  public void i_click_onrequest_a_new_access_code_in_the_start_page(Country country) {
+  public void requestNewAccessCode(Country country) {
     this.country = country;
     StartPage page = pages.getStartPage(country);
     page.clickRequestNewCodeLink();
@@ -574,8 +573,8 @@ public class RhSteps extends StepsBase {
     respondentAuthenticatedHeaderContainsChannel("RH");
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
     assertNotNull(context.respondentAuthenticatedHeader.getTransactionId());
-    respondentAuthenticatedPayloadHasResponse();
-    assertNotNull(context.respondentAuthenticatedResponse.getQuestionnaireId());
+    assertNotNull(context.respondentAuthenticatedPayload.getResponse());
+    assertNotNull(context.respondentAuthenticatedPayload.getResponse().getQuestionnaireId());
   }
 
   @And("the surveyLaunchedHeader contains the correct values")
@@ -641,47 +640,40 @@ public class RhSteps extends StepsBase {
         strChannel);
   }
 
-  private void respondentAuthenticatedPayloadHasResponse() {
-    context.respondentAuthenticatedResponse = context.respondentAuthenticatedPayload.getResponse();
-    assertNotNull(context.respondentAuthenticatedResponse);
-  }
-
   private void surveyLaunchedPayloadHasResponse() {
     context.surveyLaunchedResponse = context.surveyLaunchedPayload.getResponse();
     assertNotNull(context.surveyLaunchedResponse);
   }
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")
-  public void the_respondent_selects_continue_on_confirm_your_mobile_page(
-      String postcode, Country country) throws Exception {
+  public void confirmYourMobile(String postcode, Country country) throws Exception {
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
 
-    the_respondent_confirms_the_address(country, postcode);
-    the_respondent_sees_the_household_interstitial_page_and_clicks_continue();
-    the_respondent_selects_the_delivery_channel_as_Text_message();
-    the_respondent_enters_their_valid_UK_mobile_telephone_number();
-    the_respondents_selects_continue_text();
+    confirmAddress(country, postcode);
+    continueFromHouseholdInterstitial();
+    selectTextMessageOption();
+    enterValidMobilePhoneNumber();
+    selectContinueWithText();
   }
 
   @Given("the respondent selects continue on the confirm postal address page {string} {}")
-  public void the_respondent_selects_continue_on_confirm_postal_address_page(
-      String postcode, Country country) throws Exception {
+  public void confirmPostalAddress(String postcode, Country country) throws Exception {
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
-    the_respondent_confirms_the_address(country, postcode);
-    the_respondent_sees_the_household_interstitial_page_and_clicks_continue();
-    the_respondent_selects_the_delivery_channel_as_Post();
-    the_respondent_enters_their_first_and_last_name();
-    the_respondent_confirms_the_address_by_selecting_Yes_send_the_access_code_by_post();
-    selects_continue();
+    confirmAddress(country, postcode);
+    continueFromHouseholdInterstitial();
+    selectPostOption();
+    enterFullName();
+    confirmSendByPost();
+    selectContinueToGetHouseholdAccessCode();
   }
 
   @When("RHSVC publishes a fulfilment request")
-  public void RHSVC_publishes_a_fulfilment_request() throws Exception {
+  public void verifyFulfilmentRequestSent() throws Exception {
     assertNewFulfilmentEventHasFired();
   }
 
   @Then("check the fulfilment code is {string}")
-  public void check_the_fulfilment_code_is(String expectedFulfilmentCode) {
+  public void verifyFulfilmentCode(String expectedFulfilmentCode) {
     assertEquals(
         "FulfilmentCode is not " + expectedFulfilmentCode,
         expectedFulfilmentCode,
@@ -692,16 +684,16 @@ public class RhSteps extends StepsBase {
     emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT_REQUESTED);
 
-    WhatIsYourAddress whatIsYourPostcode = pages.getWhatIsYourAddress(country);
-    whatIsYourPostcode.addTextToAddressTextBox(postCode);
-    whatIsYourPostcode.clickContinueButton();
+    WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);
+    postcodePage.addTextToAddressTextBox(postCode);
+    postcodePage.clickContinueButton();
 
-    SelectYourAddress selectYourAddress = pages.getSelectYourAddress(country);
-    selectYourAddress.selectFirstBulletPoint();
-    selectYourAddress.clickContinueButton();
+    SelectYourAddress selectAddressPage = pages.getSelectYourAddress(country);
+    selectAddressPage.selectFirstBulletPoint();
+    selectAddressPage.clickContinueButton();
 
-    ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
-    confirmAddress.clickOptionYes();
-    confirmAddress.clickContinueButton();
+    ConfirmAddress confirmAddressPage = pages.getConfirmAddress(country);
+    confirmAddressPage.clickOptionYes();
+    confirmAddressPage.clickContinueButton();
   }
 }
