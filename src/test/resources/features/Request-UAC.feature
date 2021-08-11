@@ -93,12 +93,12 @@ Feature: Request-UAC
     And I am presented with a page to confirm my mobile number on
     When I select the Yes option to send the text now
     Then I am presented with a message saying that I have been sent an access code
-    And I am presented with a button <startcensus>
+    And I am presented with a button <startsurvey>
     And I am also presented with a link to request a new access code
 
     Examples:
-      | country | postcode   | street              | address                                                      | startcensus           |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' | 'Start census'        |
+      | country | postcode   | street              | address                                                      | startsurvey         |
+      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' | 'Start survey'        |
       | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            | "Dechrau'r cyfrifiad" |
 
   ##SETUP calls the following steps...
@@ -246,12 +246,12 @@ Feature: Request-UAC
   # Setup Steps
   # 1. The respondent is requesting a household UAC for Wales (in English) via SMS
   # 2. Address exists in AIMS (UPRN)
-  # 3. The respondent enters their postcode on What is your postcode? page https://dev-rh.int.census-gcp.onsdigital.uk/en/requests/access-code/enter-address/
+  # 3. The respondent enters their postcode on What is your postcode? path /en/requests/access-code/enter-address/
   # 4. respondent has selected the address in step 1
   # 5. the respondent confirms the address
   # 6. the respondent selects the delivery channel as Text message
   # 7. the respondents enters their valid UK mobile telephone number
-  # 8. the respondent selects Yes, send the text option on https://dev-rh.int.census-gcp.onsdigital.uk/en/requests/access-code/confirm-mobile/
+  # 8. the respondent selects Yes, send the text option on path /en/requests/access-code/confirm-mobile/
   @ignore
   @RequestUAC-Test402
   @SetUpRHEng
@@ -269,12 +269,12 @@ Feature: Request-UAC
   #  " Setup Steps
   #  " 1. The respondent is requesting a household UAC for Wales (in English) via SMS
   #  " 2. Address exists in AIMS (UPRN)
-  #  " 3. The respondent enters their postcode on What is your postcode? page https://dev-rh.int.census-gcp.onsdigital.uk/en/requests/access-code/enter-address/
+  #  " 3. The respondent enters their postcode on What is your postcode? path /en/requests/access-code/enter-address/
   #  " 4. respondent has selected the address in step 1
   #  " 5. the respondent confirms the address
   #  " 6. the respondent selects the delivery channel as Post
   #  " 7. the respondents enters their first and last name
-  #  " 8. the respondent selects Yes, send the access code by post option on https://dev-rh.int.census-gcp.onsdigital.uk/en/requests/access-code/confirm-name-address/
+  #  " 8. the respondent selects Yes, send the access code by post option on path /en/requests/access-code/confirm-name-address/
   @ignore
   @RequestUAC-Test404
   @SetUpRHEng
@@ -297,7 +297,7 @@ Feature: Request-UAC
     Given I click on "request a new access code" in the start page <country>
     And I enter a postcode <postcode>
     And select "I can't find my address", and click "Continue"
-    Then I am presented with a page to call the Census Customer Contact Centre with the correct telephone number
+    Then I am presented with a page to call the Customer Contact Centre with the correct telephone number
 
     Examples:
       | country | postcode   |

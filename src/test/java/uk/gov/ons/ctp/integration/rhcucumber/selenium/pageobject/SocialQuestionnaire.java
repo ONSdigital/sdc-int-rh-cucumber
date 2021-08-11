@@ -13,20 +13,20 @@ import org.openqa.selenium.support.PageFactory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CensusQuestionnaire extends PageObjectBase {
+public class SocialQuestionnaire extends PageObjectBase {
 
-  public CensusQuestionnaire(WebDriver driver) {
+  public SocialQuestionnaire(WebDriver driver) {
     super(driver);
-    classPrefix = "CensusQuestionnaire:";
+    classPrefix = "SocialQuestionnaire:";
     waitForLoading();
     PageFactory.initElements(driver, this);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
-  private WebElement censusLogo;
+  private WebElement socalLogo;
 
-  public void clickCensusLogo() {
-    waitForElement(censusLogo, classPrefix + "censusLogo");
-    censusLogo.click();
+  public void clickSocialLogo() {
+    waitForElement(socalLogo, classPrefix + "socialLogo");
+    socalLogo.click();
   }
 }

@@ -95,12 +95,7 @@ public class Pages {
   }
 
   public StartPage getStartPage(final Country country) {
-    startPage = StartPage.getStartPage(webDriver, country, envBaseUrl, null);
-    return startPage;
-  }
-
-  public StartPage getADStartPage(final Country country, String locationId) {
-    startPage = StartPage.getStartPage(webDriver, country, envBaseUrl, locationId);
+    startPage = StartPage.getStartPage(webDriver, country, envBaseUrl);
     return startPage;
   }
 

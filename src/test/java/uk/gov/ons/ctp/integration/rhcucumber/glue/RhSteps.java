@@ -29,7 +29,7 @@ import uk.gov.ons.ctp.common.event.EventPublisher.Source;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.JweDecryptor;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.KeyStore;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.CensusQuestionnaire;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SocialQuestionnaire;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -258,8 +258,8 @@ public class RhSteps extends StepsBase {
     pages.getSelectDeliveryMethodTextOrPost(country).clickContinueButton();
   }
 
-  @Then("I am directed to the Census Questionnaire")
-  public void i_am_directed_to_the_Census_Questionnaire() {
+  @Then("I am directed to the Questionnaire")
+  public void i_am_directed_to_the_Questionnaire() {
     context.eqExists = eqExists();
   }
 
@@ -567,8 +567,8 @@ public class RhSteps extends StepsBase {
   }
 
   @Then(
-      "I am presented with a page to call the Census Customer Contact Centre with the correct telephone number")
-  public void i_am_presented_with_a_page_telling_me_to_call_Census_Customer_Contact_centre() {
+      "I am presented with a page to call the Customer Contact Centre with the correct telephone number")
+  public void i_am_presented_with_a_page_telling_me_to_call_Customer_Contact_centre() {
     RegisterYourAddress page = pages.getRegisterYourAddress(country);
     String pageTitle = page.getTitleText();
     String textWithPhoneNumber = page.getTextWithPhoneNumber();
@@ -588,7 +588,7 @@ public class RhSteps extends StepsBase {
     boolean eqExists = false;
     if (context.errorMessageContainingCallToEQ == null) {
       try {
-        new CensusQuestionnaire().clickCensusLogo();
+        new SocialQuestionnaire().clickSocialLogo();
         eqExists = true;
       } catch (TimeoutException toe) {
         // tolerate no EQ deployment for testing

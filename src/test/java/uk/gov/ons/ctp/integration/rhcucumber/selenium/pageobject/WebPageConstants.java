@@ -32,7 +32,7 @@ public class WebPageConstants {
   static final String XPATH_TEXTBOX_ADDRESS = "//main//input[@id='address-autosuggest']";
 
   // For the Start page
-  static final String XPATH_BUTTON_ACCESS_CENSUS = "//form//button[@name='action[save_continue]']";
+  static final String XPATH_BUTTON_ACCESS_SURVEY = "//form//button[@name='action[save_continue]']";
   public static final String XPATH_PAGE_CONTENT_TITLE = "//main//h1";
   static final String XPATH_TEXTBOX_ENTER_UAC = "//form//main//input[@id='uac']";
   public static final String XPATH_CONTINUE_BUTTON = "//form//main//button[@type='submit']";

@@ -37,7 +37,7 @@ public class StartPageEng extends PageObjectBase implements StartPage {
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
   private WebElement errorEnterValidCode;
 
-  @FindBy(xpath = WebPageConstants.XPATH_BUTTON_ACCESS_CENSUS)
+  @FindBy(xpath = WebPageConstants.XPATH_BUTTON_ACCESS_SURVEY)
   private WebElement accessSurveyButton;
 
   @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ENTER_UAC)
