@@ -8,6 +8,8 @@ import uk.gov.ons.ctp.common.event.model.UAC;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
+  public static final String VALID_MOBILE_NO = "07700 900345";
+  public static final String INVALID_MOBILE_NO = "1234567";
 
   // --- model fixtures below ...
 
@@ -48,7 +50,7 @@ public class ExampleData {
     contact.setTitle("Lady");
     contact.setForename("Sally");
     contact.setSurname("Scatterbrain");
-    contact.setTelNo("07700900345");
+    contact.setTelNo(VALID_MOBILE_NO);
     return contact;
   }
 

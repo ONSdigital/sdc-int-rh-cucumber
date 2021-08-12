@@ -374,7 +374,7 @@ public class RhSteps extends StepsBase {
   @Given("I enter my mobile number and click continue")
   public void enterMobileNumberAndContinue() {
     WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
-    page.addTextToMobileNumBox("07700 900345");
+    page.addTextToMobileNumBox(ExampleData.VALID_MOBILE_NO);
     page.clickContinueButton();
   }
 
@@ -434,7 +434,7 @@ public class RhSteps extends StepsBase {
   @When("I enter an invalid mobile number and click continue")
   public void invalidMobileNumberEntered() {
     WhatIsYourMobile page = pages.getWhatIsYourMobile(country);
-    page.addTextToMobileNumBox("1234567");
+    page.addTextToMobileNumBox(ExampleData.INVALID_MOBILE_NO);
     page.clickContinueButton();
   }
 
