@@ -20,8 +20,6 @@ public class WebPageConstants {
   static final String XPATH_PARAGRAPH_ADDRESS = "//main//h1/following-sibling::p";
   public static final String XPATH_HIGHLIGHTED_ERROR_NO1 =
       "//div[@class='panel__body']/p[@class='panel__error']";
-  static final String XPATH_SAVE_AND_CONTINUE_BUTTON =
-      "//form//button[@name='action[save_continue]']";
   static final String XPATH_LINK_REQUEST_A_NEW_CODE =
       "//main//a[text()='request a new access code']";
   static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE = XPATH_LINK_REQUEST_A_NEW_CODE;
@@ -38,9 +36,6 @@ public class WebPageConstants {
   public static final String XPATH_CONTINUE_BUTTON = "//form//main//button[@type='submit']";
   static final String XPATH_BUTTON_REQUEST_A_NEW_CODE = "//main//a[@role='button']";
   static final String XPATH_LINK_CHANGE_LANGUAGE = "//header//li[@class='language-links__item']/a";
-
-  // For the Change Your Address page
-  static final String XPATH_ADDRESS_LINE1 = "//form//main//input[@id='address-line-1']";
 
   // For the Address Confirmation page
   static final String XPATH_EM_ADDRESS = "//form//p[@class='rh-address-display']";
@@ -74,39 +69,4 @@ public class WebPageConstants {
 
   // For Register Your Address Page
   static final String XPATH_P_WITH_PHONE_NUMBER = "//p[2]";
-
-  // For the Webchat page
-  static final String XPATH_HEADER_WEBCHAT = "//div[@id='web-chat-form-display']/h1";
-  static final String XPATH_BUTTON_START_CHAT = "//div[@id='web-chat-form-display']/button";
-  static final String XPATH_TEXTBOX_ENTER_YOUR_NAME = "//input[@id='screen_name']";
-  static final String XPATH_DIV_ENTER_YOUR_NAME_HIGHLIGHT =
-      "//div[@id='web-chat-form-display']/div[1]";
-  static final String XPATH_STRONG_ENTER_YOUR_NAME_INSTRUCTION =
-      "//div[@id='web-chat-form-display']/div[1]//strong";
-  static final String XPATH_DIV_SELECT_COUNTRY_HIGHLIGHT =
-      "//div[@id='web-chat-form-display']/div[2]";
-  static final String XPATH_STRONG_SELECT_COUNTRY_INSTRUCTION =
-      "//div[@id='web-chat-form-display']/div[2]//strong";
-  static final String XPATH_DIV_QUERY_TYPE_HIGHLIGHT = "//div[@id='web-chat-form-display']/div[3]";
-  static final String XPATH_STRONG_QUERY_TYPE_INSTRUCTION =
-      "//div[@id='web-chat-form-display']/div[3]//strong";
-  static final String XPATH_LINK_EN_WEB_CHAT = "//form//main//a[@href='/en/web-chat/']";
-  static final String XPATH_LINK_WALES_WEB_CHAT = "//form//main//a[@href='/cy/web-chat/']";
-
-  // For the Webchat Unavailable page
-  public static final String XPATH_WEBCHAT_UNAVAILABLE_TITLE = "//form//main//h1";
-  public static final String XPATH_WEBCHAT_UNAVAILABLE_MESSAGE = "//form//main//h2";
-
-  // Web Form
-  public static final String XPATH_SEND_MESSAGE_BUTTON = "//form//main//button[@type='submit']";
-  static final String XPATH_MORE_DETAIL = "//form//main//textarea[@id='description']";
-  static final String XPATH_NAME = "//form//main//input[@id='name']";
-  static final String XPATH_EMAIL_ADDRESS = "//form//main//input[@id='email']";
-  static final String XPATH_RADIO_COUNTRY = "//form//main//input[@id='england']";
-  static final String XPATH_RADIO_QUERY_TYPE = "//form//main//input[@id='complaint']";
-  public static final String XPATH_WEB_FORM_PAGE_CONTENT_TITLE = "//main//h1";
-  public static final String XPATH_WEB_FORM_MESSAGE_SENT_TEXT = "//main//p";
-
-  // Limit Exceed Page
-  public static final String XPATH_LIMIT_EXCEED_PAGE_MESSAGE = "//main//h1";
 }

@@ -30,8 +30,6 @@ public interface StartPage {
 
   void clickRequestNewCodeLink();
 
-  void clickWebChatLink();
-
   void clickAlternativeLanguageLink();
 
   void clickUacBox();

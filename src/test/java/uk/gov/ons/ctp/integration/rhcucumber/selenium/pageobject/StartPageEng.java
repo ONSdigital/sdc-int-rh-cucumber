@@ -46,9 +46,6 @@ public class StartPageEng extends PageObjectBase implements StartPage {
   @FindBy(xpath = WebPageConstants.XPATH_LINK_REQUEST_A_NEW_CODE)
   private WebElement requestNewCodeLink;
 
-  @FindBy(xpath = WebPageConstants.XPATH_LINK_EN_WEB_CHAT)
-  private WebElement webChatLink;
-
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
   private WebElement cymraegLink;
 
@@ -85,11 +82,6 @@ public class StartPageEng extends PageObjectBase implements StartPage {
   public void clickRequestNewCodeLink() {
     waitForElement(requestNewCodeLink, classPrefix + "requestNewCodeLink");
     requestNewCodeLink.click();
-  }
-
-  public void clickWebChatLink() {
-    waitForElement(webChatLink, classPrefix + "webChatLink");
-    webChatLink.click();
   }
 
   @Override
