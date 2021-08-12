@@ -322,15 +322,15 @@ public class RhSteps extends StepsBase {
         pageText);
   }
 
-  @Given("I select the address {string} and click continue")
-  public void selectAddressAndContinue(final String address) {
+  @Given("I select the first address and click continue")
+  public void selectAddressAndContinue() {
     SelectYourAddress page = pages.getSelectYourAddress(country);
     page.selectFirstBulletPoint();
     page.clickContinueButton();
   }
 
-  @Then("I am presented with a page displaying the address {string}")
-  public void addressIsDisplayed(String addressToBeDisplayed) {
+  @Then("I am presented with a page displaying the expected address")
+  public void addressIsDisplayed() {
     wait.forLoading();
     ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
@@ -551,9 +551,10 @@ public class RhSteps extends StepsBase {
 
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    respondentAuthenticatedHeaderContainsType("RESPONDENT_AUTHENTICATED");
-    respondentAuthenticatedHeaderContainsSource("RESPONDENT_HOME");
-    respondentAuthenticatedHeaderContainsChannel("RH");
+    assertEquals(
+        EventType.RESPONDENT_AUTHENTICATED, context.respondentAuthenticatedHeader.getType());
+    assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
+    assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
     assertNotNull(context.respondentAuthenticatedHeader.getTransactionId());
     assertNotNull(context.respondentAuthenticatedPayload.getResponse());
@@ -562,65 +563,13 @@ public class RhSteps extends StepsBase {
 
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    surveyLaunchedHeaderContainsType("SURVEY_LAUNCHED");
-    surveyLaunchedHeaderContainsSource("RESPONDENT_HOME");
-    surveyLaunchedHeaderContainsChannel("RH");
+    assertEquals(EventType.SURVEY_LAUNCHED, context.surveyLaunchedHeader.getType());
+    assertEquals(Source.RESPONDENT_HOME, context.surveyLaunchedHeader.getSource());
+    assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
     assertNotNull(context.surveyLaunchedHeader.getDateTime());
     assertNotNull(context.surveyLaunchedHeader.getTransactionId());
     surveyLaunchedPayloadHasResponse();
     assertNotNull(context.surveyLaunchedResponse.getQuestionnaireId());
-  }
-
-  private void respondentAuthenticatedHeaderContainsType(String expectedType) {
-    EventType type = context.respondentAuthenticatedHeader.getType();
-    String strType = type.name();
-    assertEquals(
-        "The RespondentAuthenticatedEvent contains a incorrect value of 'type'",
-        expectedType,
-        strType);
-  }
-
-  private void surveyLaunchedHeaderContainsType(String expectedType) {
-    EventType type = context.surveyLaunchedHeader.getType();
-    String strType = type.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'type'", expectedType, strType);
-  }
-
-  private void respondentAuthenticatedHeaderContainsSource(String expectedSource) {
-    Source source = context.respondentAuthenticatedHeader.getSource();
-    String strSource = source.name();
-    assertEquals(
-        "The RespondentAuthenticatedEvent contains a incorrect value of 'source'",
-        expectedSource,
-        strSource);
-  }
-
-  private void surveyLaunchedHeaderContainsSource(String expectedSource) {
-    Source source = context.surveyLaunchedHeader.getSource();
-    String strSource = source.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'source'",
-        expectedSource,
-        strSource);
-  }
-
-  private void respondentAuthenticatedHeaderContainsChannel(String expectedChannel) {
-    Channel channel = context.respondentAuthenticatedHeader.getChannel();
-    String strChannel = channel.name();
-    assertEquals(
-        "The ResondentAuthenticatedEvent contains a incorrect value of 'channel'",
-        expectedChannel,
-        strChannel);
-  }
-
-  private void surveyLaunchedHeaderContainsChannel(String expectedChannel) {
-    Channel channel = context.surveyLaunchedHeader.getChannel();
-    String strChannel = channel.name();
-    assertEquals(
-        "The SurveyLaunchedEvent contains a incorrect value of 'channel'",
-        expectedChannel,
-        strChannel);
   }
 
   private void surveyLaunchedPayloadHasResponse() {

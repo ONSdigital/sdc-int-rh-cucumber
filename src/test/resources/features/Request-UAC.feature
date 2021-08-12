@@ -41,12 +41,12 @@ Feature: Request-UAC
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
     When I select the address <street> and click continue
-    Then I am presented with a page displaying the address <address>
+    Then I am presented with a page displaying the expected address
 
     Examples:
-      | country | postcode   | street              | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode   | street              |
+      | ENG   | "EX2 6GA"  | 'England House'     |
+      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' |
 
   @RequestUAC-TestT70 @Setup @TearDown @ignore
   Scenario Outline: [CR-T70] User selects NO option on ‘Is your address correct?’ page
@@ -58,15 +58,15 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    Then I select the address <street> and click continue
+    Then I select the first address and click continue
     Given I am presented with a page displaying the address <address>
     When I select the ‘No, I need to change the address’ option and click continue
     Then I am presented with a page to enter my postcode on
 
     Examples:
-      | country | postcode   | street              | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode | address                                                      |
+      | ENG   | "EX2 6GA"  | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
+      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
 
   ##SETUP calls the following steps...
   ## Given RM constructs a case_created event and a uac_updated event
