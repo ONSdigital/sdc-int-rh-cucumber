@@ -39,7 +39,7 @@ public abstract class StepsBase {
 
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
-    pubSub = PubSubHelper.instance();
+    pubSub = PubSubHelper.instance("local", false);
     driver = pages.getWebDriver();
   }
 

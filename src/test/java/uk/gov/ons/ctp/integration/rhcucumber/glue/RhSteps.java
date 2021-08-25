@@ -16,6 +16,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
+import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.util.Wait;
@@ -542,9 +543,9 @@ public class RhSteps extends StepsBase {
   }
 
   private void sendInboundCaseAndUacEvents(EventType eventType) throws Exception {
-    rabbit.sendEvent(
-        EventType.CASE_CREATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
-    rabbit.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
+    pubSub.sendEvent(
+        EventType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
+    pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
   }
 
   private void verifyUacProcessed() throws Exception {
