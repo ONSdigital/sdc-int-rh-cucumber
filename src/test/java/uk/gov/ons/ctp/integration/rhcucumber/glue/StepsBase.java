@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.EventPublisher;
+import uk.gov.ons.ctp.common.event.EventTopic;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
@@ -34,11 +35,11 @@ public abstract class StepsBase {
   String keystore;
 
   WebDriver driver;
-  RabbitHelper rabbit;
+  PubSubHelper pubSub;
 
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
-    rabbit = RabbitHelper.instance(RABBIT_EXCHANGE, true);
+    pubSub = PubSubHelper.instance();
     driver = pages.getWebDriver();
   }
 
@@ -89,8 +90,8 @@ public abstract class StepsBase {
   // - event validation helpers ...
 
   void emptyEventQueue(EventType eventType) throws Exception {
-    String queueName = rabbit.createQueue(eventType);
-    rabbit.flushQueue(queueName);
+    EventTopic topicName = EventTopic.forType(eventType);
+    pubSub.flushTopic(topicName);
   }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
