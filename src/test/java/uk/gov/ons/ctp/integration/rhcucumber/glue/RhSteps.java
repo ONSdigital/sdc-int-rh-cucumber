@@ -15,9 +15,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriverException;
-import uk.gov.ons.ctp.common.event.EventPublisher.Channel;
-import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
-import uk.gov.ons.ctp.common.event.EventPublisher.Source;
+import uk.gov.ons.ctp.common.domain.Channel;
+import uk.gov.ons.ctp.common.event.EventType;
+import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
@@ -103,14 +103,17 @@ public class RhSteps extends StepsBase {
     isThisMobileNumCorrect.clickContinueButton();
   }
 
-  @Then("RHSVC publishes a new address event")
-  public void verifyNewAddressEventPublished() throws Exception {
-    assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
-  }
+
+
+//TODO
+//  @Then("RHSVC publishes a new address event")
+//  public void verifyNewAddressEventPublished() throws Exception {
+//    assertNewEventHasFired(EventType.);
+//  }
 
   @And("RHSVC publishes a UAC fulfilment request")
   public void verifyUacFulfimentRequestPublished() throws Exception {
-    assertNewEventHasFired(EventType.FULFILMENT_REQUESTED);
+    assertNewEventHasFired(EventType.FULFILMENT);
   }
 
   @And("the respondent selects the delivery channel as \"Post\"")
@@ -227,17 +230,17 @@ public class RhSteps extends StepsBase {
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
   public void emptyEventQueueForRespondentAuthenticated() throws Exception {
-    emptyEventQueue(EventType.RESPONDENT_AUTHENTICATED);
+    emptyEventQueue(EventType.UAC_AUTHENTICATE);
   }
 
   @Given("an empty queue exists for sending Survey Launched events")
   public void emptyEventQueuForSurveyLaunched() throws Exception {
-    emptyEventQueue(EventType.SURVEY_LAUNCHED);
+    emptyEventQueue(EventType.SURVEY_LAUNCH);
   }
 
   @Given("an empty queue exists for sending Fulfilment Requested events")
   public void emptyEventQueueForFulfilmentRequested() throws Exception {
-    emptyEventQueue(EventType.FULFILMENT_REQUESTED);
+    emptyEventQueue(EventType.FULFILMENT);
   }
 
   @Then("a Respondent Authenticated event is sent to RM")
@@ -252,7 +255,7 @@ public class RhSteps extends StepsBase {
 
   @Then("a FulfilmentRequested event is sent to RM")
   public void verifyFulfilmentRequestedEventSent() throws Exception {
-    assertNewEventHasFired(EventType.FULFILMENT_REQUESTED);
+    assertNewEventHasFired(EventType.FULFILMENT);
   }
 
   @Given("I click on request a new access code")
@@ -502,7 +505,7 @@ public class RhSteps extends StepsBase {
   public void setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(Country country)
       throws Exception {
     setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(
-        country, EventType.UAC_UPDATED.name());
+        country, EventType.UAC_UPDATE.name());
   }
 
   @Given(
@@ -524,7 +527,7 @@ public class RhSteps extends StepsBase {
     } else {
       prepareCaseAndUacEvents();
     }
-    sendInboundCaseAndUacEvents(EventType.UAC_UPDATED);
+    sendInboundCaseAndUacEvents(EventType.UAC_UPDATE);
     verifyUacProcessed();
   }
 
@@ -540,7 +543,7 @@ public class RhSteps extends StepsBase {
 
   private void sendInboundCaseAndUacEvents(EventType eventType) throws Exception {
     rabbit.sendEvent(
-        EventType.CASE_CREATED, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
+        EventType.CASE_CREATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     rabbit.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
   }
 
@@ -552,7 +555,7 @@ public class RhSteps extends StepsBase {
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
     assertEquals(
-        EventType.RESPONDENT_AUTHENTICATED, context.respondentAuthenticatedHeader.getType());
+        EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getType());
     assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
     assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
@@ -563,7 +566,7 @@ public class RhSteps extends StepsBase {
 
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    assertEquals(EventType.SURVEY_LAUNCHED, context.surveyLaunchedHeader.getType());
+    assertEquals(EventType.SURVEY_LAUNCH, context.surveyLaunchedHeader.getType());
     assertEquals(Source.RESPONDENT_HOME, context.surveyLaunchedHeader.getSource());
     assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
     assertNotNull(context.surveyLaunchedHeader.getDateTime());
@@ -579,7 +582,7 @@ public class RhSteps extends StepsBase {
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")
   public void confirmYourMobile(String postcode, Country country) throws Exception {
-    emptyEventQueue(EventType.FULFILMENT_REQUESTED);
+    emptyEventQueue(EventType.FULFILMENT);
 
     confirmAddress(country, postcode);
     continueFromHouseholdInterstitial();
@@ -590,7 +593,7 @@ public class RhSteps extends StepsBase {
 
   @Given("the respondent selects continue on the confirm postal address page {string} {}")
   public void confirmPostalAddress(String postcode, Country country) throws Exception {
-    emptyEventQueue(EventType.FULFILMENT_REQUESTED);
+    emptyEventQueue(EventType.FULFILMENT);
     confirmAddress(country, postcode);
     continueFromHouseholdInterstitial();
     selectPostOption();
@@ -614,7 +617,7 @@ public class RhSteps extends StepsBase {
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
     emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
-    emptyEventQueue(EventType.FULFILMENT_REQUESTED);
+    emptyEventQueue(EventType.FULFILMENT);
 
     WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);
     postcodePage.addTextToAddressTextBox(postCode);

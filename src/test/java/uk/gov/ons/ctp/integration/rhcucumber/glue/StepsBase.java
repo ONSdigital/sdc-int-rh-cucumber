@@ -8,15 +8,11 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.EventPublisher;
-import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
-import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
-import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
+import uk.gov.ons.ctp.common.event.EventType;
+import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
-import uk.gov.ons.ctp.common.event.model.NewAddressReportedEvent;
-import uk.gov.ons.ctp.common.event.model.QuestionnaireLinkedEvent;
-import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedEvent;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
-import uk.gov.ons.ctp.common.rabbit.RabbitHelper;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.util.UacUtil;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
@@ -112,10 +108,10 @@ public abstract class StepsBase {
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
 
-    EventType eventType = EventType.RESPONDENT_AUTHENTICATED;
+    EventType eventType = EventType.UAC_AUTHENTICATE;
 
-    RespondentAuthenticatedEvent event =
-        (RespondentAuthenticatedEvent)
+    UacAuthenticateEvent event =
+        (UacAuthenticateEvent) 
             rabbit.getMessage(
                 EventPublisher.RoutingKey.forType(eventType).getKey(),
                 eventClass(eventType),
@@ -131,10 +127,10 @@ public abstract class StepsBase {
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
-    EventType eventType = EventType.SURVEY_LAUNCHED;
+    EventType eventType = EventType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
-        (SurveyLaunchedEvent)
+        (SurveyLaunchEvent)
             rabbit.getMessage(
                 EventPublisher.RoutingKey.forType(eventType).getKey(),
                 eventClass(eventType),
@@ -150,10 +146,10 @@ public abstract class StepsBase {
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
-    EventType eventType = EventType.FULFILMENT_REQUESTED;
+    EventType eventType = EventType.FULFILMENT;
 
-    FulfilmentRequestedEvent fulfilmentRequestedEvent =
-        (FulfilmentRequestedEvent)
+    FulfilmentEvent fulfilmentRequestedEvent =
+        (FulfilmentEvent)
             rabbit.getMessage(
                 EventPublisher.RoutingKey.forType(eventType).getKey(),
                 eventClass(eventType),
@@ -170,18 +166,12 @@ public abstract class StepsBase {
 
   Class<?> eventClass(EventType eventType) {
     switch (eventType) {
-      case FULFILMENT_REQUESTED:
-        return FulfilmentRequestedEvent.class;
-      case NEW_ADDRESS_REPORTED:
-        return NewAddressReportedEvent.class;
-      case RESPONDENT_AUTHENTICATED:
-        return RespondentAuthenticatedEvent.class;
-      case SURVEY_LAUNCHED:
-        return SurveyLaunchedEvent.class;
-      case ADDRESS_MODIFIED:
-        return AddressModifiedEvent.class;
-      case QUESTIONNAIRE_LINKED:
-        return QuestionnaireLinkedEvent.class;
+    case FULFILMENT:
+        return FulfilmentEvent.class;
+    case UAC_AUTHENTICATE:
+        return UacAuthenticateEvent.class;
+    case SURVEY_LAUNCH:
+        return SurveyLaunchEvent.class;
       default:
         throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }

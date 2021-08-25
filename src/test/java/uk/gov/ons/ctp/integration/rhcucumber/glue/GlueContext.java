@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CollectionCase;
 import uk.gov.ons.ctp.common.event.model.Header;
-import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedPayload;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedPayload;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedResponse;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchResponse;
 import uk.gov.ons.ctp.common.event.model.UAC;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticatePayload;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 
 @Data
@@ -30,10 +30,10 @@ public class GlueContext {
   UAC uacPayload;
   String fulfilmentRequestedCode;
   Header respondentAuthenticatedHeader;
-  RespondentAuthenticatedPayload respondentAuthenticatedPayload;
-  SurveyLaunchedEvent surveyLaunchedEvent;
+  UacAuthenticatePayload respondentAuthenticatedPayload;
+  SurveyLaunchEvent surveyLaunchedEvent;
   Header surveyLaunchedHeader;
-  SurveyLaunchedPayload surveyLaunchedPayload;
-  SurveyLaunchedResponse surveyLaunchedResponse;
+  SurveyLaunchPayload surveyLaunchedPayload;
+  SurveyLaunchResponse surveyLaunchedResponse;
   boolean eqExists;
 }
