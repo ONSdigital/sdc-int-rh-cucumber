@@ -1,12 +1,19 @@
 package uk.gov.ons.ctp.integration.rhcucumber.glue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.gax.core.CredentialsProvider;
+import com.google.api.gax.core.NoCredentialsProvider;
+import com.google.api.gax.grpc.GrpcTransportChannel;
+import com.google.api.gax.rpc.FixedTransportChannelProvider;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.stub.GrpcSubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStubSettings;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.*;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
@@ -184,11 +191,23 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
     private static String syncPullMessage(String projectId, String subscription) throws CTPException {
         String msg = null;
         try {
+/*
             SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
                 .setTransportChannelProvider(
                     SubscriberStubSettings.defaultGrpcTransportProviderBuilder()
                         .setMaxInboundMessageSize(20 * 1024 * 1024) // 20MB (maximum message size).
                         .build()).build();
+*/
+            String hostport = "localhost:8085";
+            ManagedChannel channel = ManagedChannelBuilder.forTarget(hostport).usePlaintext().build();
+            TransportChannelProvider channelProvider =
+                FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+            CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
+
+
+            SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
+                .setTransportChannelProvider(
+                    channelProvider).setCredentialsProvider(credentialsProvider).build();
 
             try (SubscriberStub subscriber = GrpcSubscriberStub.create(subscriberStubSettings)) {
                 String subscriptionName = ProjectSubscriptionName.format(projectId, subscription);
@@ -207,7 +226,6 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
                     AcknowledgeRequest acknowledgeRequest = AcknowledgeRequest.newBuilder().setSubscription(subscriptionName).addAllAckIds(Collections.singleton(ackId)).build();
                     // Use acknowledgeCallable().futureCall to asynchronously perform this operation.
                     subscriber.acknowledgeCallable().call(acknowledgeRequest);
-                    System.out.println(pullResponse.getReceivedMessagesList());
                 }
             }
             return msg;
@@ -219,6 +237,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
     }
 
     public static void main(String[] args) throws CTPException {
+        //String hostport = System.getenv("PUBSUB_EMULATOR_HOST");
         PubSubHelper localPubSubHelper = new PubSubHelper("local", false);
         // send event to event_case-update
         // localPubSubHelper.sendEvent()
