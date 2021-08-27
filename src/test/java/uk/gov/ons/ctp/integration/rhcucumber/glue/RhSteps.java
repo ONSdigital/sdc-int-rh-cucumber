@@ -105,14 +105,6 @@ public class RhSteps extends StepsBase {
     isThisMobileNumCorrect.clickContinueButton();
   }
 
-
-
-//TODO
-//  @Then("RHSVC publishes a new address event")
-//  public void verifyNewAddressEventPublished() throws Exception {
-//    assertNewEventHasFired(EventType.);
-//  }
-
   @And("RHSVC publishes a UAC fulfilment request")
   public void verifyUacFulfimentRequestPublished() throws Exception {
     assertNewEventHasFired(EventType.FULFILMENT);

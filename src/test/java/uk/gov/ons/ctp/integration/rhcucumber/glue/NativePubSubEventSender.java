@@ -24,14 +24,12 @@ public class NativePubSubEventSender implements EventSender {
   private ObjectMapper objectMapper;
   private boolean addRmProperties;
   private String projectId;
-  private String emulatorHost;
   private TransportChannelProvider channelProvider;
   private CredentialsProvider credentialsProvider;
 
   public NativePubSubEventSender(String projectId, boolean addRmProperties, TransportChannelProvider  channelProvider, CredentialsProvider credentialsProvider) throws CTPException {
     this.addRmProperties = addRmProperties;
     this.projectId = projectId;
-    this.emulatorHost = emulatorHost;
     this.channelProvider = channelProvider;
     this.credentialsProvider = credentialsProvider;
     objectMapper = new CustomObjectMapper();
