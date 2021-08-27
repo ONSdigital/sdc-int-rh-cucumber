@@ -69,6 +69,7 @@ public class RhSteps extends StepsBase {
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
+    super.closeChannel();
   }
 
   @Given("I am a respondent and I am on the RH Start Page")
@@ -617,7 +618,6 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
-    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 
     WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);

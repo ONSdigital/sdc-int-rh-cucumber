@@ -151,7 +151,12 @@
       <version>1.12.1</version>
       <scope>test</scope>
     </dependency>
-    <!-- ONS dependencies end -->
+      <dependency>
+          <groupId>com.google.api</groupId>
+          <artifactId>gax-grpc</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <!-- ONS dependencies end -->
 
   </dependencies>
 

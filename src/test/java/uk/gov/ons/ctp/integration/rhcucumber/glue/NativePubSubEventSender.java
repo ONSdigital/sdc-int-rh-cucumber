@@ -2,6 +2,8 @@ package uk.gov.ons.ctp.integration.rhcucumber.glue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
+import com.google.api.gax.core.CredentialsProvider;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.Publisher;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
@@ -22,10 +24,16 @@ public class NativePubSubEventSender implements EventSender {
   private ObjectMapper objectMapper;
   private boolean addRmProperties;
   private String projectId;
+  private String emulatorHost;
+  private TransportChannelProvider channelProvider;
+  private CredentialsProvider credentialsProvider;
 
-  public NativePubSubEventSender(String projectId, boolean addRmProperties) throws CTPException {
+  public NativePubSubEventSender(String projectId, boolean addRmProperties, TransportChannelProvider  channelProvider, CredentialsProvider credentialsProvider) throws CTPException {
     this.addRmProperties = addRmProperties;
     this.projectId = projectId;
+    this.emulatorHost = emulatorHost;
+    this.channelProvider = channelProvider;
+    this.credentialsProvider = credentialsProvider;
     objectMapper = new CustomObjectMapper();
   }
 
@@ -36,7 +44,13 @@ public class NativePubSubEventSender implements EventSender {
     Publisher publisher = null;
     try {
       // Create a publisher instance with default settings bound to the topic
-      publisher = Publisher.newBuilder(topicName).build();
+      if(channelProvider != null && credentialsProvider != null) {
+        publisher = Publisher.newBuilder(topicName)
+            .setChannelProvider(channelProvider)
+            .setCredentialsProvider(credentialsProvider)
+            .build();
+        System.out.println("boop");
+      } else publisher = Publisher.newBuilder(topicName).build();
 
       ByteString data =  ByteString.copyFrom(objectMapper.writeValueAsString(genericEvent),"UTF-8");
       PubsubMessage pubsubMessage = PubsubMessage.newBuilder().setData(data).build();

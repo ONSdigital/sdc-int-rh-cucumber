@@ -7,11 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventTopic;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
-import uk.gov.ons.ctp.common.event.model.GenericEvent;
 import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.util.UacUtil;
@@ -22,8 +20,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 
 public abstract class StepsBase {
-  static final String RABBIT_EXCHANGE = "events";
-  static final int RABBIT_TIMEOUT = 2000;
   static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired GlueContext context;
@@ -45,6 +41,10 @@ public abstract class StepsBase {
 
   void closeDriver() {
     webDriverFactory.closeWebDriver(driver);
+  }
+
+  void closeChannel() {
+    PubSubHelper.closeChannel();
   }
 
   String validUac() {
@@ -88,81 +88,80 @@ public abstract class StepsBase {
   }
 
   // - event validation helpers ...
-
   void emptyEventQueue(EventType eventType) throws Exception {
     EventTopic topicName = EventTopic.forType(eventType);
-    pubSub.flushTopic(topicName);
+    pubSub.flushTopic(topicName.getTopic() + "_rh");
   }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
 
-    final GenericEvent event =
-        (GenericEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(event);
-    assertNotNull(event.getEvent());
+//    final GenericEvent event =
+//        (GenericEvent)
+//            rabbit.getMessage(
+//                EventPublisher.RoutingKey.forType(eventType).getKey(),
+//                eventClass(eventType),
+//                RABBIT_TIMEOUT);
+//
+//    assertNotNull(event);
+//    assertNotNull(event.getEvent());
   }
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
 
-    EventType eventType = EventType.UAC_AUTHENTICATE;
-
-    UacAuthenticateEvent event =
-        (UacAuthenticateEvent) 
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(event);
-
-    context.respondentAuthenticatedHeader = event.getEvent();
-    assertNotNull(context.respondentAuthenticatedHeader);
-
-    context.respondentAuthenticatedPayload = event.getPayload();
-    assertNotNull(context.respondentAuthenticatedPayload);
+//    EventType eventType = EventType.UAC_AUTHENTICATE;
+//
+//    UacAuthenticateEvent event =
+//        (UacAuthenticateEvent)
+//            rabbit.getMessage(
+//                EventPublisher.RoutingKey.forType(eventType).getKey(),
+//                eventClass(eventType),
+//                RABBIT_TIMEOUT);
+//
+//    assertNotNull(event);
+//
+//    context.respondentAuthenticatedHeader = event.getEvent();
+//    assertNotNull(context.respondentAuthenticatedHeader);
+//
+//    context.respondentAuthenticatedPayload = event.getPayload();
+//    assertNotNull(context.respondentAuthenticatedPayload);
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
-    EventType eventType = EventType.SURVEY_LAUNCH;
-
-    context.surveyLaunchedEvent =
-        (SurveyLaunchEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    assertNotNull(context.surveyLaunchedEvent);
-
-    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getEvent();
-    assertNotNull(context.surveyLaunchedHeader);
-
-    context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
-    assertNotNull(context.surveyLaunchedPayload);
+//    EventType eventType = EventType.SURVEY_LAUNCH;
+//
+//    context.surveyLaunchedEvent =
+//        (SurveyLaunchEvent)
+//            rabbit.getMessage(
+//                EventPublisher.RoutingKey.forType(eventType).getKey(),
+//                eventClass(eventType),
+//                RABBIT_TIMEOUT);
+//
+//    assertNotNull(context.surveyLaunchedEvent);
+//
+//    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getEvent();
+//    assertNotNull(context.surveyLaunchedHeader);
+//
+//    context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
+//    assertNotNull(context.surveyLaunchedPayload);
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
-    EventType eventType = EventType.FULFILMENT;
-
-    FulfilmentEvent fulfilmentRequestedEvent =
-        (FulfilmentEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
-
-    context.fulfilmentRequestedCode =
-        fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
-
-    assertNotNull(fulfilmentRequestedEvent);
-    assertNotNull(fulfilmentRequestedEvent.getEvent());
-    assertNotNull(fulfilmentRequestedEvent.getPayload());
-    assertNotNull(context.fulfilmentRequestedCode);
+//    EventType eventType = EventType.FULFILMENT;
+//
+//    FulfilmentEvent fulfilmentRequestedEvent =
+//        (FulfilmentEvent)
+//            rabbit.getMessage(
+//                EventPublisher.RoutingKey.forType(eventType).getKey(),
+//                eventClass(eventType),
+//                RABBIT_TIMEOUT);
+//
+//    context.fulfilmentRequestedCode =
+//        fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
+//
+//    assertNotNull(fulfilmentRequestedEvent);
+//    assertNotNull(fulfilmentRequestedEvent.getEvent());
+//    assertNotNull(fulfilmentRequestedEvent.getPayload());
+//    assertNotNull(context.fulfilmentRequestedCode);
   }
 
   Class<?> eventClass(EventType eventType) {
