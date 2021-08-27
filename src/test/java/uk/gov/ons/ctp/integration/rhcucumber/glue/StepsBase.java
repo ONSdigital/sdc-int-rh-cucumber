@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.EventPublisher;
-import uk.gov.ons.ctp.common.event.EventTopic;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
@@ -23,7 +22,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 
 public abstract class StepsBase {
   static final String RABBIT_EXCHANGE = "events";
-  static final int RABBIT_TIMEOUT = 2000;
+  static final int PUBSUB = 2000;
   static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired GlueContext context;
@@ -37,9 +36,16 @@ public abstract class StepsBase {
   WebDriver driver;
   PubSubHelper pubSub;
 
+  @Value("$pubsub.emulator.host")
+  private String emulatorPubSubHost;
+
+  @Value("$pubsub.emulator.host")
+  private boolean useEmulatorPubSub;
+
+
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
-    pubSub = PubSubHelper.instance("local", false);
+    pubSub = PubSubHelper.instance("local", false, useEmulatorPubSub, emulatorPubSubHost);
     driver = pages.getWebDriver();
   }
 
@@ -89,34 +95,34 @@ public abstract class StepsBase {
 
   // - event validation helpers ...
 
-  void emptyEventQueue(EventType eventType) throws Exception {
-    EventTopic topicName = EventTopic.forType(eventType);
-    pubSub.flushTopic(topicName);
-  }
+    void emptyEventQueue(EventType eventType) throws Exception {
+      String subscriptionId = pubSub.createSubscription(eventType);
+      pubSub.flushTopic(subscriptionId);
+    }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
 
     final GenericEvent event =
         (GenericEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+            pubSub.getMessage(
+                eventType,
+                eventClass(eventType), PUBSUB);
 
     assertNotNull(event);
     assertNotNull(event.getEvent());
+
   }
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
+
 
     EventType eventType = EventType.UAC_AUTHENTICATE;
 
     UacAuthenticateEvent event =
         (UacAuthenticateEvent) 
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+            pubSub.getMessage(
+                eventType,
+                eventClass(eventType), PUBSUB);
 
     assertNotNull(event);
 
@@ -125,17 +131,18 @@ public abstract class StepsBase {
 
     context.respondentAuthenticatedPayload = event.getPayload();
     assertNotNull(context.respondentAuthenticatedPayload);
+
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
+
     EventType eventType = EventType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
         (SurveyLaunchEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+            pubSub.getMessage(
+                eventType,
+                eventClass(eventType), PUBSUB);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -144,6 +151,7 @@ public abstract class StepsBase {
 
     context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
     assertNotNull(context.surveyLaunchedPayload);
+
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
@@ -151,10 +159,9 @@ public abstract class StepsBase {
 
     FulfilmentEvent fulfilmentRequestedEvent =
         (FulfilmentEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+            pubSub.getMessage(
+                eventType,
+                eventClass(eventType), PUBSUB);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();

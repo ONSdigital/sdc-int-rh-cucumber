@@ -6,15 +6,15 @@ import com.google.api.gax.core.NoCredentialsProvider;
 import com.google.api.gax.grpc.GrpcTransportChannel;
 import com.google.api.gax.rpc.FixedTransportChannelProvider;
 import com.google.api.gax.rpc.TransportChannelProvider;
-import com.google.cloud.pubsub.v1.MessageReceiver;
+import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.stub.GrpcSubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStubSettings;
-import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.error.CTPException;
@@ -24,9 +24,7 @@ import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.EventPayload;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
 
@@ -38,32 +36,95 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private PubSubHelper(String projectId, boolean addRmProperties) throws CTPException {
+    private SubscriptionAdminClient subscriptionAdminClient;
+    private SubscriberStub subscriber;
 
-        NativePubSubEventSender sender = new NativePubSubEventSender(projectId, addRmProperties);
-        eventPublisher = EventPublisher.createWithoutEventPersistence(sender);
+    private String emulatorPubSubHost;
 
-        this.projectId = projectId;
+    private boolean useEmulatorPubSub;
+
+    private PubSubHelper(String projectId, boolean addRmProperties, boolean useEmulatorPubSub, String emulatorPubSubHost) throws CTPException {
+        try {
+            NativePubSubEventSender sender = new NativePubSubEventSender(projectId, addRmProperties);
+            eventPublisher = EventPublisher.createWithoutEventPersistence(sender);
+
+            SubscriberStubSettings subscriberStubSettings = buildSubscriberStubSettings(useEmulatorPubSub, emulatorPubSubHost);
+            subscriber = GrpcSubscriberStub.create(subscriberStubSettings);
+
+            subscriptionAdminClient = SubscriptionAdminClient.create(subscriber);
+
+            this.projectId = projectId;
+        } catch (IOException e) {
+            String errorMessage = "Failed to create subscription";
+            log.error(errorMessage, e);
+            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
+        }
     }
 
-
-    public static synchronized PubSubHelper instance(String projectId, boolean addRmProperties)
+    public static synchronized PubSubHelper instance(String projectId, boolean addRmProperties, boolean useEmulatorPubSub, String emulatorPubSubHost)
         throws CTPException {
 
         if (instance == null) {
-            instance = new PubSubHelper(projectId, addRmProperties);
+            instance = new PubSubHelper(projectId, addRmProperties, useEmulatorPubSub, emulatorPubSubHost);
         }
         return instance;
     }
 
-    public void flushTopic(String subscription) {
-        //TODO when you pull from pubsub and there is no msg if will error.
-        //     Identify the error
-        //     loop through the messages until you get an error
+    public synchronized String createSubscription(EventType eventType) throws CTPException {
+        EventTopic eventTopic = EventTopic.forType(eventType);
+        String subscriptionId = buildSubscriberName(eventType);
+        try {
+            verifyAndCreateSubscription(subscriptionAdminClient, projectId, eventTopic.getTopic(), subscriptionId);
+            return subscriptionId;
+        } catch (IOException e) {
+            String errorMessage = "Failed to create subscription";
+            log.error(errorMessage, e);
+            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
+        }
+    }
 
-//        String projectId = "local";
-//        String subscriptionId = "cucumber-sub";
-//        String topic = eventTopic.getTopic();
+    public static void verifyAndCreateSubscription(SubscriptionAdminClient subscriptionAdminClient, String projectId, String topic, String subscriptionId) throws IOException {
+            if (!subscriptionExists(subscriptionAdminClient, projectId, subscriptionId)) {
+                TopicName topicName = TopicName.of(projectId, topic);
+                ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
+                // Create a pull subscription with default acknowledgement deadline of 10 seconds.
+                // Messages not successfully acknowledged within 10 seconds will get resent by the server.
+                Subscription subscription = subscriptionAdminClient
+                    .createSubscription(subscriptionName, topicName, PushConfig.getDefaultInstance(), 10);
+                System.out.println("Created pull subscription: " + subscription.getName());
+        }
+    }
+
+    private static boolean subscriptionExists(SubscriptionAdminClient subscriptionAdminClient, String projectId, String subscriptionId) {
+        ProjectName pn = ProjectName.of(projectId);
+        SubscriptionAdminClient.ListSubscriptionsPagedResponse listSubscriptionsPagedResponse = subscriptionAdminClient.listSubscriptions(pn);
+        boolean exists = false;
+        for (Subscription subscription: listSubscriptionsPagedResponse.iterateAll()) {
+            if (subscription.getName().endsWith("/"+subscriptionId)){
+                exists = true;
+                break;
+            }
+        }
+        return exists;
+    }
+
+    private String buildSubscriberName(EventType eventType) {
+        EventTopic eventTopic = EventTopic.forType(eventType);
+        if (eventTopic == null) {
+            String errorMessage = "Topic for eventType '" + eventType + "' not configured";
+            log.error(errorMessage, kv("eventType", eventType));
+            throw new UnsupportedOperationException(errorMessage);
+        }
+
+        // Use routing key for queue name as well as binding. This gives the queue a 'fake' name, but
+        // it saves the Cucumber tests from having to decide on a queue name
+        String eventTopicName = eventTopic.getTopic();
+        return eventTopicName + "_cc";
+    }
+
+
+
+    public void flushTopic(String subscription) {
         boolean isEmpty = false;
         while (!isEmpty){
             try {
@@ -142,7 +203,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
      * up to the specified number of milliseconds for a message to appear on the queue.
      *
      * @param <T>               is the class of object we are expected to recieve.
-     * @param queueName         is the name of the queue to read from.
+     * @param eventType         is the name of the queue to read from.
      * @param clazz             is the class that the message should be converted to.
      * @param maxWaitTimeMillis is the maximum amount of time the caller is prepared to wait for the
      *                          message to appear.
@@ -150,9 +211,15 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
      * expired.
      * @throws CTPException if Rabbit threw an exception when we attempted to read a message.
      */
-    public <T> T getMessage(String queueName, Class<T> clazz, long maxWaitTimeMillis)
+    public <T> T getMessage(EventType eventType, Class<T> clazz, long maxWaitTimeMillis)
         throws CTPException {
-        String message = getMessage(queueName, maxWaitTimeMillis);
+        String subscriberName = buildSubscriberName(eventType);
+        return getMessage(subscriberName, clazz, maxWaitTimeMillis);
+    }
+
+    public <T> T getMessage(String subscription, Class<T> clazz, long maxWaitTimeMillis)
+        throws CTPException {
+        String message = getMessage(subscription, maxWaitTimeMillis);
 
         // Return to caller if nothing read from queue
         if (message == null) {
@@ -170,7 +237,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         } catch (IOException e) {
             String errorMessage =
                 "Failed to convert message to object of type '" + clazz.getName() + "'";
-            log.error(errorMessage, kv("queueName", queueName), e);
+            log.error(errorMessage, kv("subscritption", subscription), e);
             throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
         }
     }
@@ -191,29 +258,15 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
     private static String syncPullMessage(String projectId, String subscription) throws CTPException {
         String msg = null;
         try {
-/*
-            SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
-                .setTransportChannelProvider(
-                    SubscriberStubSettings.defaultGrpcTransportProviderBuilder()
-                        .setMaxInboundMessageSize(20 * 1024 * 1024) // 20MB (maximum message size).
-                        .build()).build();
-*/
-            String hostport = "localhost:8085";
-            ManagedChannel channel = ManagedChannelBuilder.forTarget(hostport).usePlaintext().build();
-            TransportChannelProvider channelProvider =
-                FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
-            CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
-
-
-            SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
-                .setTransportChannelProvider(
-                    channelProvider).setCredentialsProvider(credentialsProvider).build();
-
+            SubscriberStubSettings subscriberStubSettings = buildSubscriberStubSettings(true,
+                //                emulatorPubSubHost);
+                                "localhost:8085");
             try (SubscriberStub subscriber = GrpcSubscriberStub.create(subscriberStubSettings)) {
                 String subscriptionName = ProjectSubscriptionName.format(projectId, subscription);
                 PullRequest pullRequest = PullRequest.newBuilder().setMaxMessages(1).setSubscription(subscriptionName).build();
 
                 // Use pullCallable().futureCall to asynchronously perform this operation.
+
                 PullResponse pullResponse = subscriber.pullCallable().call(pullRequest);
                 String ackId = null;
 
@@ -231,19 +284,51 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
             return msg;
         } catch (IOException e) {
             String errorMessage = "Failed to flush queue '" + subscription + "'";
-            log.error(errorMessage, kv("queueName", subscription), e);
+            log.error(errorMessage, kv("subscription", subscription), e);
             throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
         }
     }
 
-    public static void main(String[] args) throws CTPException {
+    private static SubscriberStubSettings buildSubscriberStubSettings(boolean isForEmulator,
+        String emulatorPubSubHost)  throws IOException {
+        if(isForEmulator)
+            return buildEmulatorSubscriberStubSettings(emulatorPubSubHost);
+        else
+            return buildCloudSubscriberStubSettings();
+    }
+
+    private static SubscriberStubSettings buildCloudSubscriberStubSettings()
+        throws IOException {
+        SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
+            .setTransportChannelProvider(
+                SubscriberStubSettings.defaultGrpcTransportProviderBuilder()
+                    .setMaxInboundMessageSize(20 * 1024 * 1024) // 20MB (maximum message size).
+                    .build()).build();
+        return subscriberStubSettings;
+    }
+
+    private static SubscriberStubSettings buildEmulatorSubscriberStubSettings(String hostport) throws IOException {
+        //String hostport = "localhost:8085";
+        ManagedChannel channel = ManagedChannelBuilder.forTarget(hostport).usePlaintext().build();
+        TransportChannelProvider channelProvider = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+        CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
+
+        SubscriberStubSettings subscriberStubSettings = SubscriberStubSettings.newBuilder()
+            .setTransportChannelProvider(channelProvider).setCredentialsProvider(credentialsProvider).build();
+
+        return subscriberStubSettings;
+    }
+
+    public static void main(String[] args) throws Exception {
+        //PubSubHelper.instance("local", false);
         //String hostport = System.getenv("PUBSUB_EMULATOR_HOST");
-        PubSubHelper localPubSubHelper = new PubSubHelper("local", false);
+        //PubSubHelper.verifyAndCreateSubscription("local", "event_case-update", "donkey");
+      //  PubSubHelper localPubSubHelper = new PubSubHelper("local", false);
         // send event to event_case-update
         // localPubSubHelper.sendEvent()
 
         //retrieve message
-        String msg = localPubSubHelper.getMessageNoWait("event_case-update_rh");
-        System.out.println("msg: " + msg);
+      //  String msg = localPubSubHelper.getMessageNoWait("event_case-update_rh");
+      //  System.out.println("msg: " + msg);
     }
 }

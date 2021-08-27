@@ -43,3 +43,8 @@ keystore: '{
 cloudStorage:
   caseSchemaName: case
   uacSchemaName: uac
+
+pubsub:
+  emulator:
+    host: localhost\:8085
+    use: true

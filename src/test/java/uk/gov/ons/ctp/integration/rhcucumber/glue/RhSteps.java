@@ -106,11 +106,10 @@ public class RhSteps extends StepsBase {
 
 
 
-//TODO
-//  @Then("RHSVC publishes a new address event")
-//  public void verifyNewAddressEventPublished() throws Exception {
-//    assertNewEventHasFired(EventType.);
-//  }
+  @Then("RHSVC publishes a new address event")
+  public void verifyNewAddressEventPublished() throws Exception {
+    assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
+  }
 
   @And("RHSVC publishes a UAC fulfilment request")
   public void verifyUacFulfimentRequestPublished() throws Exception {
