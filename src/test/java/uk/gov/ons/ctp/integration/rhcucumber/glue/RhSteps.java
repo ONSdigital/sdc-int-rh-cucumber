@@ -16,7 +16,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
-import uk.gov.ons.ctp.common.event.EventSender;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.util.Wait;
@@ -69,6 +68,7 @@ public class RhSteps extends StepsBase {
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
+    super.closeChannel();
   }
 
   @Given("I am a respondent and I am on the RH Start Page")

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.ons.ctp.common.event.EventPublisher;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
@@ -21,8 +20,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 
 public abstract class StepsBase {
-  static final String RABBIT_EXCHANGE = "events";
-  static final int PUBSUB = 2000;
+  static final long PUBSUB_TIMEOUT_MS = 2000;
   static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired GlueContext context;
@@ -33,15 +31,14 @@ public abstract class StepsBase {
   @Value("${keystore}")
   String keystore;
 
-  WebDriver driver;
-  PubSubHelper pubSub;
-
-  @Value("$pubsub.emulator.host")
+  @Value("${pubsub.emulator.host}")
   private String emulatorPubSubHost;
 
-  @Value("$pubsub.emulator.host")
+  @Value("${pubsub.emulator.use}")
   private boolean useEmulatorPubSub;
 
+  WebDriver driver;
+  PubSubHelper pubSub;
 
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
@@ -51,6 +48,10 @@ public abstract class StepsBase {
 
   void closeDriver() {
     webDriverFactory.closeWebDriver(driver);
+  }
+
+  void closeChannel() {
+    pubSub.closeChannel();
   }
 
   String validUac() {
@@ -105,7 +106,7 @@ public abstract class StepsBase {
         (GenericEvent)
             pubSub.getMessage(
                 eventType,
-                eventClass(eventType), PUBSUB);
+                eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
     assertNotNull(event.getEvent());
@@ -118,10 +119,10 @@ public abstract class StepsBase {
     EventType eventType = EventType.UAC_AUTHENTICATE;
 
     UacAuthenticateEvent event =
-        (UacAuthenticateEvent) 
+        (UacAuthenticateEvent)
             pubSub.getMessage(
                 eventType,
-                eventClass(eventType), PUBSUB);
+                eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
 
@@ -141,7 +142,7 @@ public abstract class StepsBase {
         (SurveyLaunchEvent)
             pubSub.getMessage(
                 eventType,
-                eventClass(eventType), PUBSUB);
+                eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -160,7 +161,7 @@ public abstract class StepsBase {
         (FulfilmentEvent)
             pubSub.getMessage(
                 eventType,
-                eventClass(eventType), PUBSUB);
+                eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
@@ -174,13 +175,13 @@ public abstract class StepsBase {
   Class<?> eventClass(EventType eventType) {
     switch (eventType) {
     case FULFILMENT:
-        return FulfilmentEvent.class;
+      return FulfilmentEvent.class;
     case UAC_AUTHENTICATE:
-        return UacAuthenticateEvent.class;
+      return UacAuthenticateEvent.class;
     case SURVEY_LAUNCH:
-        return SurveyLaunchEvent.class;
-      default:
-        throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
+      return SurveyLaunchEvent.class;
+    default:
+      throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }
   }
 }

@@ -28,8 +28,7 @@ Feature:  UAC-Authentication-Success
 
     Examples:
       | eventType     |
-      | "UAC_UPDATED" |
-      | "UAC_CREATED" |
+      | "UAC_UPDATE" |
 
   ##SETUP calls the following steps...
   ##  Given RM constructs a case_created event and a uac_updated event where Region is W
@@ -62,8 +61,7 @@ Feature:  UAC-Authentication-Success
 
     Examples:
       | eventType     |
-      | "UAC_UPDATED" |
-      | "UAC_CREATED" |
+      | "UAC_UPDATE" |
 
   ##SETUP calls the following steps...
   ##  Given RM constructs a case_created event and a uac_updated event where Region is W
@@ -100,6 +98,5 @@ Feature:  UAC-Authentication-Success
 
     Examples:
       | eventType     |
-      | "UAC_UPDATED" |
-      | "UAC_CREATED" |
+      | "UAC_UPDATE" |
 

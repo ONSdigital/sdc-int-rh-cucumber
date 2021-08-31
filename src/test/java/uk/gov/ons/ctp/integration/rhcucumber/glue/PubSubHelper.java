@@ -35,6 +35,9 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
 
     private EventPublisher eventPublisher;
     private String projectId;
+    private static ManagedChannel channel;
+    private static TransportChannelProvider channelProvider;
+    private static CredentialsProvider credentialsProvider;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -47,7 +50,16 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         try {
             this.useEmulatorPubSub = useEmulatorPubSub;
             this.emulatorPubSubHost = emulatorPubSubHost;
-            NativePubSubEventSender sender = new NativePubSubEventSender(projectId, addRmProperties);
+
+            System.out.println(emulatorPubSubHost);
+            if (useEmulatorPubSub) {
+                channel = ManagedChannelBuilder.forTarget(emulatorPubSubHost).usePlaintext().build();
+                channelProvider = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
+                credentialsProvider = NoCredentialsProvider.create();
+            }
+            NativePubSubEventSender sender =
+                new NativePubSubEventSender(projectId, addRmProperties, channelProvider,
+                    credentialsProvider);
             eventPublisher = EventPublisher.createWithoutEventPersistence(sender);
 
             defaultSubscriberStubSettings = buildSubscriberStubSettings(useEmulatorPubSub, emulatorPubSubHost);
@@ -90,29 +102,6 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         createSubscription(eventType);
     }
 
-    /**
-     * Publish a message to a pubsub topic.
-     *
-     * @param eventType is the type of the event that is being sent.
-     * @param source    states who is sending, or pretending, to set the message.
-     * @param channel   holds a channel identifier.
-     * @param payload   is the object to be sent.
-     * @return the transaction id generated for the published message.
-     * @throws CTPException if anything went wrong.
-     */
-    public synchronized String sendEvent(EventType eventType, Source source, Channel channel, EventPayload payload) throws CTPException {
-        try {
-            String transactionId = eventPublisher.sendEvent(eventType, source, channel, payload);
-            return transactionId;
-
-        } catch (Exception e) {
-            String errorMessage = "Failed to send message. Cause: " + e.getMessage();
-            log.error(errorMessage, kv("eventType", eventType), kv("source", source),
-                kv("channel", channel), e);
-            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, errorMessage, e);
-        }
-    }
-
     public synchronized String deleteSubscription(EventType eventType) throws CTPException {
         EventTopic eventTopic = EventTopic.forType(eventType);
         String subscriptionId = buildSubscriberId(eventType);
@@ -134,6 +123,10 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
             log.error(errorMessage, e);
             throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
         }
+    }
+
+    public void closeChannel() {
+        if(channel != null) channel.shutdown();
     }
 
     public static void verifyAndCreateSubscription(SubscriptionAdminClient subscriptionAdminClient,
@@ -276,6 +269,30 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
             throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
         }
     }
+
+  /**
+   * Publish a message to a pubsub topic.
+   *
+   * @param eventType is the type of the event that is being sent.
+   * @param source    states who is sending, or pretending, to set the message.
+   * @param channel   holds a channel identifier.
+   * @param payload   is the object to be sent.
+   * @return the transaction id generated for the published message.
+   * @throws CTPException if anything went wrong.
+   */
+  public synchronized String sendEvent(EventType eventType, Source source, Channel channel,
+      EventPayload payload) throws CTPException {
+    try {
+      String transactionId = eventPublisher.sendEvent(eventType, source, channel, payload);
+      return transactionId;
+
+    } catch (Exception e) {
+      String errorMessage = "Failed to send message. Cause: " + e.getMessage();
+      log.error(errorMessage, kv("eventType", eventType), kv("source", source),
+          kv("channel", channel), e);
+      throw new CTPException(CTPException.Fault.SYSTEM_ERROR, errorMessage, e);
+    }
+  }
 
     private String buildSubscriberId(EventType eventType) {
         EventTopic eventTopic = EventTopic.forType(eventType);

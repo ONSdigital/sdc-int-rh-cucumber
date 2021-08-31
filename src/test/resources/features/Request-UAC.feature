@@ -211,7 +211,7 @@ Feature: Request-UAC
     And the respondent selects the delivery channel as "Text message"
     And the respondents enters their valid UK mobile telephone number
     When the respondents selects continue "text"
-    # TODO Then RHSVC publishes a new address event
+    Then RHSVC publishes a new address event
     And RHSVC publishes a UAC fulfilment request
 
     Examples:
@@ -235,7 +235,7 @@ Feature: Request-UAC
     And the respondent enters their first and last name
     When the respondent confirms the address by selecting "Yes, send the access code by post"
     And selects continue
-    # TODO Then RHSVC publishes a new address event
+    Then RHSVC publishes a new address event
     And RHSVC publishes a UAC fulfilment request
 
     Examples:
