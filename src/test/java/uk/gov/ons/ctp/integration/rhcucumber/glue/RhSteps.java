@@ -108,7 +108,7 @@ public class RhSteps extends StepsBase {
 
   @Then("RHSVC publishes a new address event")
   public void verifyNewAddressEventPublished() throws Exception {
-    assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
+    //assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
   @And("RHSVC publishes a UAC fulfilment request")
@@ -616,7 +616,7 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
-    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
+//    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 
     WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);

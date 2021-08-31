@@ -46,5 +46,5 @@ cloudStorage:
 
 pubsub:
   emulator:
-    host: localhost\:8085
+    host: localhost:8085
     use: true

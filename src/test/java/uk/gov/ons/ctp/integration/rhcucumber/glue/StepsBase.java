@@ -96,8 +96,7 @@ public abstract class StepsBase {
   // - event validation helpers ...
 
     void emptyEventQueue(EventType eventType) throws Exception {
-      String subscriptionId = pubSub.createSubscription(eventType);
-      pubSub.flushTopic(subscriptionId);
+      pubSub.flushTopic(eventType);
     }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
