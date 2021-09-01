@@ -50,8 +50,8 @@ public abstract class StepsBase {
     webDriverFactory.closeWebDriver(driver);
   }
 
-  void closeChannel() {
-    pubSub.closeChannel();
+  void destroyPubSub() {
+    PubSubHelper.destroy();
   }
 
   String validUac() {

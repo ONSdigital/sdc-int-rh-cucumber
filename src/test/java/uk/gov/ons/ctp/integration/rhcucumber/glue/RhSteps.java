@@ -68,7 +68,7 @@ public class RhSteps extends StepsBase {
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
-    super.closeChannel();
+    super.destroyPubSub();
   }
 
   @Given("I am a respondent and I am on the RH Start Page")

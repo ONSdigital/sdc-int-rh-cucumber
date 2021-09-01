@@ -51,15 +51,13 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
             this.useEmulatorPubSub = useEmulatorPubSub;
             this.emulatorPubSubHost = emulatorPubSubHost;
 
-            System.out.println(emulatorPubSubHost);
+            log.info("is configured for PubSub Emulator?: " + emulatorPubSubHost);
             if (useEmulatorPubSub) {
                 channel = ManagedChannelBuilder.forTarget(emulatorPubSubHost).usePlaintext().build();
                 channelProvider = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
                 credentialsProvider = NoCredentialsProvider.create();
             }
-            NativePubSubEventSender sender =
-                new NativePubSubEventSender(projectId, addRmProperties, channelProvider,
-                    credentialsProvider);
+            NativePubSubEventSender sender = new NativePubSubEventSender(projectId, addRmProperties, channelProvider, credentialsProvider);
             eventPublisher = EventPublisher.createWithoutEventPersistence(sender);
 
             defaultSubscriberStubSettings = buildSubscriberStubSettings(useEmulatorPubSub, emulatorPubSubHost);
@@ -79,6 +77,11 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
             instance = new PubSubHelper(projectId, addRmProperties, useEmulatorPubSub, emulatorPubSubHost);
         }
         return instance;
+    }
+
+    public static synchronized void destroy(){
+        channel.shutdown();
+        instance = null;
     }
 
     public synchronized String createSubscription(EventType eventType) throws CTPException {
@@ -103,52 +106,37 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
     }
 
     public synchronized String deleteSubscription(EventType eventType) throws CTPException {
-        EventTopic eventTopic = EventTopic.forType(eventType);
         String subscriptionId = buildSubscriberId(eventType);
         deleteSubscription(subscriptionId);
         return subscriptionId;
-    }
-
-    private void deleteSubscription(String subscriptionId) throws CTPException {
-        try {
-            SubscriberStub subscriberStub = GrpcSubscriberStub.create(defaultSubscriberStubSettings);
-            SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(subscriberStub);
-
-            if (subscriptionExists(subscriptionAdminClient, projectId, subscriptionId)) {
-                ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
-                subscriptionAdminClient.deleteSubscription(subscriptionName);
-            }
-        } catch (IOException e) {
-            String errorMessage = "Failed to delete subscription";
-            log.error(errorMessage, e);
-            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
-        }
     }
 
     public void closeChannel() {
         if(channel != null) channel.shutdown();
     }
 
-    public static void verifyAndCreateSubscription(SubscriptionAdminClient subscriptionAdminClient,
-        String projectId, String topic, String subscriptionId) throws IOException {
-        if (!subscriptionExists(subscriptionAdminClient, projectId, subscriptionId)) {
-            TopicName topicName = TopicName.of(projectId, topic);
-            ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
-            subscriptionAdminClient.createSubscription(subscriptionName, topicName, PushConfig.getDefaultInstance(), 10);
-        }
-    }
+    /**
+     * Publish a message to a pubsub topic.
+     *
+     * @param eventType is the type of the event that is being sent.
+     * @param source    states who is sending, or pretending, to set the message.
+     * @param channel   holds a channel identifier.
+     * @param payload   is the object to be sent.
+     * @return the transaction id generated for the published message.
+     * @throws CTPException if anything went wrong.
+     */
+    public synchronized String sendEvent(EventType eventType, Source source, Channel channel,
+        EventPayload payload) throws CTPException {
+        try {
+            String transactionId = eventPublisher.sendEvent(eventType, source, channel, payload);
+            return transactionId;
 
-    private static boolean subscriptionExists(SubscriptionAdminClient subscriptionAdminClient, String projectId, String subscriptionId) {
-        ProjectName pn = ProjectName.of(projectId);
-        SubscriptionAdminClient.ListSubscriptionsPagedResponse listSubscriptionsPagedResponse = subscriptionAdminClient.listSubscriptions(pn);
-        boolean exists = false;
-        for (Subscription subscription : listSubscriptionsPagedResponse.iterateAll()) {
-            if (subscription.getName().endsWith("/" + subscriptionId)) {
-                exists = true;
-                break;
-            }
+        } catch (Exception e) {
+            String errorMessage = "Failed to send message. Cause: " + e.getMessage();
+            log.error(errorMessage, kv("eventType", eventType), kv("source", source),
+                kv("channel", channel), e);
+            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, errorMessage, e);
         }
-        return exists;
     }
 
     /**
@@ -162,7 +150,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
      *                          message to appear.
      * @return an object of the specified type, or null if no message was found before the timeout
      * expired.
-     * @throws CTPException if Rabbit threw an exception when we attempted to read a message.
+     * @throws CTPException if PubSub threw an exception when we attempted to read a message.
      */
 
     public <T> T getMessage(EventType eventType, Class<T> clazz, long maxWaitTimeMillis)  throws CTPException {
@@ -191,7 +179,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
     }
 
     /**
-     * Reads a message from the named queue. This method will wait for up to the specified number of
+     * Reads a message from the named subscription. This method will wait for up to the specified number of
      * milliseconds for a message to appear on the queue.
      *
      * @param subscription      is the name of the queue to read from.
@@ -229,7 +217,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
 
     private synchronized String retrieveMessage(String subscription, long wait) throws CTPException {
         try {
-            SubscriberStubSettings subscriberStubSettings = buildSubscriberStubSettings(useEmulatorPubSub, emulatorPubSubHost, wait);
+            SubscriberStubSettings subscriberStubSettings = buildSubscriberStubSettings(wait);
             String result = syncPullMessage(subscriberStubSettings, projectId, subscription);
             return result == null ? null : new String(result);
         } catch (IOException e) {
@@ -270,31 +258,46 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         }
     }
 
-  /**
-   * Publish a message to a pubsub topic.
-   *
-   * @param eventType is the type of the event that is being sent.
-   * @param source    states who is sending, or pretending, to set the message.
-   * @param channel   holds a channel identifier.
-   * @param payload   is the object to be sent.
-   * @return the transaction id generated for the published message.
-   * @throws CTPException if anything went wrong.
-   */
-  public synchronized String sendEvent(EventType eventType, Source source, Channel channel,
-      EventPayload payload) throws CTPException {
-    try {
-      String transactionId = eventPublisher.sendEvent(eventType, source, channel, payload);
-      return transactionId;
+    private void deleteSubscription(String subscriptionId) throws CTPException {
+        try {
+            SubscriberStub subscriberStub = GrpcSubscriberStub.create(defaultSubscriberStubSettings);
+            SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(subscriberStub);
 
-    } catch (Exception e) {
-      String errorMessage = "Failed to send message. Cause: " + e.getMessage();
-      log.error(errorMessage, kv("eventType", eventType), kv("source", source),
-          kv("channel", channel), e);
-      throw new CTPException(CTPException.Fault.SYSTEM_ERROR, errorMessage, e);
+            if (subscriptionExists(subscriptionAdminClient, projectId, subscriptionId)) {
+                ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
+                subscriptionAdminClient.deleteSubscription(subscriptionName);
+            }
+        } catch (IOException e) {
+            String errorMessage = "Failed to delete subscription";
+            log.error(errorMessage, e);
+            throw new CTPException(CTPException.Fault.SYSTEM_ERROR, e, errorMessage);
+        }
     }
-  }
 
-    private String buildSubscriberId(EventType eventType) {
+    public static void verifyAndCreateSubscription(SubscriptionAdminClient subscriptionAdminClient,
+        String projectId, String topic, String subscriptionId) throws IOException {
+        if (!subscriptionExists(subscriptionAdminClient, projectId, subscriptionId)) {
+            TopicName topicName = TopicName.of(projectId, topic);
+            ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
+            subscriptionAdminClient.createSubscription(subscriptionName, topicName, PushConfig.getDefaultInstance(), 10);
+        }
+    }
+
+    private static boolean subscriptionExists(SubscriptionAdminClient subscriptionAdminClient, String projectId, String subscriptionId) {
+        ProjectName pn = ProjectName.of(projectId);
+        SubscriptionAdminClient.ListSubscriptionsPagedResponse listSubscriptionsPagedResponse = subscriptionAdminClient.listSubscriptions(pn);
+        boolean exists = false;
+        for (Subscription subscription : listSubscriptionsPagedResponse.iterateAll()) {
+            if (subscription.getName().endsWith("/" + subscriptionId)) {
+                exists = true;
+                break;
+            }
+        }
+        return exists;
+    }
+
+
+    private static String buildSubscriberId(EventType eventType) {
         EventTopic eventTopic = EventTopic.forType(eventType);
         if (eventTopic == null) {
             String errorMessage = "Topic for eventType '" + eventType + "' not configured";
@@ -305,21 +308,21 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         // Use routing key for queue name as well as binding. This gives the queue a 'fake' name, but
         // it saves the Cucumber tests from having to decide on a queue name
         String eventTopicName = eventTopic.getTopic();
-        return eventTopicName + "_cc";
+        return eventTopicName + "_cuc";
     }
 
-    private static SubscriberStubSettings buildSubscriberStubSettings(boolean isForEmulator, String emulatorPubSubHost, long wait)  throws IOException {
-        if (isForEmulator)
-            return buildEmulatorSubscriberStubSettings(emulatorPubSubHost, wait);
+    private SubscriberStubSettings buildSubscriberStubSettings(long wait)  throws IOException {
+        if (useEmulatorPubSub)
+            return buildEmulatorSubscriberStubSettings(wait);
         else
             return buildCloudSubscriberStubSettings(wait);
     }
 
-    private static SubscriberStubSettings buildSubscriberStubSettings(boolean isForEmulator, String emulatorPubSubHost) throws IOException {
-        return buildSubscriberStubSettings(isForEmulator, emulatorPubSubHost, DEFAULT_TIMEOUT_MS);
+    private SubscriberStubSettings buildSubscriberStubSettings(boolean isForEmulator, String emulatorPubSubHost) throws IOException {
+        return buildSubscriberStubSettings(DEFAULT_TIMEOUT_MS);
     }
 
-    private static SubscriberStubSettings buildCloudSubscriberStubSettings(long wait) throws IOException {
+    private SubscriberStubSettings buildCloudSubscriberStubSettings(long wait) throws IOException {
         Duration timeout = Duration.ofMillis(wait);
 
         SubscriberStubSettings.Builder builder = SubscriberStubSettings.newBuilder();
@@ -331,11 +334,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         return subscriberStubSettings;
     }
 
-    private static SubscriberStubSettings buildEmulatorSubscriberStubSettings(String hostPort, long wait) throws IOException {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(hostPort).usePlaintext().build();
-        TransportChannelProvider channelProvider = FixedTransportChannelProvider.create(GrpcTransportChannel.create(channel));
-        CredentialsProvider credentialsProvider = NoCredentialsProvider.create();
-
+    private SubscriberStubSettings buildEmulatorSubscriberStubSettings(long wait) throws IOException {
         Duration timeout = Duration.ofMillis(wait);
         SubscriberStubSettings.Builder builder = SubscriberStubSettings.newBuilder();
         builder.pullSettings().setSimpleTimeoutNoRetries(timeout);
@@ -353,7 +352,7 @@ import static uk.gov.ons.ctp.common.log.ScopedStructuredArguments.kv;
         //        System.out.println("sync:" + msg);
 
         PubSubHelper pubsub = PubSubHelper.instance("local", false, true, "localhost:8085");
-        String subscriptionId = pubsub.createSubscription(EventType.CASE_UPDATE);
+        //String subscriptionId = pubsub.createSubscription(EventType.CASE_UPDATE);
         String msg = pubsub.getMessage(EventType.CASE_UPDATE, String.class, 1000);
         System.out.println("sync:" + msg);
 
