@@ -45,6 +45,7 @@ cloudStorage:
   uacSchemaName: uac
 
 pubsub:
+  projectid: http://localhost:9092/
   emulator:
     host: localhost:8085
     use: true
