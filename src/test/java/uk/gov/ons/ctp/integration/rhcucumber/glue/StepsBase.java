@@ -21,7 +21,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 
 public abstract class StepsBase {
-  static final long PUBSUB_TIMEOUT_MS = 2000;
+  static final long PUBSUB_TIMEOUT_MS = 20000;
   static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired GlueContext context;
@@ -31,6 +31,9 @@ public abstract class StepsBase {
 
   @Value("${keystore}")
   String keystore;
+
+  @Value("${pubsub.projectid}")
+  private String pubsubProjectId;
 
   @Value("${pubsub.emulator.host}")
   private String emulatorPubSubHost;
@@ -43,7 +46,7 @@ public abstract class StepsBase {
 
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
-    pubSub = PubSubHelper.instance("local", false, useEmulatorPubSub, emulatorPubSubHost);
+    pubSub = PubSubHelper.instance(pubsubProjectId, false, useEmulatorPubSub, emulatorPubSubHost);
     driver = pages.getWebDriver();
   }
 

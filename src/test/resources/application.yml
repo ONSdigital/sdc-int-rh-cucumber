@@ -18,7 +18,7 @@ logging:
     '[org.openqa.selenium.remote.ProtocolHandshake]': WARN
 
 rhui:
-  baseurl: http://localhost:9092/
+  baseurl: https://dev-rh.int.gcp.onsdigital.uk/
   
 webdriver:
   type: FIREFOX
@@ -45,6 +45,7 @@ cloudStorage:
   uacSchemaName: uac
 
 pubsub:
+  projectid: http://localhost:9092/
   emulator:
     host: localhost:8085
     use: true
