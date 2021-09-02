@@ -18,7 +18,7 @@ logging:
     '[org.openqa.selenium.remote.ProtocolHandshake]': WARN
 
 rhui:
-  baseurl: https://dev-rh.int.gcp.onsdigital.uk/
+  baseurl: http://localhost:9092/
   
 webdriver:
   type: FIREFOX
