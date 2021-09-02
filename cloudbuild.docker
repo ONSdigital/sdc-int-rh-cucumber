@@ -23,5 +23,5 @@ RUN curl -sSL https://sdk.cloud.google.com | bash
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 USER rhsvc
-CMD [ "bash" ]
+ENTRYPOINT ["/bin/bash"]
 
