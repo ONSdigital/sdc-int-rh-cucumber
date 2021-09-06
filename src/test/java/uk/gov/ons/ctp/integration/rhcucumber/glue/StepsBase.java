@@ -14,7 +14,7 @@ import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
 import uk.gov.ons.ctp.common.util.UacUtil;
-import uk.gov.ons.ctp.common.util.WebDriverFactory;
+import uk.gov.ons.ctp.common.util.SimpleWebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.repository.RespondentDataRepository;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -26,7 +26,7 @@ public abstract class StepsBase {
 
   @Autowired GlueContext context;
   @Autowired RespondentDataRepository dataRepo;
-  @Autowired WebDriverFactory webDriverFactory;
+  @Autowired SimpleWebDriverFactory webDriverFactory;
   @Autowired Pages pages;
 
   @Value("${keystore}")
