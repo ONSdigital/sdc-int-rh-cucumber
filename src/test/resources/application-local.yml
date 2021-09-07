@@ -1,3 +1,4 @@
 pubsub:
   emulator:
+    host: localhost:9085
     use: true
