@@ -16,8 +16,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
-import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.domain.Source;
+import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
@@ -104,11 +104,9 @@ public class RhSteps extends StepsBase {
     isThisMobileNumCorrect.clickContinueButton();
   }
 
-
-
   @Then("RHSVC publishes a new address event")
   public void verifyNewAddressEventPublished() throws Exception {
-    //assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
+    // assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
   @And("RHSVC publishes a UAC fulfilment request")
@@ -554,8 +552,7 @@ public class RhSteps extends StepsBase {
 
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    assertEquals(
-        EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getType());
+    assertEquals(EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getType());
     assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
     assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
@@ -616,7 +613,7 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
-//    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
+    //    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 
     WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);

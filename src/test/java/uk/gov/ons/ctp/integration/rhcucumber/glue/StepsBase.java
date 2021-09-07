@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
-import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
 import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
 import uk.gov.ons.ctp.common.util.UacUtil;
-import uk.gov.ons.ctp.common.util.SimpleWebDriverFactory;
+import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.repository.RespondentDataRepository;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -26,7 +26,7 @@ public abstract class StepsBase {
 
   @Autowired GlueContext context;
   @Autowired RespondentDataRepository dataRepo;
-  @Autowired SimpleWebDriverFactory webDriverFactory;
+  @Autowired WebDriverFactory webDriverFactory;
   @Autowired Pages pages;
 
   @Value("${keystore}")
@@ -100,33 +100,26 @@ public abstract class StepsBase {
 
   // - event validation helpers ...
 
-    void emptyEventQueue(EventType eventType) throws Exception {
-      pubSub.flushTopic(eventType);
-    }
+  void emptyEventQueue(EventType eventType) throws Exception {
+    pubSub.flushTopic(eventType);
+  }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
 
     final GenericEvent event =
-        (GenericEvent)
-            pubSub.getMessage(
-                eventType,
-                eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
     assertNotNull(event.getEvent());
-
   }
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
-
 
     EventType eventType = EventType.UAC_AUTHENTICATE;
 
     UacAuthenticateEvent event =
         (UacAuthenticateEvent)
-            pubSub.getMessage(
-                eventType,
-                eventClass(eventType), PUBSUB_TIMEOUT_MS);
+            pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
 
@@ -135,7 +128,6 @@ public abstract class StepsBase {
 
     context.respondentAuthenticatedPayload = event.getPayload();
     assertNotNull(context.respondentAuthenticatedPayload);
-
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
@@ -143,10 +135,7 @@ public abstract class StepsBase {
     EventType eventType = EventType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
-        (SurveyLaunchEvent)
-            pubSub.getMessage(
-                eventType,
-                eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -155,17 +144,13 @@ public abstract class StepsBase {
 
     context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
     assertNotNull(context.surveyLaunchedPayload);
-
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
     EventType eventType = EventType.FULFILMENT;
 
     FulfilmentEvent fulfilmentRequestedEvent =
-        (FulfilmentEvent)
-            pubSub.getMessage(
-                eventType,
-                eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
@@ -178,14 +163,14 @@ public abstract class StepsBase {
 
   Class<?> eventClass(EventType eventType) {
     switch (eventType) {
-    case FULFILMENT:
-      return FulfilmentEvent.class;
-    case UAC_AUTHENTICATE:
-      return UacAuthenticateEvent.class;
-    case SURVEY_LAUNCH:
-      return SurveyLaunchEvent.class;
-    default:
-      throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
+      case FULFILMENT:
+        return FulfilmentEvent.class;
+      case UAC_AUTHENTICATE:
+        return UacAuthenticateEvent.class;
+      case SURVEY_LAUNCH:
+        return SurveyLaunchEvent.class;
+      default:
+        throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }
   }
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import uk.gov.ons.ctp.common.util.SimpleWebDriverFactory;
+import uk.gov.ons.ctp.common.util.WebDriverFactory;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
@@ -17,7 +17,7 @@ public class Pages {
   @Value("${rhui.baseurl}")
   private String envBaseUrl;
 
-  @Autowired private SimpleWebDriverFactory webDriverFactory;
+  @Autowired private WebDriverFactory webDriverFactory;
   private WebDriver webDriver;
 
   private StartPage startPage = null;
