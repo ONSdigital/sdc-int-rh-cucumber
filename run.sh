@@ -34,6 +34,8 @@ echo "Running cucumber tests ..."
 		grep --line-buffered -v 'Channel error: cannot send/recv' |
 		grep --line-buffered -v 'AbortError: A request was aborted, for example through a call to IDBTransaction.abort' |
 		grep --line-buffered -v 'Channel closing: too late to send/recv, messages will be lost' |
+		grep --line-buffered -v 'NS_ERROR_FAILURE' |
+		grep --line-buffered -v 'Marionette	INFO' |
 		sed '/^$/N;/^\n$/D'
 )
 
