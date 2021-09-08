@@ -7,16 +7,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.ons.ctp.common.event.EventPublisher;
-import uk.gov.ons.ctp.common.event.EventPublisher.EventType;
-import uk.gov.ons.ctp.common.event.model.AddressModifiedEvent;
-import uk.gov.ons.ctp.common.event.model.FulfilmentRequestedEvent;
+import uk.gov.ons.ctp.common.event.EventType;
+import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
-import uk.gov.ons.ctp.common.event.model.NewAddressReportedEvent;
-import uk.gov.ons.ctp.common.event.model.QuestionnaireLinkedEvent;
-import uk.gov.ons.ctp.common.event.model.RespondentAuthenticatedEvent;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchedEvent;
-import uk.gov.ons.ctp.common.rabbit.RabbitHelper;
+import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
+import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
 import uk.gov.ons.ctp.common.util.UacUtil;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
@@ -25,8 +21,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Pages;
 
 public abstract class StepsBase {
-  static final String RABBIT_EXCHANGE = "events";
-  static final int RABBIT_TIMEOUT = 2000;
+  static final long PUBSUB_TIMEOUT_MS = 20000;
   static final long WAIT_TIMEOUT = 20_000L;
 
   @Autowired GlueContext context;
@@ -37,17 +32,30 @@ public abstract class StepsBase {
   @Value("${keystore}")
   String keystore;
 
+  @Value("${pubsub.projectid}")
+  private String pubsubProjectId;
+
+  @Value("${pubsub.emulator.host}")
+  private String emulatorPubSubHost;
+
+  @Value("${pubsub.emulator.use}")
+  private boolean useEmulatorPubSub;
+
   WebDriver driver;
-  RabbitHelper rabbit;
+  PubSubHelper pubSub;
 
   public void setupForAll() throws Exception {
     dataRepo.deleteCollections();
-    rabbit = RabbitHelper.instance(RABBIT_EXCHANGE, true);
+    pubSub = PubSubHelper.instance(pubsubProjectId, false, useEmulatorPubSub, emulatorPubSubHost);
     driver = pages.getWebDriver();
   }
 
   void closeDriver() {
     webDriverFactory.closeWebDriver(driver);
+  }
+
+  void destroyPubSub() {
+    PubSubHelper.destroy();
   }
 
   String validUac() {
@@ -93,18 +101,13 @@ public abstract class StepsBase {
   // - event validation helpers ...
 
   void emptyEventQueue(EventType eventType) throws Exception {
-    String queueName = rabbit.createQueue(eventType);
-    rabbit.flushQueue(queueName);
+    pubSub.flushTopic(eventType);
   }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
 
     final GenericEvent event =
-        (GenericEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+        (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
     assertNotNull(event.getEvent());
@@ -112,14 +115,11 @@ public abstract class StepsBase {
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
 
-    EventType eventType = EventType.RESPONDENT_AUTHENTICATED;
+    EventType eventType = EventType.UAC_AUTHENTICATE;
 
-    RespondentAuthenticatedEvent event =
-        (RespondentAuthenticatedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+    UacAuthenticateEvent event =
+        (UacAuthenticateEvent)
+            pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
 
@@ -131,14 +131,11 @@ public abstract class StepsBase {
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
-    EventType eventType = EventType.SURVEY_LAUNCHED;
+
+    EventType eventType = EventType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
-        (SurveyLaunchedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+        (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -150,14 +147,10 @@ public abstract class StepsBase {
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
-    EventType eventType = EventType.FULFILMENT_REQUESTED;
+    EventType eventType = EventType.FULFILMENT;
 
-    FulfilmentRequestedEvent fulfilmentRequestedEvent =
-        (FulfilmentRequestedEvent)
-            rabbit.getMessage(
-                EventPublisher.RoutingKey.forType(eventType).getKey(),
-                eventClass(eventType),
-                RABBIT_TIMEOUT);
+    FulfilmentEvent fulfilmentRequestedEvent =
+        (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
@@ -170,18 +163,12 @@ public abstract class StepsBase {
 
   Class<?> eventClass(EventType eventType) {
     switch (eventType) {
-      case FULFILMENT_REQUESTED:
-        return FulfilmentRequestedEvent.class;
-      case NEW_ADDRESS_REPORTED:
-        return NewAddressReportedEvent.class;
-      case RESPONDENT_AUTHENTICATED:
-        return RespondentAuthenticatedEvent.class;
-      case SURVEY_LAUNCHED:
-        return SurveyLaunchedEvent.class;
-      case ADDRESS_MODIFIED:
-        return AddressModifiedEvent.class;
-      case QUESTIONNAIRE_LINKED:
-        return QuestionnaireLinkedEvent.class;
+      case FULFILMENT:
+        return FulfilmentEvent.class;
+      case UAC_AUTHENTICATE:
+        return UacAuthenticateEvent.class;
+      case SURVEY_LAUNCH:
+        return SurveyLaunchEvent.class;
       default:
         throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }

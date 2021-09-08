@@ -14,9 +14,14 @@ ENV M2_HOME=/home/rhsvc/.m2
 RUN mkdir -p /home/rhsvc/.m2/repository
 RUN ln -s /usr/bin/firefox-esr /usr/bin/firefox
 COPY . /home/rhsvc/rh-cucumber
-RUN chown -R rhsvc:rhsvc /home/rhsvc/rh-cucumber
+RUN chown -R rhsvc:rhsvc /home/rhsvc
 COPY .maven.settings.xml /home/rhsvc/.m2/settings.xml
 WORKDIR /home/rhsvc/rh-cucumber
-USER rhsvc
 
-CMD [ "mvn", "verify", "-Dmaven.repo.local=m2/repository"]
+ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+USER rhsvc
+ENTRYPOINT ["/bin/bash"]
+

@@ -11,7 +11,7 @@
   <parent>
     <groupId>ons.sdc.int.common</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.27</version>
+    <version>1.0.31</version>
   </parent>
 
   <properties>
@@ -25,6 +25,7 @@
   </scm>
 
   <dependencies>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -35,6 +36,11 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>25.0-jre</version><!--$NO-MVN-MAN-VER$ -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
     </dependency>
 
     <dependency>
@@ -85,6 +91,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.api</groupId>
+      <artifactId>gax-grpc</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.12.1</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -95,7 +114,7 @@
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>cucumber-common</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
       <scope>test</scope>
     </dependency>
 
