@@ -24,18 +24,6 @@
     <tag>rh-cuc-0.0.0</tag>
   </scm>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.google.cloud</groupId>
-        <artifactId>libraries-bom</artifactId>
-        <version>21.0.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
 
     <dependency>
@@ -103,6 +91,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.api</groupId>
+      <artifactId>gax-grpc</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.12.1</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -140,18 +141,7 @@
       <artifactId>test-framework</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.12.1</version>
-      <scope>test</scope>
-    </dependency>
-      <dependency>
-          <groupId>com.google.api</groupId>
-          <artifactId>gax-grpc</artifactId>
-          <scope>test</scope>
-      </dependency>
-      <!-- ONS dependencies end -->
+    <!-- ONS dependencies end -->
 
   </dependencies>
 
