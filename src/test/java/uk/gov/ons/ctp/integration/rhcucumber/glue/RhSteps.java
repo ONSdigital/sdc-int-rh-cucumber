@@ -106,6 +106,7 @@ public class RhSteps extends StepsBase {
 
   @Then("RHSVC publishes a new address event")
   public void verifyNewAddressEventPublished() throws Exception {
+    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
     // assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
@@ -613,6 +614,7 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
+    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
     //    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 
