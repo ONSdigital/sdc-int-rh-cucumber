@@ -1,28 +1,35 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.IDS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StartPageWales extends PageObjectBase implements StartPage {
+public class StartPage extends PageObjectBase {
 
-  public static final String START_URL_SUFFIX = "cy/start/";
-  private String testUPRN = "100100645811";
+  private String testUPRN = "10023122451";
 
-  public StartPageWales(final WebDriver driver, final String urlPrefix) {
-    super(driver);
-    classPrefix = "Dechrau:";
-    startURL = urlPrefix + START_URL_SUFFIX;
+  static public StartPage getStartPage(
+      final WebDriver webDriver, final Country country, final String envBaseUrl) {
+      return new StartPage(webDriver, envBaseUrl, country);
+  }
+  
+  public StartPage(final WebDriver driver, final String urlPrefix, Country country) {
+    super(driver, country);
+    classPrefix = translate(Translations.IDS.START_PAGE_CLASS_PREFIX);
+    startURL = urlPrefix + translate(Translations.IDS.START_PAGE_URL_SUFFIX);
     driver.get(startURL);
     waitForLoading();
     PageFactory.initElements(driver, this);
@@ -43,11 +50,11 @@ public class StartPageWales extends PageObjectBase implements StartPage {
   @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ENTER_UAC)
   private WebElement uacTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_LINK_WALES_REQUEST_A_NEW_CODE)
+  @FindBy(xpath = WebPageConstants.XPATH_LINK_REQUEST_A_NEW_CODE)
   private WebElement requestNewCodeLink;
 
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
-  private WebElement englishLink;
+  private WebElement changeLanguageLink;
 
   public String getErrorEnterAccessCodeText() {
     waitForElement(errorEnterAccessCode, classPrefix + "errorEnterAccessCode");
@@ -84,13 +91,8 @@ public class StartPageWales extends PageObjectBase implements StartPage {
     requestNewCodeLink.click();
   }
 
-  @Override
   public void clickAlternativeLanguageLink() {
-    clickEnglishLink();
-  }
-
-  private void clickEnglishLink() {
-    waitForElement(englishLink, classPrefix + "englishLink");
-    englishLink.click();
+    waitForElement(changeLanguageLink, classPrefix + translate(IDS.START_PAGE_CHANGE_LANGUAGE_LINK));
+    changeLanguageLink.click();
   }
 }

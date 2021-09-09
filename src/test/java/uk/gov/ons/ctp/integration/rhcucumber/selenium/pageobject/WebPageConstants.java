@@ -22,9 +22,6 @@ public class WebPageConstants {
       "//div[@class='panel__body']/p[@class='panel__error']";
   static final String XPATH_LINK_REQUEST_A_NEW_CODE =
       "//main//a[text()='request a new access code']";
-  static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE = XPATH_LINK_REQUEST_A_NEW_CODE;
-  // "//main//a[text()='ofyn am god mynediad newydd']";     // TODO: Welsh translation when RHUI
-  // ready
   static final String XPATH_LINK_WALES_REQUEST_A_NEW_CODE_SENT =
       "//main//a[text()='ofyn am god mynediad newydd']";
   static final String XPATH_TEXTBOX_ADDRESS = "//main//input[@id='address-autosuggest']";
