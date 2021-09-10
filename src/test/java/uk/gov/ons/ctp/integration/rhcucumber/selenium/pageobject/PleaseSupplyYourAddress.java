@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,14 +18,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PleaseSupplyYourAddress extends PageObjectBase {
 
-  private String expectedText = "What is your postcode?";
-  private String expectedSelectionText = "Select your address";
+  private String expectedText;
+  private String expectedSelectionText;
 
-  public PleaseSupplyYourAddress(WebDriver driver) {
+  public PleaseSupplyYourAddress(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "PleaseSupplyYourAddressEng:";
+    classPrefix = "PleaseSupplyYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_TEXT);
+    expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)

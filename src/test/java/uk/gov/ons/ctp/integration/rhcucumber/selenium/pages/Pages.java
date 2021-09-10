@@ -16,6 +16,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressF
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -75,8 +76,7 @@ public class Pages {
   }
 
   public PleaseSupplyYourAddress getPleaseSupplyYourAddress(final Country country) {
-    pleaseSupplyYourAddress =
-        PleaseSupplyYourAddress.getPleaseSupplyYourAddress(webDriver, country);
+    pleaseSupplyYourAddress = new PleaseSupplyYourAddress(webDriver, country);
     return pleaseSupplyYourAddress;
   }
 
