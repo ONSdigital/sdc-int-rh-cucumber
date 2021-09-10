@@ -14,6 +14,7 @@ import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -64,7 +65,7 @@ public class Pages {
   }
 
   public IsThisMobileNumCorrect getIsThisMobileNumCorrect(final Country country) {
-    isThisMobileNumCorrect = IsThisMobileNumCorrect.getIsThisMobileNumCorrect(webDriver, country);
+    isThisMobileNumCorrect = new IsThisMobileNumCorrect(webDriver, country);
     return isThisMobileNumCorrect;
   }
 
