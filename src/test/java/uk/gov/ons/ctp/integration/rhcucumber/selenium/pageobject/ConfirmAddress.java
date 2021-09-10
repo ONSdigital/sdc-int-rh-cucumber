@@ -1,26 +1,27 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.IDS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfirmAddressWales extends PageObjectBase implements ConfirmAddress {
+public class ConfirmAddress extends PageObjectBase {
 
-  private String expectedConfirmText = "Ai dyma'r cyfeiriad cywir?";
-
-  public ConfirmAddressWales(WebDriver driver) {
-    super(driver);
-    classPrefix = "ConfirmAddressWales:";
+  public ConfirmAddress(WebDriver driver, Country country) {
+    super(driver, country);
+    classPrefix = translate(Translations.IDS.CONFIRM_ADDRESS_CLASS_PREFIX);
     waitForLoading();
     PageFactory.initElements(driver, this);
   }
@@ -31,6 +32,15 @@ public class ConfirmAddressWales extends PageObjectBase implements ConfirmAddres
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement confirmAddressTitle;
 
+  @FindBy(xpath = WebPageConstants.XPATH_PARAGRAPH_ADDRESS)
+  private WebElement wholeAddressParagraph;
+
+  private String firstLineAddress;
+  private String secondLineAddress;
+  private String thirdLineAddress;
+  private String townName;
+  private String postcode;
+
   @FindBy(xpath = WebPageConstants.XPATH_RADIO_ADDRESS_YES)
   private WebElement optionYes;
 
@@ -40,21 +50,13 @@ public class ConfirmAddressWales extends PageObjectBase implements ConfirmAddres
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
-  @FindBy(xpath = WebPageConstants.XPATH_PARAGRAPH_ADDRESS)
-  private WebElement wholeAddressParagraph;
-
-  private String firstLineAddress;
-
-  private String secondLineAddress;
-
-  private String thirdLineAddress;
-
-  private String townName;
-
-  private String postcode;
-
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
-  private WebElement englishLink;
+  private WebElement changeLanguageLink;
+
+  public WebElement getOnsLogo() {
+    waitForElement(onsLogo, classPrefix + "onsLogo");
+    return onsLogo;
+  }
 
   public String getConfirmAddressTitleText() {
     waitForElement(confirmAddressTitle, classPrefix + "confirmAddressTitle");
@@ -77,6 +79,7 @@ public class ConfirmAddressWales extends PageObjectBase implements ConfirmAddres
   }
 
   public void setAddressTextFields() {
+    waitForElement(wholeAddressParagraph, classPrefix + "wholeAddressParagraph");
     String address = wholeAddressParagraph.getText();
     String[] addressText = address.split("\n");
     firstLineAddress = addressText[0];
@@ -85,9 +88,13 @@ public class ConfirmAddressWales extends PageObjectBase implements ConfirmAddres
     townName = addressText[3];
     postcode = addressText[4];
   }
+  
+  public String getExpectedConfirmText() {
+    return translate(IDS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
+  }
 
-  public void clickEnglishLink() {
-    waitForElement(englishLink, classPrefix + "englishLink");
-    englishLink.click();
+  public void clickAlternativeLanguageLink() {
+    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
+    changeLanguageLink.click();
   }
 }

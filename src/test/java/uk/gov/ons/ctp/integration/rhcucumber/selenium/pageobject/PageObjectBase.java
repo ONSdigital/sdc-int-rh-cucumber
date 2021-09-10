@@ -47,4 +47,8 @@ public abstract class PageObjectBase {
   public String translate(Translations.IDS key) {
     return constants.get(key);
   }
+  
+  public Country getCountry() {
+    return constants.getCountry();
+  }
 }

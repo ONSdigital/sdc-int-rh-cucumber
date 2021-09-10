@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.IDS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -92,7 +91,7 @@ public class StartPage extends PageObjectBase {
   }
 
   public void clickAlternativeLanguageLink() {
-    waitForElement(changeLanguageLink, classPrefix + translate(IDS.START_PAGE_CHANGE_LANGUAGE_LINK));
+    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
     changeLanguageLink.click();
   }
 }
