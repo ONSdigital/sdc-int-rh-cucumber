@@ -18,6 +18,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNum
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -58,8 +59,7 @@ public class Pages {
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost(final Country country) {
-    selectDeliveryMethodTextOrPost =
-        SelectDeliveryMethodTextOrPost.getSelectDeliveryMethodTextOrPost(webDriver, country);
+    selectDeliveryMethodTextOrPost = new SelectDeliveryMethodTextOrPost(webDriver, country);
     return selectDeliveryMethodTextOrPost;
   }
 

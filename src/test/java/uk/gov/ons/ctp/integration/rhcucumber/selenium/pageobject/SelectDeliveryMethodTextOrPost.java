@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,11 +21,13 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
   private String expectedSelectDeliveryMethodTextOrPostText =
       "How would you like to receive a new household access code?";
 
-  public SelectDeliveryMethodTextOrPost(WebDriver driver) {
+  public SelectDeliveryMethodTextOrPost(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "SelectDeliveryMethodTextOrPost:";
+    classPrefix = "SelectDeliveryMethodTextOrPost-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedSelectDeliveryMethodTextOrPostText = translate(KEYS.SELECT_DELIVERY_METHOD_TEXT_OR_POST_EXPECTED_DELIVERY_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -42,7 +46,7 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
   private WebElement continueButton;
 
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
-  private WebElement cymraegLink;
+  private WebElement changeLanguageLink;
 
   public WebElement getOnsLogo() {
     waitForElement(onsLogo, classPrefix + "onsLogo");
@@ -68,5 +72,10 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
   public void clickOptionPost() {
     waitForElement(optionPost, classPrefix + "optionPost");
     optionPost.click();
+  }
+  
+  public void clickEnglishLink() {
+    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
+    changeLanguageLink.click();
   }
 }

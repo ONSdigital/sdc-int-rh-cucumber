@@ -27,9 +27,9 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInters
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
