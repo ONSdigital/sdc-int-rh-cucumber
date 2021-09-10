@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -134,7 +135,7 @@ public class Pages {
   }
 
   public HouseholdInterstitial getHouseholdInterstitial(final Country country) {
-    return HouseholdInterstitial.getHouseholdInterstitial(webDriver, country);
+    return new HouseholdInterstitial(webDriver, country);
   }
 
   public WebDriver getWebDriver() {
