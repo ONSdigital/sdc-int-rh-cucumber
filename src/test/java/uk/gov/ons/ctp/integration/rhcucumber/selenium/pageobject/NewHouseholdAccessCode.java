@@ -4,12 +4,21 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.NewHouseholdAccessCode;
 
-public class NewHouseholdAccessCodeWales extends PageObjectBase implements NewHouseholdAccessCode {
-  public NewHouseholdAccessCodeWales(WebDriver webDriver) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class NewHouseholdAccessCode extends PageObjectBase {
+  public NewHouseholdAccessCode(WebDriver webDriver, Country country) {
     super(webDriver);
-    classPrefix = "NewHouseholdAccessCodeWales:";
+    classPrefix = "NewHouseholdAccessCodeENG-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
   }
