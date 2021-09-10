@@ -20,6 +20,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYou
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -96,7 +97,7 @@ public class Pages {
   }
 
   public SentAccessCode getSentAccessCode(final Country country) {
-    sentAccessCode = SentAccessCode.getSentAccessCode(webDriver, country);
+    sentAccessCode = new SentAccessCode(webDriver, country);
     return sentAccessCode;
   }
 

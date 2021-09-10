@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,11 +21,14 @@ public class SentAccessCode extends PageObjectBase {
   private String expectedText = "A text has been sent to 07700 900345";
   private String expectedRequestCodeText = "request a new access code";
 
-  public SentAccessCode(WebDriver driver) {
+  public SentAccessCode(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "SentAccessCode:";
+    classPrefix = "SentAccessCode-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_TEXT);
+    expectedRequestCodeText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_REQUEST_CODE_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
