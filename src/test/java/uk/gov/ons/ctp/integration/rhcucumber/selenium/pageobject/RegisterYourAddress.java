@@ -22,7 +22,7 @@ public class RegisterYourAddress extends PageObjectBase {
   private String expectedTextWithPhoneNumber;
 
   public RegisterYourAddress(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "RegisterYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

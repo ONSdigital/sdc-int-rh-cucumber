@@ -24,7 +24,7 @@ public class SelectYourAddress extends PageObjectBase {
   private String expectedPostcode;
 
   public SelectYourAddress(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "SelectYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

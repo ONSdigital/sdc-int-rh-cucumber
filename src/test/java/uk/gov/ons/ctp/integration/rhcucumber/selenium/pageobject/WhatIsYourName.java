@@ -19,7 +19,7 @@ public class WhatIsYourName extends PageObjectBase {
   private String expectedText = "What is your name?";
 
   public WhatIsYourName(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "WhatIsYourName-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

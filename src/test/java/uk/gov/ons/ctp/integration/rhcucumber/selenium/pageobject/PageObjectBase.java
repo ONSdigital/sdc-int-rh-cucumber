@@ -15,11 +15,6 @@ public abstract class PageObjectBase {
 
   public PageObjectBase() {}
 
-  public PageObjectBase(WebDriver driver) {
-    // PMB Delete method
-    this(driver, Country.ENG);
-  }
-
   public PageObjectBase(WebDriver driver, Country country) {
     this.constants = new Translations(country);
     this.driver = driver;

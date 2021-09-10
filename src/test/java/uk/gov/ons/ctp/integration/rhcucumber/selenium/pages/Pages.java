@@ -114,7 +114,7 @@ public class Pages {
   }
 
   public StartPage getStartPage() {
-    return startPage; //PMB Delete?
+    return startPage;
   }
 
   public WhatIsYourMobile getWhatIsYourMobile(final Country country) {

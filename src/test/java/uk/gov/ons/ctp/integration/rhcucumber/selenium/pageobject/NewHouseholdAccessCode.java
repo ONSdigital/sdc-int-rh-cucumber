@@ -17,7 +17,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 @AllArgsConstructor
 public class NewHouseholdAccessCode extends PageObjectBase {
   public NewHouseholdAccessCode(WebDriver webDriver, Country country) {
-    super(webDriver);
+    super(webDriver, country);
     classPrefix = "NewHouseholdAccessCodeENG-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

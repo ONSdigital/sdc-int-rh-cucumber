@@ -22,7 +22,7 @@ public class PleaseSupplyYourAddress extends PageObjectBase {
   private String expectedSelectionText;
 
   public PleaseSupplyYourAddress(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "PleaseSupplyYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

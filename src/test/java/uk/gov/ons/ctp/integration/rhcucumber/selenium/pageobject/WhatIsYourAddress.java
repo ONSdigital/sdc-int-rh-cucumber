@@ -20,7 +20,7 @@ public class WhatIsYourAddress extends PageObjectBase {
   private String expectedTitleText = "What is your address?"; // TODO: Wales translation, when RHUI ready.
 
   public WhatIsYourAddress(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "WhatIsYourPostcode-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

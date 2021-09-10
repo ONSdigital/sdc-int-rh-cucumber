@@ -22,7 +22,7 @@ public class WhatIsYourMobile extends PageObjectBase {
   private String expectedErrorText;
 
   public WhatIsYourMobile(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "WhatIsYourMobile-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

@@ -22,7 +22,7 @@ public class SentAccessCode extends PageObjectBase {
   private String expectedRequestCodeText = "request a new access code";
 
   public SentAccessCode(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "SentAccessCode-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);

@@ -22,7 +22,7 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
       "How would you like to receive a new household access code?";
 
   public SelectDeliveryMethodTextOrPost(WebDriver driver, Country country) {
-    super(driver);
+    super(driver, country);
     classPrefix = "SelectDeliveryMethodTextOrPost-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
