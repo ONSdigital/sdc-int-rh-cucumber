@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,16 +18,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SelectYourAddress extends PageObjectBase {
 
-  private String expectedSelectionText = "Select your address";
-  private String expectedSelectionListText1 = "";
-  private String expectedSelectionListText2 = " addresses found for postcode";
-  private String expectedPostcode = "EX2 6GA";
+  private String expectedSelectionText;
+  private String expectedSelectionListText1;
+  private String expectedSelectionListText2;
+  private String expectedPostcode;
 
-  public SelectYourAddress(WebDriver driver) {
+  public SelectYourAddress(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "SelectYourAddressEng:";
+    classPrefix = "SelectYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedSelectionText = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
+    expectedSelectionListText1 = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_LIST_TEXT1);
+    expectedSelectionListText2 = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_LIST_TEXT2);
+    expectedPostcode = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_POSTCODE);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)

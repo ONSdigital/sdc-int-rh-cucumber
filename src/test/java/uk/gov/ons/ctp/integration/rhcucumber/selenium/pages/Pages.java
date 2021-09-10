@@ -19,6 +19,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAcc
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -86,7 +87,7 @@ public class Pages {
   }
 
   public SelectYourAddress getSelectYourAddress(final Country country) {
-    selectYourAddress = SelectYourAddress.getSelectYourAddress(webDriver, country);
+    selectYourAddress = new SelectYourAddress(webDriver, country);
     return selectYourAddress;
   }
 
