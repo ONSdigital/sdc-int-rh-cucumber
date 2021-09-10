@@ -32,8 +32,8 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddre
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourName;
 
 public class RhSteps extends StepsBase {

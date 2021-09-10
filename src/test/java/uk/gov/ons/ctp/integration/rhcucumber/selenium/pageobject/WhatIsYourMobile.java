@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,15 +18,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WhatIsYourMobile extends PageObjectBase {
 
-  private String expectedText = "What is your mobile number?";
-  private String expectedErrorText =
-      "Enter a UK mobile number in a valid format, for example, 07700 900345 or +44 7700 900345";
+  private String expectedText;
+  private String expectedErrorText;
 
-  public WhatIsYourMobile(WebDriver driver) {
+  public WhatIsYourMobile(WebDriver driver, Country country) {
     super(driver);
     classPrefix = "WhatIsYourMobile:";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedText = translate(KEYS.WHAT_IS_YOUR_MOBILE_EXPECTED_TEXT);
+    expectedText = translate(KEYS.WHAT_IS_YOUR_MOBILE_EXPECTED_ERROR_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
