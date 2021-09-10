@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,8 +28,8 @@ public class StartPage extends PageObjectBase {
   
   public StartPage(final WebDriver driver, final String urlPrefix, Country country) {
     super(driver, country);
-    classPrefix = translate(Translations.IDS.START_PAGE_CLASS_PREFIX);
-    startURL = urlPrefix + translate(Translations.IDS.START_PAGE_URL_SUFFIX);
+    classPrefix = "Start-" + country.name() + ":";
+    startURL = urlPrefix + translate(Translations.KEYS.START_PAGE_URL_SUFFIX);
     driver.get(startURL);
     waitForLoading();
     PageFactory.initElements(driver, this);

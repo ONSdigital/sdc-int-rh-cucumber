@@ -10,8 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.IDS;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -21,7 +20,7 @@ public class ConfirmAddress extends PageObjectBase {
 
   public ConfirmAddress(WebDriver driver, Country country) {
     super(driver, country);
-    classPrefix = translate(Translations.IDS.CONFIRM_ADDRESS_CLASS_PREFIX);
+    classPrefix = "ConfirmAddress-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
   }
@@ -90,7 +89,7 @@ public class ConfirmAddress extends PageObjectBase {
   }
   
   public String getExpectedConfirmText() {
-    return translate(IDS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
+    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
   }
 
   public void clickAlternativeLanguageLink() {

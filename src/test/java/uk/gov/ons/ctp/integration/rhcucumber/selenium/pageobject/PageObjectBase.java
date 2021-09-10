@@ -44,7 +44,7 @@ public abstract class PageObjectBase {
     return startURL;
   }
   
-  public String translate(Translations.IDS key) {
+  public String translate(Translations.KEYS key) {
     return constants.get(key);
   }
   

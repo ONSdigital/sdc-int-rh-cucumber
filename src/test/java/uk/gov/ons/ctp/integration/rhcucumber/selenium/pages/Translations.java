@@ -9,11 +9,11 @@ public class Translations {
   private Country country;
   private ResourceBundle bundle;
   
-  public enum IDS {
-    START_PAGE_CLASS_PREFIX,
+  public enum KEYS {
     START_PAGE_URL_SUFFIX,
-    CONFIRM_ADDRESS_CLASS_PREFIX,
-    CONFIRM_ADDRESS_CONFIRMATION_TEXT
+    CONFIRM_ADDRESS_CONFIRMATION_TEXT,
+    CONFIRM_ADDRESS_FOR_NEW_UAC_EXPECTED_CONFIRM_TEXT,
+    CONFIRM_ADDRESS_FOR_NEW_UAC_EXPECTED_ADDRESS,
   }
   
   public Translations(Country country) {
@@ -21,7 +21,7 @@ public class Translations {
     bundle = ResourceBundle.getBundle("translations", country.getLocale());
   }
 
-  public String get(IDS key) {
+  public String get(KEYS key) {
     String keyName = key.name();
     if (!bundle.containsKey(keyName)) { 
       throw new IllegalStateException("No translation value. Country: " + country + " Key:" + key);

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 
 @Component
@@ -48,7 +49,7 @@ public class Pages {
   }
 
   public ConfirmAddressForNewUac getConfirmAddressForNewUac(final Country country) {
-    return ConfirmAddressForNewUac.getConfirmAddressForNewUac(webDriver, country);
+    return new ConfirmAddressForNewUac(webDriver, country);
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost(final Country country) {
