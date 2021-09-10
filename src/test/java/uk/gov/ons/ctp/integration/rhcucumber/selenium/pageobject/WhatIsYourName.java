@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,9 +18,9 @@ import lombok.NoArgsConstructor;
 public class WhatIsYourName extends PageObjectBase {
   private String expectedText = "What is your name?";
 
-  public WhatIsYourName(WebDriver driver) {
+  public WhatIsYourName(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "WhatIsYourName:";
+    classPrefix = "WhatIsYourName-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
   }

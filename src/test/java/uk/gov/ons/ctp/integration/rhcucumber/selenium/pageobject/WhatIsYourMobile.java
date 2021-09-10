@@ -23,7 +23,7 @@ public class WhatIsYourMobile extends PageObjectBase {
 
   public WhatIsYourMobile(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "WhatIsYourMobile:";
+    classPrefix = "WhatIsYourMobile-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
     
