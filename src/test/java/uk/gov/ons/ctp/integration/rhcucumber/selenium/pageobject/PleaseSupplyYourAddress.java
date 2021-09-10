@@ -28,7 +28,7 @@ public class PleaseSupplyYourAddress extends PageObjectBase {
     PageFactory.initElements(driver, this);
     
     expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_TEXT);
-    expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
+    expectedSelectionText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)

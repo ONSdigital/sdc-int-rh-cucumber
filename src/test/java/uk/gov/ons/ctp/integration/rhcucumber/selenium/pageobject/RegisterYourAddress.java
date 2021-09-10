@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,15 +18,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RegisterYourAddress extends PageObjectBase {
 
-  private String expectedTitleText = "Register an address";
-  private String expectedTextWithPhoneNumber =
-      "To register your address, we need you to get in touch. You can call us free on 0800 141 2021 or choose another way to contact us.";
+  private String expectedTitleText;
+  private String expectedTextWithPhoneNumber;
 
-  public RegisterYourAddress(WebDriver driver) {
+  public RegisterYourAddress(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "RegisterYourAddressEng:";
+    classPrefix = "RegisterYourAddressEng-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
+    
+    expectedTitleText = translate(KEYS.REGISTER_YOUR_ADDRESS_EXPECTED_TITLE_TEXT);
+    expectedTextWithPhoneNumber = translate(KEYS.REGISTER_YOUR_ADDRESS_EXPECTED_TEXT_WITH_PHONE_NUMBER);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
