@@ -31,8 +31,8 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryM
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourName;
 

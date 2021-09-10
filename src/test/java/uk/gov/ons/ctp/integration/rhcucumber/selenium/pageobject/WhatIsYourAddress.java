@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,11 +17,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WhatIsYourAddress extends PageObjectBase {
 
-  private String expectedTitleText = "What is your address?";
+  private String expectedTitleText = "What is your address?"; // TODO: Wales translation, when RHUI ready.
 
-  public WhatIsYourAddress(WebDriver driver) {
+  public WhatIsYourAddress(WebDriver driver, Country country) {
     super(driver);
-    classPrefix = "WhatIsYourPostcode:";
+    classPrefix = "WhatIsYourPostcode-" + country.name() + ":";
     waitForLoading();
     PageFactory.initElements(driver, this);
   }

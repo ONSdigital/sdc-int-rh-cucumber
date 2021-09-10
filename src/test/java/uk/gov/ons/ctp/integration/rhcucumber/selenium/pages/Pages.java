@@ -22,6 +22,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryM
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
@@ -119,7 +120,7 @@ public class Pages {
   }
 
   public WhatIsYourAddress getWhatIsYourAddress(final Country country) {
-    whatIsYourAddress = WhatIsYourAddress.getWhatIsYourAddress(webDriver, country);
+    whatIsYourAddress = new WhatIsYourAddress(webDriver, country);
     return whatIsYourAddress;
   }
 
