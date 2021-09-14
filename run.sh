@@ -22,6 +22,12 @@ then
 	exit 2
 fi
 
+# Delete any previously dumped page
+if [ -d "/tmp" ] 
+then
+    rm -f /tmp/rh.* 
+fi
+
 echo "Running cucumber tests ..."
 (
 	unbuffer mvn clean install $* | 
@@ -38,6 +44,5 @@ echo "Running cucumber tests ..."
 		grep --line-buffered -v 'Marionette	INFO' |
 		sed '/^$/N;/^\n$/D'
 )
-
 
 # EOF

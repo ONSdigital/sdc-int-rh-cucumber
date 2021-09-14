@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
 
 @EqualsAndHashCode(callSuper = true)
@@ -26,8 +27,7 @@ public class StartPage extends PageObjectBase {
   }
   
   public StartPage(final WebDriver driver, final String urlPrefix, Country country) {
-    super(driver, country);
-    classPrefix = "Start-" + country.name() + ":";
+    super(PageId.START_PAGE, driver, country);
     startURL = urlPrefix + translate(Translations.KEYS.START_PAGE_URL_SUFFIX);
     driver.get(startURL);
     waitForLoading();
@@ -56,27 +56,27 @@ public class StartPage extends PageObjectBase {
   private WebElement changeLanguageLink;
 
   public String getErrorEnterAccessCodeText() {
-    waitForElement(errorEnterAccessCode, classPrefix + "errorEnterAccessCode");
+    waitForElement(errorEnterAccessCode, "errorEnterAccessCode");
     return errorEnterAccessCode.getText();
   }
 
   public String getErrorEnterValidCodeText() {
-    waitForElement(errorEnterValidCode, classPrefix + "errorEnterValidCode");
+    waitForElement(errorEnterValidCode, "errorEnterValidCode");
     return errorEnterValidCode.getText();
   }
 
   public void clickAccessSurveyButton() {
-    waitForElement(accessSurveyButton, classPrefix + "accessSurveyButton");
+    waitForElement(accessSurveyButton, "accessSurveyButton");
     accessSurveyButton.click();
   }
 
   public void clickUacBox() {
-    waitForElement(uacTextBox, classPrefix + "uacTextBox");
+    waitForElement(uacTextBox, "uacTextBox");
     uacTextBox.click();
   }
 
   private void addTextToUac(String txtToAdd) {
-    waitForElement(uacTextBox, classPrefix + "uacTextBox");
+    waitForElement(uacTextBox, "uacTextBox");
     uacTextBox.sendKeys(txtToAdd);
   }
 
@@ -86,12 +86,12 @@ public class StartPage extends PageObjectBase {
   }
 
   public void clickRequestNewCodeLink() {
-    waitForElement(requestNewCodeLink, classPrefix + "requestNewCodeLink");
+    waitForElement(requestNewCodeLink, "requestNewCodeLink");
     requestNewCodeLink.click();
   }
 
   public void clickAlternativeLanguageLink() {
-    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
+    waitForElement(changeLanguageLink, "changeLanguageLink");
     changeLanguageLink.click();
   }
 }

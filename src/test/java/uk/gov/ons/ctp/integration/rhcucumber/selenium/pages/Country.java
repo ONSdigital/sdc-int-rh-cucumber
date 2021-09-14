@@ -11,7 +11,7 @@ public enum Country {
 
   private Locale locale;
 
-  Country(String language) {
+  private Country(String language) {
 	this.locale = new Locale(language);
   }
 }

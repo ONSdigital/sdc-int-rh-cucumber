@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,17 +19,13 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 public class ConfirmAddress extends PageObjectBase {
 
   public ConfirmAddress(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "ConfirmAddress-" + country.name() + ":";
+    super(PageId.CONFIRM_ADDRESS, driver, country);
     waitForLoading();
     PageFactory.initElements(driver, this);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
   private WebElement onsLogo;
-
-  @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
-  private WebElement confirmAddressTitle;
 
   @FindBy(xpath = WebPageConstants.XPATH_PARAGRAPH_ADDRESS)
   private WebElement wholeAddressParagraph;
@@ -53,32 +49,27 @@ public class ConfirmAddress extends PageObjectBase {
   private WebElement changeLanguageLink;
 
   public WebElement getOnsLogo() {
-    waitForElement(onsLogo, classPrefix + "onsLogo");
+    waitForElement(onsLogo, "onsLogo");
     return onsLogo;
   }
 
-  public String getConfirmAddressTitleText() {
-    waitForElement(confirmAddressTitle, classPrefix + "confirmAddressTitle");
-    return confirmAddressTitle.getText();
-  }
-
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void clickOptionYes() {
-    waitForElement(optionYes, classPrefix + "optionYes");
+    waitForElement(optionYes, "optionYes");
     optionYes.click();
   }
 
   public void clickOptionNo() {
-    waitForElement(optionNo, classPrefix + "optionNo");
+    waitForElement(optionNo, "optionNo");
     optionNo.click();
   }
 
   public void setAddressTextFields() {
-    waitForElement(wholeAddressParagraph, classPrefix + "wholeAddressParagraph");
+    waitForElement(wholeAddressParagraph, "wholeAddressParagraph");
     String address = wholeAddressParagraph.getText();
     String[] addressText = address.split("\n");
     firstLineAddress = addressText[0];
@@ -87,13 +78,9 @@ public class ConfirmAddress extends PageObjectBase {
     townName = addressText[3];
     postcode = addressText[4];
   }
-  
-  public String getExpectedConfirmText() {
-    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
-  }
 
   public void clickAlternativeLanguageLink() {
-    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
+    waitForElement(changeLanguageLink, "changeLanguageLink");
     changeLanguageLink.click();
   }
 }

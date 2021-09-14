@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriverException;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -39,6 +40,24 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
+  
+  @Before()
+  public void embedScreenshotStep(Scenario scenario) {
+      System.out.println("PMB ------------------------------: " + scenario.getName());
+      System.out.println("PMB ------------------------------: " + scenario.getId());
+      System.out.println("PMB ------------------------------: " + scenario.getStatus());
+      System.out.println("PMB ------------------------------: " + scenario.isFailed());
+  }
+
+  @After()
+  public void aembedScreenshotStep(Scenario scenario) {
+    System.out.println("PMB -------::: " + scenario.getName());
+    System.out.println("PMB -------::: " + scenario.getId());
+    System.out.println("PMB -------::: " + scenario.getStatus());
+    System.out.println("PMB -------::: " + scenario.isFailed());
+  }
+
+
 
   @Before("@Setup")
   public void setupNoCountry() throws Exception {
@@ -161,11 +180,6 @@ public class RhSteps extends StepsBase {
   public void verifyConfirmMyAddress() {
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     verifyCorrectOnsLogoUsed(confirmAddress.getOnsLogo(), country);
-
-    assertEquals(
-        "address confirmation title has incorrect text",
-        pages.getConfirmAddress().getExpectedConfirmText(),
-        pages.getConfirmAddress().getConfirmAddressTitleText());
   }
 
   @Then("a blank uac error {string} appears")
@@ -337,11 +351,6 @@ public class RhSteps extends StepsBase {
     wait.forLoading();
     ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
-
-    assertEquals(
-        "Address confirmation for new uac - title has incorrect text",
-        page.getExpectedConfirmText(),
-        page.getConfirmAddressTitleText());
 
     assertEquals(
         "Address confirmation for new uac - address displayed is incorrect",
