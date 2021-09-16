@@ -1,11 +1,10 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -20,9 +19,10 @@ public class RegisterYourAddress extends PageObjectBase {
     super(PageId.REGISTER_YOUR_ADDRESS, driver, country);
     waitForLoading();
     PageFactory.initElements(driver, this);
-    
+
     expectedTitleText = translate(KEYS.REGISTER_YOUR_ADDRESS_EXPECTED_TITLE_TEXT);
-    expectedTextWithPhoneNumber = translate(KEYS.REGISTER_YOUR_ADDRESS_EXPECTED_TEXT_WITH_PHONE_NUMBER);
+    expectedTextWithPhoneNumber =
+        translate(KEYS.REGISTER_YOUR_ADDRESS_EXPECTED_TEXT_WITH_PHONE_NUMBER);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)

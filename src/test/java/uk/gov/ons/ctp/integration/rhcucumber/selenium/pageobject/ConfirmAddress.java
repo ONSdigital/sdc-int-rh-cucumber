@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -78,7 +77,7 @@ public class ConfirmAddress extends PageObjectBase {
     townName = addressText[3];
     postcode = addressText[4];
   }
-  
+
   public String getExpectedConfirmText() {
     return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
   }

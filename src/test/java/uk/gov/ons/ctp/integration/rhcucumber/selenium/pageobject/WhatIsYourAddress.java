@@ -1,17 +1,17 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Getter
 public class WhatIsYourAddress extends PageObjectBase {
 
-  private String expectedTitleText = "What is your address?"; // TODO: Wales translation, when RHUI ready.
+  private String expectedTitleText =
+      "What is your address?"; // TODO: Wales translation, when RHUI ready.
 
   public WhatIsYourAddress(WebDriver driver, Country country) {
     super(PageId.WHAT_IS_YOUR_ADDRESS, driver, country);

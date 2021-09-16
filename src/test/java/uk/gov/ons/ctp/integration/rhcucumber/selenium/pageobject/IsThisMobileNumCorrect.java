@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -16,7 +15,7 @@ public class IsThisMobileNumCorrect extends PageObjectBase {
 
   public IsThisMobileNumCorrect(WebDriver driver, Country country) {
     super(PageId.IS_THIS_MOBILE_NUM_CORRECT, driver, country);
-    
+
     expectedText = translate(KEYS.IS_THIS_MOBILE_NUM_CORRECT_EXPECTED_TEXT);
   }
 

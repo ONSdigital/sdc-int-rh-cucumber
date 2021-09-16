@@ -4,18 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriverException;
-
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.event.EventType;
@@ -39,7 +38,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
-  
+
   @Before("@Setup")
   public void setupNoCountry() throws Exception {
     super.setupForAll();
@@ -107,7 +106,8 @@ public class RhSteps extends StepsBase {
 
   @Then("RHSVC publishes a new address event")
   public void verifyNewAddressEventPublished() throws Exception {
-    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
+    // TODO we will revisit these when the features are made to work, when Address typeahead is
+    // working in cucumber tests
     // assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
@@ -615,7 +615,8 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
-    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
+    // TODO we will revisit these when the features are made to work, when Address typeahead is
+    // working in cucumber tests
     //    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 

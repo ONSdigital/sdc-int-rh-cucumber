@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -17,7 +16,7 @@ public class ConfirmAddressForNewUac extends PageObjectBase {
 
   public ConfirmAddressForNewUac(WebDriver driver, Country country) {
     super(PageId.CONFIRM_ADDRESS_FOR_NEW_UAC, driver, country);
-    
+
     expectedConfirmText = translate(KEYS.CONFIRM_ADDRESS_FOR_NEW_UAC_EXPECTED_CONFIRM_TEXT);
     expectedAddress = translate(KEYS.CONFIRM_ADDRESS_FOR_NEW_UAC_EXPECTED_ADDRESS);
   }

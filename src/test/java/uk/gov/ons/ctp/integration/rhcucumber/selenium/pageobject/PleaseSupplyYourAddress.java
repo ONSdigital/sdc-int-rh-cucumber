@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -17,7 +16,7 @@ public class PleaseSupplyYourAddress extends PageObjectBase {
 
   public PleaseSupplyYourAddress(WebDriver driver, Country country) {
     super(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, driver, country);
-    
+
     expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_TEXT);
     expectedSelectionText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
   }

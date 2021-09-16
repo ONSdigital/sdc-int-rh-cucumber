@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -17,8 +16,9 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
 
   public SelectDeliveryMethodTextOrPost(WebDriver driver, Country country) {
     super(PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, driver, country);
-    
-    expectedSelectDeliveryMethodTextOrPostText = translate(KEYS.SELECT_DELIVERY_METHOD_TEXT_OR_POST_EXPECTED_DELIVERY_TEXT);
+
+    expectedSelectDeliveryMethodTextOrPostText =
+        translate(KEYS.SELECT_DELIVERY_METHOD_TEXT_OR_POST_EXPECTED_DELIVERY_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -45,8 +45,7 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
   }
 
   public String getSelectDeliveryMethodTextOrPostTitleText() {
-    waitForElement(
-        selectDeliveryMethodTextOrPostTitle, "selectDeliveryMethodTextOrPostTitle");
+    waitForElement(selectDeliveryMethodTextOrPostTitle, "selectDeliveryMethodTextOrPostTitle");
     return selectDeliveryMethodTextOrPostTitle.getText();
   }
 
@@ -64,7 +63,7 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
     waitForElement(optionPost, "optionPost");
     optionPost.click();
   }
-  
+
   public void clickEnglishLink() {
     waitForElement(changeLanguageLink, "changeLanguageLink");
     changeLanguageLink.click();

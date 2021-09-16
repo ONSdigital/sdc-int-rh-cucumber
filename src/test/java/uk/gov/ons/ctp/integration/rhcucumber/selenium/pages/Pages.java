@@ -3,13 +3,11 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pages;
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
 import javax.annotation.PostConstruct;
-
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
@@ -37,7 +35,7 @@ public class Pages {
   @Autowired private WebDriverFactory webDriverFactory;
   private WebDriver webDriver;
   private PageTracker pageTracker;
-  
+
   private StartPage startPage = null;
   private ConfirmAddress confirmAddress = null;
   private WhatIsYourAddress whatIsYourAddress;
@@ -52,7 +50,6 @@ public class Pages {
     this.webDriver = webDriverFactory.getWebDriver();
     this.pageTracker = new PageTracker(webDriver);
   }
-  
 
   public ConfirmAddress getConfirmAddress(final Country country) {
     confirmAddress = new ConfirmAddress(webDriver, country);
@@ -66,9 +63,9 @@ public class Pages {
   }
 
   public ConfirmAddressForNewUac getConfirmAddressForNewUac(final Country country) {
-   ConfirmAddressForNewUac confirm = new ConfirmAddressForNewUac(webDriver, country);
-   pageTracker.verifyCurrentPage(PageId.CONFIRM_ADDRESS_FOR_NEW_UAC, country);
-   return confirm;
+    ConfirmAddressForNewUac confirm = new ConfirmAddressForNewUac(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_ADDRESS_FOR_NEW_UAC, country);
+    return confirm;
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost(final Country country) {
@@ -78,29 +75,32 @@ public class Pages {
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost() {
-    pageTracker.verifyCurrentPage(PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, selectDeliveryMethodTextOrPost.getCountry());
+    pageTracker.verifyCurrentPage(
+        PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, selectDeliveryMethodTextOrPost.getCountry());
     return selectDeliveryMethodTextOrPost;
   }
 
   public IsThisMobileNumCorrect getIsThisMobileNumCorrect(final Country country) {
     isThisMobileNumCorrect = new IsThisMobileNumCorrect(webDriver, country);
-    pageTracker.verifyCurrentPage(PageId.IS_THIS_MOBILE_NUM_CORRECT, country); 
+    pageTracker.verifyCurrentPage(PageId.IS_THIS_MOBILE_NUM_CORRECT, country);
     return isThisMobileNumCorrect;
   }
 
   public IsThisMobileNumCorrect getIsThisMobileNumCorrect() {
-    pageTracker.verifyCurrentPage(PageId.IS_THIS_MOBILE_NUM_CORRECT, isThisMobileNumCorrect.getCountry()); 
+    pageTracker.verifyCurrentPage(
+        PageId.IS_THIS_MOBILE_NUM_CORRECT, isThisMobileNumCorrect.getCountry());
     return isThisMobileNumCorrect;
   }
 
   public PleaseSupplyYourAddress getPleaseSupplyYourAddress(final Country country) {
     pleaseSupplyYourAddress = new PleaseSupplyYourAddress(webDriver, country);
-    pageTracker.verifyCurrentPage(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, country); 
+    pageTracker.verifyCurrentPage(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, country);
     return pleaseSupplyYourAddress;
   }
 
   public PleaseSupplyYourAddress getPleaseSupplyYourAddress() {
-    pageTracker.verifyCurrentPage(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, pleaseSupplyYourAddress.getCountry()); 
+    pageTracker.verifyCurrentPage(
+        PageId.PLEASE_SUPPLY_YOUR_ADDRESS, pleaseSupplyYourAddress.getCountry());
     return pleaseSupplyYourAddress;
   }
 
@@ -131,6 +131,7 @@ public class Pages {
     pageTracker.verifyCurrentPage(PageId.START_PAGE, country);
     return startPage;
   }
+
   public StartPage getStartPage() {
     pageTracker.verifyCurrentPage(PageId.START_PAGE, startPage.getCountry());
     return startPage;

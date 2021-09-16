@@ -3,7 +3,6 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
@@ -26,11 +25,11 @@ public abstract class PageObjectBase {
   }
 
   protected void waitForElement(final WebElement element, final String identifier) {
-	wait.forElementToBeDisplayed(5, element, classPrefix + identifier);
+    wait.forElementToBeDisplayed(5, element, classPrefix + identifier);
   }
 
   protected void waitForElement(
-    final int timeout, final WebElement element, final String identifier) {
+      final int timeout, final WebElement element, final String identifier) {
     wait.forElementToBeDisplayed(timeout, element, classPrefix + identifier);
   }
 
@@ -41,7 +40,7 @@ public abstract class PageObjectBase {
   public String translate(Translations.KEYS key) {
     return constants.get(key);
   }
-  
+
   public Country getCountry() {
     return constants.getCountry();
   }

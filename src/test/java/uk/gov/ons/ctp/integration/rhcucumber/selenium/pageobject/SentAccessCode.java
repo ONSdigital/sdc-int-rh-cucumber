@@ -1,10 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
@@ -17,7 +16,7 @@ public class SentAccessCode extends PageObjectBase {
 
   public SentAccessCode(WebDriver driver, Country country) {
     super(PageId.SENT_ACCESS_CODE, driver, country);
-    
+
     expectedText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_TEXT);
     expectedRequestCodeText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_REQUEST_CODE_TEXT);
   }
