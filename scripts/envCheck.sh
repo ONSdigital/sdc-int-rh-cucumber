@@ -3,6 +3,9 @@
 # This script checks to see if the RH Cucumber prerequisites, needed for
 # local execution are running.
 #
+# If any services are not responding then an error message is printed and 
+# the script exits with a non zero code.
+#
 
 set -e 
 
