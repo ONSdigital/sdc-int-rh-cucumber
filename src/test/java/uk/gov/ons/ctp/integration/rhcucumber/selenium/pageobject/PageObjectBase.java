@@ -16,8 +16,6 @@ public abstract class PageObjectBase {
   protected String classPrefix;
   protected String startURL;
 
-  public PageObjectBase() {}
-
   public PageObjectBase(PageId pageId, WebDriver driver, Country country) {
     this.constants = new Translations(country);
     this.classPrefix = pageId.name() + "-" + country.name() + ":";
@@ -25,7 +23,6 @@ public abstract class PageObjectBase {
     wait = new Wait(driver);
     waitForLoading();
     PageFactory.initElements(driver, this);
-
   }
 
   protected void waitForElement(final WebElement element, final String identifier) {
@@ -33,7 +30,7 @@ public abstract class PageObjectBase {
   }
 
   protected void waitForElement(
-      final int timeout, final WebElement element, final String identifier) {
+    final int timeout, final WebElement element, final String identifier) {
     wait.forElementToBeDisplayed(timeout, element, classPrefix + identifier);
   }
 
@@ -41,10 +38,6 @@ public abstract class PageObjectBase {
     wait.forLoading();
   }
 
-  public String getStartURL() {
-    return startURL;
-  }
-  
   public String translate(Translations.KEYS key) {
     return constants.get(key);
   }

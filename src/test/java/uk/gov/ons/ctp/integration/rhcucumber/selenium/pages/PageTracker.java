@@ -124,15 +124,17 @@ public class PageTracker {
   }
   
   private String dumpPageContent(String pageContent, PageId expectedPage, Country country) {
+    String fileName = "/tmp/rh." + (pageCaptureNum++) + "." + expectedPage.name() + "." + country.name() + ".html";
     try {
-      String fileName = "/tmp/rh." + (pageCaptureNum++) + "." + expectedPage.name() + "." + country.name() + ".html";
       FileOutputStream outputStream = new FileOutputStream(fileName);
       outputStream.write(pageContent.getBytes()); 
-      
       outputStream.close();
+      
+      System.out.println("Page content saved to: " + fileName);
+      
       return fileName;
     } catch (IOException e) {
-      throw new IllegalStateException("Failed to dump page content", e);
+      throw new IllegalStateException("Failed to dump page content to: " + fileName, e);
     }
   }
 }

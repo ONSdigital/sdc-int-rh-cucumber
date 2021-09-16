@@ -3,7 +3,6 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -20,7 +19,6 @@ public class StartPage extends PageObjectBase {
     startURL = urlPrefix + translate(Translations.KEYS.START_PAGE_URL_SUFFIX);
     driver.get(startURL);
     waitForLoading();
-    PageFactory.initElements(driver, this);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
