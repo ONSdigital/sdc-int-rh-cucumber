@@ -3,29 +3,20 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class SentAccessCode extends PageObjectBase {
 
   private String expectedText = "A text has been sent to 07700 900345";
   private String expectedRequestCodeText = "request a new access code";
 
   public SentAccessCode(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "SentAccessCode-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.SENT_ACCESS_CODE, driver, country);
     
     expectedText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_TEXT);
     expectedRequestCodeText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_REQUEST_CODE_TEXT);
@@ -44,17 +35,17 @@ public class SentAccessCode extends PageObjectBase {
   private WebElement requestNewCodeLink;
 
   public String getSentAccessCodeTitleText() {
-    waitForElement(sentAccessCodeTitle, classPrefix + "sentAccessCodeTitle");
+    waitForElement(sentAccessCodeTitle, "sentAccessCodeTitle");
     return sentAccessCodeTitle.getText();
   }
 
   public String getStartSurveyButtonText() {
-    waitForElement(startSurveyButton, classPrefix + "startSurveyButton");
+    waitForElement(startSurveyButton, "startSurveyButton");
     return startSurveyButton.getText();
   }
 
   public String getRequestNewCodeLinkText() {
-    waitForElement(requestNewCodeLink, classPrefix + "requestNewCodeLink");
+    waitForElement(requestNewCodeLink, "requestNewCodeLink");
     return requestNewCodeLink.getText();
   }
 }

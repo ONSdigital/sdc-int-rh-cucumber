@@ -3,27 +3,18 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class WhatIsYourAddress extends PageObjectBase {
 
   private String expectedTitleText = "What is your address?"; // TODO: Wales translation, when RHUI ready.
 
   public WhatIsYourAddress(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "WhatIsYourPostcode-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.WHAT_IS_YOUR_ADDRESS, driver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -46,17 +37,17 @@ public class WhatIsYourAddress extends PageObjectBase {
   }
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void addTextToAddressTextBox(String txtToAdd) {
-    waitForElement(addressTextBox, classPrefix + "addressTextBox");
+    waitForElement(addressTextBox, "addressTextBox");
     addressTextBox.sendKeys(txtToAdd);
   }
 
   public String getErrorEnterValidPostcodeText() {
-    waitForElement(errorEnterValidPostcode, classPrefix + "errorEnterValidPostcode");
+    waitForElement(errorEnterValidPostcode, "errorEnterValidPostcode");
     return errorEnterValidPostcode.getText();
   }
 }

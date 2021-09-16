@@ -3,29 +3,20 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class WhatIsYourMobile extends PageObjectBase {
 
   private String expectedText;
   private String expectedErrorText;
 
   public WhatIsYourMobile(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "WhatIsYourMobile-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.WHAT_IS_YOUR_MOBILE, driver, country);
     
     expectedText = translate(KEYS.WHAT_IS_YOUR_MOBILE_EXPECTED_TEXT);
     expectedText = translate(KEYS.WHAT_IS_YOUR_MOBILE_EXPECTED_ERROR_TEXT);
@@ -47,22 +38,22 @@ public class WhatIsYourMobile extends PageObjectBase {
   private WebElement invalidMobileNumError;
 
   public String getWhatIsYourMobileTitleText() {
-    waitForElement(whatIsYourMobileTitle, classPrefix + "whatIsYourMobileTitle");
+    waitForElement(whatIsYourMobileTitle, "whatIsYourMobileTitle");
     return whatIsYourMobileTitle.getText();
   }
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void addTextToMobileNumBox(String txtToAdd) {
-    waitForElement(mobileTextBox, classPrefix + "mobileTextBox");
+    waitForElement(mobileTextBox, "mobileTextBox");
     mobileTextBox.sendKeys(txtToAdd);
   }
 
   public String getInvalidMobileErrorText() {
-    waitForElement(invalidMobileNumError, classPrefix + "invalidMobileNumError");
+    waitForElement(invalidMobileNumError, "invalidMobileNumError");
     return invalidMobileNumError.getText();
   }
 }

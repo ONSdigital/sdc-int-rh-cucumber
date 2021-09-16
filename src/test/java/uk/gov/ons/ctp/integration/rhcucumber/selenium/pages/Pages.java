@@ -127,7 +127,7 @@ public class Pages {
   }
 
   public StartPage getStartPage(final Country country) {
-    startPage = StartPage.getStartPage(webDriver, country, envBaseUrl);
+    startPage = new StartPage(webDriver, envBaseUrl, country);
     pageTracker.verifyCurrentPage(PageId.START_PAGE, country);
     return startPage;
   }

@@ -41,24 +41,6 @@ public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
   
-  @Before()
-  public void embedScreenshotStep(Scenario scenario) {
-      System.out.println("PMB ------------------------------: " + scenario.getName());
-      System.out.println("PMB ------------------------------: " + scenario.getId());
-      System.out.println("PMB ------------------------------: " + scenario.getStatus());
-      System.out.println("PMB ------------------------------: " + scenario.isFailed());
-  }
-
-  @After()
-  public void aembedScreenshotStep(Scenario scenario) {
-    System.out.println("PMB -------::: " + scenario.getName());
-    System.out.println("PMB -------::: " + scenario.getId());
-    System.out.println("PMB -------::: " + scenario.getStatus());
-    System.out.println("PMB -------::: " + scenario.isFailed());
-  }
-
-
-
   @Before("@Setup")
   public void setupNoCountry() throws Exception {
     super.setupForAll();
@@ -180,6 +162,11 @@ public class RhSteps extends StepsBase {
   public void verifyConfirmMyAddress() {
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     verifyCorrectOnsLogoUsed(confirmAddress.getOnsLogo(), country);
+
+    assertEquals(
+        "address confirmation title has incorrect text",
+        pages.getConfirmAddress().getExpectedConfirmText(),
+        pages.getConfirmAddress().getConfirmAddressTitleText());
   }
 
   @Then("a blank uac error {string} appears")
@@ -239,7 +226,7 @@ public class RhSteps extends StepsBase {
 
   @Then("I am directed to the Questionnaire")
   public void clickForQuestionnaire() {
-    EqValidator.clickThoughToEq(context);
+    EqValidator.clickThoughToEq(driver, context);
   }
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
@@ -351,6 +338,11 @@ public class RhSteps extends StepsBase {
     wait.forLoading();
     ConfirmAddressForNewUac page = pages.getConfirmAddressForNewUac(country);
     verifyCorrectOnsLogoUsed(page.getOnsLogo(), country);
+
+    assertEquals(
+        "Address confirmation for new uac - title has incorrect text",
+        page.getExpectedConfirmText(),
+        page.getConfirmAddressTitleText());
 
     assertEquals(
         "Address confirmation for new uac - address displayed is incorrect",

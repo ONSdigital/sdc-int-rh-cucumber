@@ -28,7 +28,8 @@ public class PageTracker {
     NEW_HOUSEHOLD_ACCESS_CODE("TODO", "TODO"),
     REGISTER_YOUR_ADDRESS("TODO", "TODO"),
     HOUSEHOLD_INTERSTITIAL("TODO", "TODO"),
-    PAGE_NOT_FOUND("Page not found", "Heb ddod o hyd i'r dudalen");
+    PAGE_NOT_FOUND("Page not found", "Heb ddod o hyd i'r dudalen"), 
+    SOCIAL_QUESTIONNAIRE("TODO", "TODO");
     
     private String identiferEnglish;
     private String identiferWelsh;

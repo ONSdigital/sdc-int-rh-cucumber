@@ -3,29 +3,20 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
 
   private String expectedSelectDeliveryMethodTextOrPostText =
       "How would you like to receive a new household access code?";
 
   public SelectDeliveryMethodTextOrPost(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "SelectDeliveryMethodTextOrPost-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, driver, country);
     
     expectedSelectDeliveryMethodTextOrPostText = translate(KEYS.SELECT_DELIVERY_METHOD_TEXT_OR_POST_EXPECTED_DELIVERY_TEXT);
   }
@@ -49,33 +40,33 @@ public class SelectDeliveryMethodTextOrPost extends PageObjectBase {
   private WebElement changeLanguageLink;
 
   public WebElement getOnsLogo() {
-    waitForElement(onsLogo, classPrefix + "onsLogo");
+    waitForElement(onsLogo, "onsLogo");
     return onsLogo;
   }
 
   public String getSelectDeliveryMethodTextOrPostTitleText() {
     waitForElement(
-        selectDeliveryMethodTextOrPostTitle, classPrefix + "selectDeliveryMethodTextOrPostTitle");
+        selectDeliveryMethodTextOrPostTitle, "selectDeliveryMethodTextOrPostTitle");
     return selectDeliveryMethodTextOrPostTitle.getText();
   }
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void clickOptionText() {
-    waitForElement(optionText, classPrefix + "optionText");
+    waitForElement(optionText, "optionText");
     optionText.click();
   }
 
   public void clickOptionPost() {
-    waitForElement(optionPost, classPrefix + "optionPost");
+    waitForElement(optionPost, "optionPost");
     optionPost.click();
   }
   
   public void clickEnglishLink() {
-    waitForElement(changeLanguageLink, classPrefix + "changeLanguageLink");
+    waitForElement(changeLanguageLink, "changeLanguageLink");
     changeLanguageLink.click();
   }
 }

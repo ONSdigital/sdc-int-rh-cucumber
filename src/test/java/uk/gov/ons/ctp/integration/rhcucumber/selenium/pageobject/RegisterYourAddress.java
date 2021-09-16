@@ -5,25 +5,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class RegisterYourAddress extends PageObjectBase {
 
   private String expectedTitleText;
   private String expectedTextWithPhoneNumber;
 
   public RegisterYourAddress(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "RegisterYourAddressEng-" + country.name() + ":";
+    super(PageId.REGISTER_YOUR_ADDRESS, driver, country);
     waitForLoading();
     PageFactory.initElements(driver, this);
     

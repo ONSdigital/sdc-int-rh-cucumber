@@ -3,28 +3,19 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class HouseholdInterstitial extends PageObjectBase {
 
   private String expectedText;
 
   public HouseholdInterstitial(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "HouseholdInterstitial-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.HOUSEHOLD_INTERSTITIAL, driver, country);
 
     expectedText = translate(KEYS.HOUSEHOLD_INTERSTITIAL_EXPECTED_TEXT);
   }
@@ -39,12 +30,12 @@ public class HouseholdInterstitial extends PageObjectBase {
   private WebElement continueButton;
 
   public WebElement getOnsLogo() {
-    waitForElement(onsLogo, classPrefix + "onsLogo");
+    waitForElement(onsLogo, "onsLogo");
     return onsLogo;
   }
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 

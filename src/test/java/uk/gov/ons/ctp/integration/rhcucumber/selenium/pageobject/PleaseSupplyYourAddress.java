@@ -3,29 +3,20 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class PleaseSupplyYourAddress extends PageObjectBase {
 
   private String expectedText;
   private String expectedSelectionText;
 
   public PleaseSupplyYourAddress(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "PleaseSupplyYourAddressEng-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, driver, country);
     
     expectedText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_TEXT);
     expectedSelectionText = translate(KEYS.PLEASE_SUPPLY_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
@@ -33,9 +24,6 @@ public class PleaseSupplyYourAddress extends PageObjectBase {
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
   private WebElement onsLogo;
-
-  @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
-  private WebElement pleaseSupplyYourAddressTitle;
 
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
@@ -45,10 +33,6 @@ public class PleaseSupplyYourAddress extends PageObjectBase {
 
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
   private WebElement errorEnterValidPostcode;
-
-  public String getPleaseSupplyYourAddressTitleText() {
-    return pleaseSupplyYourAddressTitle.getText();
-  }
 
   public void clickContinueButton() {
     waitForElement(continueButton, classPrefix + "continueButton");

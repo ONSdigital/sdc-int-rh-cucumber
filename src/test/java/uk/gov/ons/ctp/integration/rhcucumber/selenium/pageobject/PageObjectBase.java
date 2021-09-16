@@ -2,6 +2,7 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
@@ -22,15 +23,9 @@ public abstract class PageObjectBase {
     this.classPrefix = pageId.name() + "-" + country.name() + ":";
     this.driver = driver;
     wait = new Wait(driver);
-    wait.forLoading();
-  }
+    waitForLoading();
+    PageFactory.initElements(driver, this);
 
-  public PageObjectBase(WebDriver driver, Country country) { // PMB Delete
-    this.constants = new Translations(country);
-    this.classPrefix = country.name() + ":";
-    this.driver = driver;
-    wait = new Wait(driver);
-    wait.forLoading();
   }
 
   protected void waitForElement(final WebElement element, final String identifier) {

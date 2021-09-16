@@ -3,26 +3,17 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class WhatIsYourName extends PageObjectBase {
   private String expectedText = "What is your name?";
 
   public WhatIsYourName(WebDriver driver, Country country) {
-    super(driver, country);
-    classPrefix = "WhatIsYourName-" + country.name() + ":";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+    super(PageId.WHAT_IS_YOUR_NAME, driver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
@@ -35,17 +26,17 @@ public class WhatIsYourName extends PageObjectBase {
   private WebElement lastNameTextBox;
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void addTextToFirstNameTextBox(String txtToAdd) {
-    waitForElement(firstNameTextBox, classPrefix + "firstNameTextBox  ");
+    waitForElement(firstNameTextBox, "firstNameTextBox");
     firstNameTextBox.sendKeys(txtToAdd);
   }
 
   public void addTextToLastNameTextBox(String txtToAdd) {
-    waitForElement(lastNameTextBox, classPrefix + "lastNameTextBox");
+    waitForElement(lastNameTextBox, "lastNameTextBox");
     lastNameTextBox.sendKeys(txtToAdd);
   }
 }

@@ -5,27 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class StartPage extends PageObjectBase {
 
   private String testUPRN = "10023122451";
 
-  static public StartPage getStartPage(
-      final WebDriver webDriver, final Country country, final String envBaseUrl) {
-      return new StartPage(webDriver, envBaseUrl, country);
-  }
-  
   public StartPage(final WebDriver driver, final String urlPrefix, Country country) {
     super(PageId.START_PAGE, driver, country);
     startURL = urlPrefix + translate(Translations.KEYS.START_PAGE_URL_SUFFIX);
