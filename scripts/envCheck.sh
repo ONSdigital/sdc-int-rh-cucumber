@@ -7,8 +7,6 @@
 # the script exits with a non zero code.
 #
 
-set -e 
-
 mock_envoy_port="8181" 
 mock_ai_port="8162"
 pubsub_emulator_port="9808"
@@ -27,8 +25,8 @@ function verify_service_running {
   url=$2
   expected_status=$3
 
-  status=`curl -s -o /dev/null -w '%{http_code}' localhost:9808`
-  
+  status=$(curl -s -o /dev/null -w '%{http_code}' $url)
+
   if [ $status != $expected_status ]
   then 
     echo "$service_name: NOT RUNNING  Response=$status  Expected:$expected_status"
