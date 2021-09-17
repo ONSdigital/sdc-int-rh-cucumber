@@ -55,6 +55,7 @@ function verify_redis_running {
 }
 
 
+# Check to see that the required services appear to be running
 verify_service_running "Mock Envoy     " "http://localhost:$mock_envoy_port/info" "200" 
 verify_service_running "Mock AI        " "http://localhost:$mock_ai_port/info" "200" 
 verify_service_running "PubSub emulator" "http://localhost:$pubsub_emulator_port" "200"
