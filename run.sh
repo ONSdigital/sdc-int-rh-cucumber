@@ -25,7 +25,8 @@ fi
 # Delete any previously dumped page
 if [ -d "/tmp" ] 
 then
-    rm -f /tmp/rh.* 
+    rm -f /tmp/rh.*ENG.html 
+    rm -f /tmp/rh.*WALES.html
 fi
 
 echo "Running cucumber tests ..."

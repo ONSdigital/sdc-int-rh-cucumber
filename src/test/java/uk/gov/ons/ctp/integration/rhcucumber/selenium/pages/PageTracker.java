@@ -152,6 +152,8 @@ public class PageTracker {
       outputStream.write(pageContent.getBytes());
       outputStream.close();
 
+      // Need to tell the user where the debug file can be found.
+      // Using stdout as logging doesn't appear.
       System.out.println("Page content saved to: " + fileName);
 
       return fileName;
