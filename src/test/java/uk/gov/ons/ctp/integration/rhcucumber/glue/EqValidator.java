@@ -27,7 +27,6 @@ public final class EqValidator {
           "account_service_log_out_url",
           "account_service_url",
           "case_id",
-          "case_type",
           "channel",
           "collection_exercise_sid",
           "display_address",
