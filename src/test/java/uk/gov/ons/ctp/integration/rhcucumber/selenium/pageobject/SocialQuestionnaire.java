@@ -1,32 +1,24 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class SocialQuestionnaire extends PageObjectBase {
 
-  public SocialQuestionnaire(WebDriver driver) {
-    super(driver);
-    classPrefix = "SocialQuestionnaire:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public SocialQuestionnaire(WebDriver driver, Country country) {
+    super(PageId.SOCIAL_QUESTIONNAIRE, driver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
   private WebElement socalLogo;
 
   public void clickSocialLogo() {
-    waitForElement(socalLogo, classPrefix + "socialLogo");
+    waitForElement(socalLogo, "socialLogo");
     socalLogo.click();
   }
 }

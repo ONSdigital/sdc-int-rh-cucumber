@@ -1,28 +1,20 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class WhatIsYourAddressEng extends PageObjectBase implements WhatIsYourAddress {
+@Getter
+public class WhatIsYourAddress extends PageObjectBase {
 
-  private String expectedTitleText = "What is your address?";
+  private String expectedTitleText =
+      "What is your address?"; // TODO: Wales translation, when RHUI ready.
 
-  public WhatIsYourAddressEng(WebDriver driver) {
-    super(driver);
-    classPrefix = "WhatIsYourPostcode:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public WhatIsYourAddress(WebDriver driver, Country country) {
+    super(PageId.WHAT_IS_YOUR_ADDRESS, driver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -40,26 +32,22 @@ public class WhatIsYourAddressEng extends PageObjectBase implements WhatIsYourAd
   @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
   private WebElement errorEnterValidPostcode;
 
-  @Override
   public String getwhatIsYourAddressTitleText() {
     return whatIsYourPostcodeTitle.getText();
   }
 
-  @Override
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
-  @Override
   public void addTextToAddressTextBox(String txtToAdd) {
-    waitForElement(addressTextBox, classPrefix + "addressTextBox");
+    waitForElement(addressTextBox, "addressTextBox");
     addressTextBox.sendKeys(txtToAdd);
   }
 
-  @Override
   public String getErrorEnterValidPostcodeText() {
-    waitForElement(errorEnterValidPostcode, classPrefix + "errorEnterValidPostcode");
+    waitForElement(errorEnterValidPostcode, "errorEnterValidPostcode");
     return errorEnterValidPostcode.getText();
   }
 }

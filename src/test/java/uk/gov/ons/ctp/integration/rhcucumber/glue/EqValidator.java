@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.JweDecryptor;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.KeyStore;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SocialQuestionnaire;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EqValidator {
@@ -45,10 +46,10 @@ public final class EqValidator {
           "tx_id",
           "user_id");
 
-  static void clickThoughToEq(GlueContext context) {
+  static void clickThoughToEq(WebDriver driver, GlueContext context) {
     if (context.errorMessageContainingCallToEQ == null) {
       try {
-        new SocialQuestionnaire().clickSocialLogo();
+        new SocialQuestionnaire(driver, Country.ENG).clickSocialLogo();
         context.eqExists = true;
       } catch (TimeoutException e) {
         // tolerate no EQ deployment for testing

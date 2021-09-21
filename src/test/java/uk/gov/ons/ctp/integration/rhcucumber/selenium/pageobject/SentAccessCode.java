@@ -1,29 +1,24 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SentAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SentAccessCodeEng extends PageObjectBase implements SentAccessCode {
+@Getter
+public class SentAccessCode extends PageObjectBase {
 
   private String expectedText = "A text has been sent to 07700 900345";
   private String expectedRequestCodeText = "request a new access code";
 
-  public SentAccessCodeEng(WebDriver driver) {
-    super(driver);
-    classPrefix = "SentAccessCode:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public SentAccessCode(WebDriver driver, Country country) {
+    super(PageId.SENT_ACCESS_CODE, driver, country);
+
+    expectedText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_TEXT);
+    expectedRequestCodeText = translate(KEYS.SENT_ACCESS_CODE_EXPECTED_REQUEST_CODE_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -38,21 +33,18 @@ public class SentAccessCodeEng extends PageObjectBase implements SentAccessCode 
   @FindBy(xpath = WebPageConstants.XPATH_LINK_REQUEST_A_NEW_CODE)
   private WebElement requestNewCodeLink;
 
-  @Override
   public String getSentAccessCodeTitleText() {
-    waitForElement(sentAccessCodeTitle, classPrefix + "sentAccessCodeTitle");
+    waitForElement(sentAccessCodeTitle, "sentAccessCodeTitle");
     return sentAccessCodeTitle.getText();
   }
 
-  @Override
   public String getStartSurveyButtonText() {
-    waitForElement(startSurveyButton, classPrefix + "startSurveyButton");
+    waitForElement(startSurveyButton, "startSurveyButton");
     return startSurveyButton.getText();
   }
 
-  @Override
   public String getRequestNewCodeLinkText() {
-    waitForElement(requestNewCodeLink, classPrefix + "requestNewCodeLink");
+    waitForElement(requestNewCodeLink, "requestNewCodeLink");
     return requestNewCodeLink.getText();
   }
 }

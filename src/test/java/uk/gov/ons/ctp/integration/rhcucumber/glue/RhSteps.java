@@ -20,20 +20,20 @@ import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddressForNewUac;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourMobile;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourName;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.HouseholdInterstitial;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.IsThisMobileNumCorrect;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PleaseSupplyYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.RegisterYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectDeliveryMethodTextOrPost;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SentAccessCode;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourMobile;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.WhatIsYourName;
 
 public class RhSteps extends StepsBase {
   private Wait wait;
@@ -106,7 +106,8 @@ public class RhSteps extends StepsBase {
 
   @Then("RHSVC publishes a new address event")
   public void verifyNewAddressEventPublished() throws Exception {
-    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
+    // TODO we will revisit these when the features are made to work, when Address typeahead is
+    // working in cucumber tests
     // assertNewEventHasFired(EventType.NEW_ADDRESS_REPORTED);
   }
 
@@ -224,7 +225,7 @@ public class RhSteps extends StepsBase {
 
   @Then("I am directed to the Questionnaire")
   public void clickForQuestionnaire() {
-    EqValidator.clickThoughToEq(context);
+    EqValidator.clickThoughToEq(driver, context);
   }
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
@@ -614,7 +615,8 @@ public class RhSteps extends StepsBase {
   }
 
   private void confirmYourAddress(Country country, String postCode) throws Exception {
-    //TODO we will revisit these when the features are made to work, when Address typeahead is working in cucumber tests
+    // TODO we will revisit these when the features are made to work, when Address typeahead is
+    // working in cucumber tests
     //    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
     emptyEventQueue(EventType.FULFILMENT);
 

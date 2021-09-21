@@ -1,28 +1,18 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.ConfirmAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ConfirmAddressEng extends PageObjectBase implements ConfirmAddress {
+@Getter
+public class ConfirmAddress extends PageObjectBase {
 
-  private String expectedConfirmText = "Is this the correct address?";
-
-  public ConfirmAddressEng(WebDriver driver) {
-    super(driver);
-    classPrefix = "ConfirmAddress:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public ConfirmAddress(WebDriver driver, Country country) {
+    super(PageId.CONFIRM_ADDRESS, driver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -50,41 +40,35 @@ public class ConfirmAddressEng extends PageObjectBase implements ConfirmAddress 
   private WebElement continueButton;
 
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
-  private WebElement cymraegLink;
+  private WebElement changeLanguageLink;
 
-  @Override
   public WebElement getOnsLogo() {
-    waitForElement(onsLogo, classPrefix + "onsLogo");
+    waitForElement(onsLogo, "onsLogo");
     return onsLogo;
   }
 
-  @Override
   public String getConfirmAddressTitleText() {
-    waitForElement(confirmAddressTitle, classPrefix + "confirmAddressTitle");
+    waitForElement(confirmAddressTitle, "confirmAddressTitle");
     return confirmAddressTitle.getText();
   }
 
-  @Override
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
-  @Override
   public void clickOptionYes() {
-    waitForElement(optionYes, classPrefix + "optionYes");
+    waitForElement(optionYes, "optionYes");
     optionYes.click();
   }
 
-  @Override
   public void clickOptionNo() {
-    waitForElement(optionNo, classPrefix + "optionNo");
+    waitForElement(optionNo, "optionNo");
     optionNo.click();
   }
 
-  @Override
   public void setAddressTextFields() {
-    waitForElement(wholeAddressParagraph, classPrefix + "wholeAddressParagraph");
+    waitForElement(wholeAddressParagraph, "wholeAddressParagraph");
     String address = wholeAddressParagraph.getText();
     String[] addressText = address.split("\n");
     firstLineAddress = addressText[0];
@@ -92,5 +76,14 @@ public class ConfirmAddressEng extends PageObjectBase implements ConfirmAddress 
     thirdLineAddress = addressText[2];
     townName = addressText[3];
     postcode = addressText[4];
+  }
+
+  public String getExpectedConfirmText() {
+    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
+  }
+
+  public void clickAlternativeLanguageLink() {
+    waitForElement(changeLanguageLink, "changeLanguageLink");
+    changeLanguageLink.click();
   }
 }

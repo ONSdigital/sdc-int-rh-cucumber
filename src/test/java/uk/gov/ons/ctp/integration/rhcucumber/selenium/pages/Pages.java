@@ -9,6 +9,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourMobile;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
@@ -19,6 +34,7 @@ public class Pages {
 
   @Autowired private WebDriverFactory webDriverFactory;
   private WebDriver webDriver;
+  private PageTracker pageTracker;
 
   private StartPage startPage = null;
   private ConfirmAddress confirmAddress = null;
@@ -32,104 +48,134 @@ public class Pages {
   @PostConstruct
   private void setupWebDriver() {
     this.webDriver = webDriverFactory.getWebDriver();
+    this.pageTracker = new PageTracker(webDriver);
   }
 
   public ConfirmAddress getConfirmAddress(final Country country) {
-    confirmAddress = ConfirmAddress.getConfirmAddress(webDriver, country);
+    confirmAddress = new ConfirmAddress(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_ADDRESS, country);
     return confirmAddress;
   }
 
   public ConfirmAddress getConfirmAddress() {
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_ADDRESS, confirmAddress.getCountry());
     return confirmAddress;
   }
 
   public ConfirmAddressForNewUac getConfirmAddressForNewUac(final Country country) {
-    return ConfirmAddressForNewUac.getConfirmAddressForNewUac(webDriver, country);
+    ConfirmAddressForNewUac confirm = new ConfirmAddressForNewUac(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_ADDRESS_FOR_NEW_UAC, country);
+    return confirm;
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost(final Country country) {
-    selectDeliveryMethodTextOrPost =
-        SelectDeliveryMethodTextOrPost.getSelectDeliveryMethodTextOrPost(webDriver, country);
+    selectDeliveryMethodTextOrPost = new SelectDeliveryMethodTextOrPost(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, country);
     return selectDeliveryMethodTextOrPost;
   }
 
   public SelectDeliveryMethodTextOrPost getSelectDeliveryMethodTextOrPost() {
+    pageTracker.verifyCurrentPage(
+        PageId.SELECT_DELIVERY_METHOD_TEXT_OR_POST, selectDeliveryMethodTextOrPost.getCountry());
     return selectDeliveryMethodTextOrPost;
   }
 
   public IsThisMobileNumCorrect getIsThisMobileNumCorrect(final Country country) {
-    isThisMobileNumCorrect = IsThisMobileNumCorrect.getIsThisMobileNumCorrect(webDriver, country);
+    isThisMobileNumCorrect = new IsThisMobileNumCorrect(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.IS_THIS_MOBILE_NUM_CORRECT, country);
     return isThisMobileNumCorrect;
   }
 
   public IsThisMobileNumCorrect getIsThisMobileNumCorrect() {
+    pageTracker.verifyCurrentPage(
+        PageId.IS_THIS_MOBILE_NUM_CORRECT, isThisMobileNumCorrect.getCountry());
     return isThisMobileNumCorrect;
   }
 
   public PleaseSupplyYourAddress getPleaseSupplyYourAddress(final Country country) {
-    pleaseSupplyYourAddress =
-        PleaseSupplyYourAddress.getPleaseSupplyYourAddress(webDriver, country);
+    pleaseSupplyYourAddress = new PleaseSupplyYourAddress(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.PLEASE_SUPPLY_YOUR_ADDRESS, country);
     return pleaseSupplyYourAddress;
   }
 
   public PleaseSupplyYourAddress getPleaseSupplyYourAddress() {
+    pageTracker.verifyCurrentPage(
+        PageId.PLEASE_SUPPLY_YOUR_ADDRESS, pleaseSupplyYourAddress.getCountry());
     return pleaseSupplyYourAddress;
   }
 
   public SelectYourAddress getSelectYourAddress(final Country country) {
-    selectYourAddress = SelectYourAddress.getSelectYourAddress(webDriver, country);
+    selectYourAddress = new SelectYourAddress(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.SELECT_YOUR_ADDRESS, country);
     return selectYourAddress;
   }
 
   public SelectYourAddress getSelectYourAddress() {
+    pageTracker.verifyCurrentPage(PageId.SELECT_YOUR_ADDRESS, selectYourAddress.getCountry());
     return selectYourAddress;
   }
 
   public SentAccessCode getSentAccessCode(final Country country) {
-    sentAccessCode = SentAccessCode.getSentAccessCode(webDriver, country);
+    sentAccessCode = new SentAccessCode(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.SENT_ACCESS_CODE, country);
     return sentAccessCode;
   }
 
   public SentAccessCode getSentAccessCode() {
+    pageTracker.verifyCurrentPage(PageId.SENT_ACCESS_CODE, sentAccessCode.getCountry());
     return sentAccessCode;
   }
 
   public StartPage getStartPage(final Country country) {
-    startPage = StartPage.getStartPage(webDriver, country, envBaseUrl);
+    startPage = new StartPage(webDriver, envBaseUrl, country);
+    pageTracker.verifyCurrentPage(PageId.START_PAGE, country);
     return startPage;
   }
 
   public StartPage getStartPage() {
+    pageTracker.verifyCurrentPage(PageId.START_PAGE, startPage.getCountry());
     return startPage;
   }
 
   public WhatIsYourMobile getWhatIsYourMobile(final Country country) {
-    return WhatIsYourMobile.getWhatIsYourMobile(webDriver, country);
+    WhatIsYourMobile whatIsYourMobile = new WhatIsYourMobile(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.WHAT_IS_YOUR_MOBILE, country);
+    return whatIsYourMobile;
   }
 
   public WhatIsYourAddress getWhatIsYourAddress(final Country country) {
-    whatIsYourAddress = WhatIsYourAddress.getWhatIsYourAddress(webDriver, country);
+    whatIsYourAddress = new WhatIsYourAddress(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.WHAT_IS_YOUR_ADDRESS, country);
     return whatIsYourAddress;
   }
 
   public WhatIsYourAddress getWhatIsYourAddress() {
+    pageTracker.verifyCurrentPage(PageId.WHAT_IS_YOUR_ADDRESS, whatIsYourAddress.getCountry());
     return whatIsYourAddress;
   }
 
   public WhatIsYourName getWhatIsYourName(final Country country) {
-    return WhatIsYourName.getWhatIsYourName(webDriver, country);
+    WhatIsYourName whatIsYourName = new WhatIsYourName(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.WHAT_IS_YOUR_NAME, country);
+    return whatIsYourName;
   }
 
   public NewHouseholdAccessCode getNewHouseholdAccessCode(final Country country) {
-    return NewHouseholdAccessCode.getNewHouseholdAccessCode(webDriver, country);
+    NewHouseholdAccessCode newHouseholdAccessCode = new NewHouseholdAccessCode(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.NEW_HOUSEHOLD_ACCESS_CODE, country);
+    return newHouseholdAccessCode;
   }
 
   public RegisterYourAddress getRegisterYourAddress(final Country country) {
-    return RegisterYourAddress.getRegisterYourAddress(webDriver, country);
+    RegisterYourAddress registerYourAddress = new RegisterYourAddress(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_YOUR_ADDRESS, country);
+    return registerYourAddress;
   }
 
   public HouseholdInterstitial getHouseholdInterstitial(final Country country) {
-    return HouseholdInterstitial.getHouseholdInterstitial(webDriver, country);
+    HouseholdInterstitial householdInterstitial = new HouseholdInterstitial(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.HOUSEHOLD_INTERSTITIAL, country);
+    return householdInterstitial;
   }
 
   public WebDriver getWebDriver() {

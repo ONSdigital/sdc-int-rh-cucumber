@@ -1,31 +1,23 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.StartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class StartPageWales extends PageObjectBase implements StartPage {
+@Getter
+public class StartPage extends PageObjectBase {
 
-  public static final String START_URL_SUFFIX = "cy/start/";
-  private String testUPRN = "100100645811";
+  private String testUPRN = "10023122451";
 
-  public StartPageWales(final WebDriver driver, final String urlPrefix) {
-    super(driver);
-    classPrefix = "Dechrau:";
-    startURL = urlPrefix + START_URL_SUFFIX;
+  public StartPage(final WebDriver driver, final String urlPrefix, Country country) {
+    super(PageId.START_PAGE, driver, country);
+    startURL = urlPrefix + translate(Translations.KEYS.START_PAGE_URL_SUFFIX);
     driver.get(startURL);
     waitForLoading();
-    PageFactory.initElements(driver, this);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -43,34 +35,34 @@ public class StartPageWales extends PageObjectBase implements StartPage {
   @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_ENTER_UAC)
   private WebElement uacTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_LINK_WALES_REQUEST_A_NEW_CODE)
+  @FindBy(xpath = WebPageConstants.XPATH_LINK_REQUEST_A_NEW_CODE)
   private WebElement requestNewCodeLink;
 
   @FindBy(xpath = WebPageConstants.XPATH_LINK_CHANGE_LANGUAGE)
-  private WebElement englishLink;
+  private WebElement changeLanguageLink;
 
   public String getErrorEnterAccessCodeText() {
-    waitForElement(errorEnterAccessCode, classPrefix + "errorEnterAccessCode");
+    waitForElement(errorEnterAccessCode, "errorEnterAccessCode");
     return errorEnterAccessCode.getText();
   }
 
   public String getErrorEnterValidCodeText() {
-    waitForElement(errorEnterValidCode, classPrefix + "errorEnterValidCode");
+    waitForElement(errorEnterValidCode, "errorEnterValidCode");
     return errorEnterValidCode.getText();
   }
 
   public void clickAccessSurveyButton() {
-    waitForElement(accessSurveyButton, classPrefix + "accessSurveyButton");
+    waitForElement(accessSurveyButton, "accessSurveyButton");
     accessSurveyButton.click();
   }
 
   public void clickUacBox() {
-    waitForElement(uacTextBox, classPrefix + "uacTextBox");
+    waitForElement(uacTextBox, "uacTextBox");
     uacTextBox.click();
   }
 
   private void addTextToUac(String txtToAdd) {
-    waitForElement(uacTextBox, classPrefix + "uacTextBox");
+    waitForElement(uacTextBox, "uacTextBox");
     uacTextBox.sendKeys(txtToAdd);
   }
 
@@ -80,17 +72,12 @@ public class StartPageWales extends PageObjectBase implements StartPage {
   }
 
   public void clickRequestNewCodeLink() {
-    waitForElement(requestNewCodeLink, classPrefix + "requestNewCodeLink");
+    waitForElement(requestNewCodeLink, "requestNewCodeLink");
     requestNewCodeLink.click();
   }
 
-  @Override
   public void clickAlternativeLanguageLink() {
-    clickEnglishLink();
-  }
-
-  private void clickEnglishLink() {
-    waitForElement(englishLink, classPrefix + "englishLink");
-    englishLink.click();
+    waitForElement(changeLanguageLink, "changeLanguageLink");
+    changeLanguageLink.click();
   }
 }

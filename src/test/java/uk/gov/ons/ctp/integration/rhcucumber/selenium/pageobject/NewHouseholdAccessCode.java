@@ -1,17 +1,16 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.NewHouseholdAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
-public class NewHouseholdAccessCodeWales extends PageObjectBase implements NewHouseholdAccessCode {
-  public NewHouseholdAccessCodeWales(WebDriver webDriver) {
-    super(webDriver);
-    classPrefix = "NewHouseholdAccessCodeWales:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+@Getter
+public class NewHouseholdAccessCode extends PageObjectBase {
+  public NewHouseholdAccessCode(WebDriver webDriver, Country country) {
+    super(PageId.NEW_HOUSEHOLD_ACCESS_CODE, webDriver, country);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
@@ -24,17 +23,17 @@ public class NewHouseholdAccessCodeWales extends PageObjectBase implements NewHo
   private WebElement optionNo;
 
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
   public void selectYesSendByPost() {
-    waitForElement(optionYes, classPrefix + "optionYes");
+    waitForElement(optionYes, "optionYes");
     optionYes.click();
   }
 
   public void selectNoSendAnotherWay() {
-    waitForElement(optionNo, classPrefix + "optionNo");
+    waitForElement(optionNo, "optionNo");
     optionNo.click();
   }
 }

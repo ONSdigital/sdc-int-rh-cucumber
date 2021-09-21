@@ -1,31 +1,28 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.SelectYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SelectYourAddressEng extends PageObjectBase implements SelectYourAddress {
+@Getter
+public class SelectYourAddress extends PageObjectBase {
 
-  private String expectedSelectionText = "Select your address";
-  private String expectedSelectionListText1 = "";
-  private String expectedSelectionListText2 = " addresses found for postcode";
-  private String expectedPostcode = "EX2 6GA";
+  private String expectedSelectionText;
+  private String expectedSelectionListText1;
+  private String expectedSelectionListText2;
+  private String expectedPostcode;
 
-  public SelectYourAddressEng(WebDriver driver) {
-    super(driver);
-    classPrefix = "SelectYourAddressEng:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public SelectYourAddress(WebDriver driver, Country country) {
+    super(PageId.SELECT_YOUR_ADDRESS, driver, country);
+
+    expectedSelectionText = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_TEXT);
+    expectedSelectionListText1 = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_LIST_TEXT1);
+    expectedSelectionListText2 = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_SELECTION_LIST_TEXT2);
+    expectedPostcode = translate(KEYS.SELECT_YOUR_ADDRESS_EXPECTED_POSTCODE);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -49,32 +46,28 @@ public class SelectYourAddressEng extends PageObjectBase implements SelectYourAd
   @FindBy(xpath = WebPageConstants.XPATH_RADIO_CANNOT_FIND_ADDRESS)
   private WebElement cannotFindAddressBulletPoint;
 
-  @Override
   public String getSelectYourAddressTitleText() {
-    waitForElement(selectYourAddressTitle, classPrefix + "selectYourAddressTitle");
+    waitForElement(selectYourAddressTitle, "selectYourAddressTitle");
     return selectYourAddressTitle.getText();
   }
 
-  @Override
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
-  @Override
   public void selectFirstBulletPoint() {
-    waitForElement(firstBulletPoint, classPrefix + "firstBulletPoint");
+    waitForElement(firstBulletPoint, "firstBulletPoint");
     firstBulletPoint.click();
   }
 
-  @Override
   public void selectSecondBulletPoint() {
-    waitForElement(secondBulletPoint, classPrefix + "secondBulletPoint");
+    waitForElement(secondBulletPoint, "secondBulletPoint");
     secondBulletPoint.click();
   }
 
   public void selectCannotFindAddressBulletPoint() {
-    waitForElement(cannotFindAddressBulletPoint, classPrefix + "cannotFindAddressBulletPoint");
+    waitForElement(cannotFindAddressBulletPoint, "cannotFindAddressBulletPoint");
     cannotFindAddressBulletPoint.click();
   }
 }

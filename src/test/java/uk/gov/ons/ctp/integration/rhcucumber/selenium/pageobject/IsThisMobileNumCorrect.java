@@ -1,28 +1,22 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.IsThisMobileNumCorrect;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class IsThisMobileNumCorrectEng extends PageObjectBase implements IsThisMobileNumCorrect {
+@Getter
+public class IsThisMobileNumCorrect extends PageObjectBase {
 
   private String expectedText = "Is this mobile number correct?";
 
-  public IsThisMobileNumCorrectEng(WebDriver driver) {
-    super(driver);
-    classPrefix = "IsThisMobileNumCorrect:";
-    waitForLoading();
-    PageFactory.initElements(driver, this);
+  public IsThisMobileNumCorrect(WebDriver driver, Country country) {
+    super(PageId.IS_THIS_MOBILE_NUM_CORRECT, driver, country);
+
+    expectedText = translate(KEYS.IS_THIS_MOBILE_NUM_CORRECT_EXPECTED_TEXT);
   }
 
   @FindBy(xpath = WebPageConstants.XPATH_LOGO)
@@ -40,27 +34,23 @@ public class IsThisMobileNumCorrectEng extends PageObjectBase implements IsThisM
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
-  @Override
   public String getIsMobileCorrectTitleText() {
     waitForElement(isMobileCorrectTitle, classPrefix + "isMobileCorrectTitle");
     return isMobileCorrectTitle.getText();
   }
 
-  @Override
   public void clickContinueButton() {
-    waitForElement(continueButton, classPrefix + "continueButton");
+    waitForElement(continueButton, "continueButton");
     continueButton.click();
   }
 
-  @Override
   public void clickOptionYes() {
-    waitForElement(optionYes, classPrefix + "optionYes");
+    waitForElement(optionYes, "optionYes");
     optionYes.click();
   }
 
-  @Override
   public void clickOptionNo() {
-    waitForElement(optionNo, classPrefix + "optionNo");
+    waitForElement(optionNo, "optionNo");
     optionNo.click();
   }
 }
