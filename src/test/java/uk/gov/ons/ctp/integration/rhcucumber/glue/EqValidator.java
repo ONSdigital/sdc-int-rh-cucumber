@@ -27,7 +27,6 @@ public final class EqValidator {
           "account_service_log_out_url",
           "account_service_url",
           "case_id",
-          "case_type",
           "channel",
           "collection_exercise_sid",
           "display_address",
@@ -106,7 +105,6 @@ public final class EqValidator {
         "England House, England Street",
         result1.get("display_address").trim());
     assertEquals("Must have the correct channel", "rh", result1.get("channel"));
-    assertEquals("Must have the correct case type", "HH", result1.get("case_type"));
     assertEquals("Must have the correct eq id", "CENSUS", result1.get("eq_id").toUpperCase());
     assertEquals("Must have the correct UPRN value", "10023122451", result1.get("ru_ref"));
     assertEquals("Must have the correct language_code value", "en", result1.get("language_code"));
