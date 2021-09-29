@@ -101,7 +101,7 @@ public abstract class StepsBase {
   // - event validation helpers ...
 
   void emptyEventQueue(EventType eventType) throws Exception {
-    pubSub.flushSubscription(eventType);
+    pubSub.flushTopic(eventType);
   }
 
   void assertNewEventHasFired(EventType eventType) throws Exception {
@@ -110,7 +110,7 @@ public abstract class StepsBase {
         (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
 
     assertNotNull(event);
-    assertNotNull(event.getEvent());
+    assertNotNull(event.getHeader());
   }
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
@@ -123,7 +123,7 @@ public abstract class StepsBase {
 
     assertNotNull(event);
 
-    context.respondentAuthenticatedHeader = event.getEvent();
+    context.respondentAuthenticatedHeader = event.getHeader();
     assertNotNull(context.respondentAuthenticatedHeader);
 
     context.respondentAuthenticatedPayload = event.getPayload();
@@ -139,7 +139,7 @@ public abstract class StepsBase {
 
     assertNotNull(context.surveyLaunchedEvent);
 
-    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getEvent();
+    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getHeader();
     assertNotNull(context.surveyLaunchedHeader);
 
     context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
@@ -156,7 +156,7 @@ public abstract class StepsBase {
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
 
     assertNotNull(fulfilmentRequestedEvent);
-    assertNotNull(fulfilmentRequestedEvent.getEvent());
+    assertNotNull(fulfilmentRequestedEvent.getHeader());
     assertNotNull(fulfilmentRequestedEvent.getPayload());
     assertNotNull(context.fulfilmentRequestedCode);
   }

@@ -554,22 +554,22 @@ public class RhSteps extends StepsBase {
 
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    assertEquals(EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getType());
+    assertEquals(EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getTopic());
     assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
     assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
-    assertNotNull(context.respondentAuthenticatedHeader.getTransactionId());
+    assertNotNull(context.respondentAuthenticatedHeader.getMessageId());
     assertNotNull(context.respondentAuthenticatedPayload.getResponse());
     assertNotNull(context.respondentAuthenticatedPayload.getResponse().getQuestionnaireId());
   }
 
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    assertEquals(EventType.SURVEY_LAUNCH, context.surveyLaunchedHeader.getType());
+    assertEquals(EventType.SURVEY_LAUNCH, context.surveyLaunchedHeader.getTopic());
     assertEquals(Source.RESPONDENT_HOME, context.surveyLaunchedHeader.getSource());
     assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
     assertNotNull(context.surveyLaunchedHeader.getDateTime());
-    assertNotNull(context.surveyLaunchedHeader.getTransactionId());
+    assertNotNull(context.surveyLaunchedHeader.getMessageId());
     surveyLaunchedPayloadHasResponse();
     assertNotNull(context.surveyLaunchedResponse.getQuestionnaireId());
   }
