@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
+import uk.gov.ons.ctp.common.event.EventTopic;
 import uk.gov.ons.ctp.common.event.EventType;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
@@ -554,7 +555,7 @@ public class RhSteps extends StepsBase {
 
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    assertEquals(EventType.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getTopic());
+    assertEquals(EventTopic.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getTopic());
     assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
     assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
@@ -565,7 +566,7 @@ public class RhSteps extends StepsBase {
 
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    assertEquals(EventType.SURVEY_LAUNCH, context.surveyLaunchedHeader.getTopic());
+    assertEquals(EventTopic.SURVEY_LAUNCH, context.surveyLaunchedHeader.getTopic());
     assertEquals(Source.RESPONDENT_HOME, context.surveyLaunchedHeader.getSource());
     assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
     assertNotNull(context.surveyLaunchedHeader.getDateTime());
