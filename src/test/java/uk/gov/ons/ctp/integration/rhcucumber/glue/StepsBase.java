@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.ons.ctp.common.event.EventType;
+import uk.gov.ons.ctp.common.event.TopicType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
@@ -100,11 +100,11 @@ public abstract class StepsBase {
 
   // - event validation helpers ...
 
-  void emptyEventQueue(EventType eventType) throws Exception {
+  void emptyEventQueue(TopicType eventType) throws Exception {
     pubSub.flushSubscription(eventType);
   }
 
-  void assertNewEventHasFired(EventType eventType) throws Exception {
+  void assertNewEventHasFired(TopicType eventType) throws Exception {
 
     final GenericEvent event =
         (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
@@ -115,7 +115,7 @@ public abstract class StepsBase {
 
   void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
 
-    EventType eventType = EventType.UAC_AUTHENTICATE;
+    TopicType eventType = TopicType.UAC_AUTHENTICATE;
 
     UacAuthenticateEvent event =
         (UacAuthenticateEvent)
@@ -132,7 +132,7 @@ public abstract class StepsBase {
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
 
-    EventType eventType = EventType.SURVEY_LAUNCH;
+    TopicType eventType = TopicType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
         (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
@@ -147,7 +147,7 @@ public abstract class StepsBase {
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
-    EventType eventType = EventType.FULFILMENT;
+    TopicType eventType = TopicType.FULFILMENT;
 
     FulfilmentEvent fulfilmentRequestedEvent =
         (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
@@ -161,7 +161,7 @@ public abstract class StepsBase {
     assertNotNull(context.fulfilmentRequestedCode);
   }
 
-  Class<?> eventClass(EventType eventType) {
+  Class<?> eventClass(TopicType eventType) {
     switch (eventType) {
       case FULFILMENT:
         return FulfilmentEvent.class;

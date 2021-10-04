@@ -18,7 +18,7 @@ import org.openqa.selenium.WebDriverException;
 import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.event.EventTopic;
-import uk.gov.ons.ctp.common.event.EventType;
+import uk.gov.ons.ctp.common.event.TopicType;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
@@ -114,7 +114,7 @@ public class RhSteps extends StepsBase {
 
   @And("RHSVC publishes a UAC fulfilment request")
   public void verifyUacFulfimentRequestPublished() throws Exception {
-    assertNewEventHasFired(EventType.FULFILMENT);
+    assertNewEventHasFired(TopicType.FULFILMENT);
   }
 
   @And("the respondent selects the delivery channel as \"Post\"")
@@ -231,17 +231,17 @@ public class RhSteps extends StepsBase {
 
   @Given("an empty queue exists for sending Respondent Authenticated events")
   public void emptyEventQueueForRespondentAuthenticated() throws Exception {
-    emptyEventQueue(EventType.UAC_AUTHENTICATE);
+    emptyEventQueue(TopicType.UAC_AUTHENTICATE);
   }
 
   @Given("an empty queue exists for sending Survey Launched events")
   public void emptyEventQueuForSurveyLaunched() throws Exception {
-    emptyEventQueue(EventType.SURVEY_LAUNCH);
+    emptyEventQueue(TopicType.SURVEY_LAUNCH);
   }
 
   @Given("an empty queue exists for sending Fulfilment Requested events")
   public void emptyEventQueueForFulfilmentRequested() throws Exception {
-    emptyEventQueue(EventType.FULFILMENT);
+    emptyEventQueue(TopicType.FULFILMENT);
   }
 
   @Then("a Respondent Authenticated event is sent to RM")
@@ -256,7 +256,7 @@ public class RhSteps extends StepsBase {
 
   @Then("a FulfilmentRequested event is sent to RM")
   public void verifyFulfilmentRequestedEventSent() throws Exception {
-    assertNewEventHasFired(EventType.FULFILMENT);
+    assertNewEventHasFired(TopicType.FULFILMENT);
   }
 
   @Given("I click on request a new access code")
@@ -506,7 +506,7 @@ public class RhSteps extends StepsBase {
   public void setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(Country country)
       throws Exception {
     setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(
-        country, EventType.UAC_UPDATE.name());
+        country, TopicType.UAC_UPDATE.name());
   }
 
   @Given(
@@ -515,7 +515,7 @@ public class RhSteps extends StepsBase {
       Country country, String uacEventType) throws Exception {
     setupTest(country);
     prepareCaseAndUacEvents();
-    sendInboundCaseAndUacEvents(EventType.valueOf(uacEventType));
+    sendInboundCaseAndUacEvents(TopicType.valueOf(uacEventType));
     verifyUacProcessed();
   }
 
@@ -528,7 +528,7 @@ public class RhSteps extends StepsBase {
     } else {
       prepareCaseAndUacEvents();
     }
-    sendInboundCaseAndUacEvents(EventType.UAC_UPDATE);
+    sendInboundCaseAndUacEvents(TopicType.UAC_UPDATE);
     verifyUacProcessed();
   }
 
@@ -542,9 +542,9 @@ public class RhSteps extends StepsBase {
     constructUacUpdatedEvent();
   }
 
-  private void sendInboundCaseAndUacEvents(EventType eventType) throws Exception {
+  private void sendInboundCaseAndUacEvents(TopicType eventType) throws Exception {
     pubSub.sendEvent(
-        EventType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
+        TopicType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
   }
 
@@ -582,7 +582,7 @@ public class RhSteps extends StepsBase {
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")
   public void confirmYourMobile(String postcode, Country country) throws Exception {
-    emptyEventQueue(EventType.FULFILMENT);
+    emptyEventQueue(TopicType.FULFILMENT);
 
     confirmAddress(country, postcode);
     continueFromHouseholdInterstitial();
@@ -593,7 +593,7 @@ public class RhSteps extends StepsBase {
 
   @Given("the respondent selects continue on the confirm postal address page {string} {}")
   public void confirmPostalAddress(String postcode, Country country) throws Exception {
-    emptyEventQueue(EventType.FULFILMENT);
+    emptyEventQueue(TopicType.FULFILMENT);
     confirmAddress(country, postcode);
     continueFromHouseholdInterstitial();
     selectPostOption();
@@ -619,7 +619,7 @@ public class RhSteps extends StepsBase {
     // TODO we will revisit these when the features are made to work, when Address typeahead is
     // working in cucumber tests
     //    emptyEventQueue(EventType.NEW_ADDRESS_REPORTED);
-    emptyEventQueue(EventType.FULFILMENT);
+    emptyEventQueue(TopicType.FULFILMENT);
 
     WhatIsYourAddress postcodePage = pages.getWhatIsYourAddress(country);
     postcodePage.addTextToAddressTextBox(postCode);
