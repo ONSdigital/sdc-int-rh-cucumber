@@ -19,7 +19,7 @@ public class WebPageConstants {
 
   static final String XPATH_PARAGRAPH_ADDRESS = "//main//h1/following-sibling::p";
   public static final String XPATH_HIGHLIGHTED_ERROR_NO1 =
-      "//div[@class='panel__body']/p[@class='panel__error']";
+      "//div[@class='ons-panel__body']/p[@class='ons-panel__error']";
   static final String XPATH_LINK_REQUEST_A_NEW_CODE =
       "//main//a[text()='request a new access code']";
   static final String XPATH_TEXTBOX_ADDRESS = "//main//input[@id='address-autosuggest']";
@@ -30,7 +30,7 @@ public class WebPageConstants {
   static final String XPATH_TEXTBOX_ENTER_UAC = "//form//main//input[@id='uac']";
   public static final String XPATH_CONTINUE_BUTTON = "//form//main//button[@type='submit']";
   static final String XPATH_BUTTON_REQUEST_A_NEW_CODE = "//main//a[@role='button']";
-  static final String XPATH_LINK_CHANGE_LANGUAGE = "//header//li[@class='language-links__item']/a";
+  static final String XPATH_LINK_CHANGE_LANGUAGE = "//header//li[@class='ons-language-links__item']/a";
 
   // For the Address Confirmation page
   static final String XPATH_EM_ADDRESS = "//form//p[@class='rh-address-display']";
