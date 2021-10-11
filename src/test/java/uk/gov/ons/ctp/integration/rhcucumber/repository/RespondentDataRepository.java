@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.ons.ctp.common.cloud.TestCloudDataStore;
 import uk.gov.ons.ctp.common.error.CTPException;
-import uk.gov.ons.ctp.common.event.model.CollectionCase;
+import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
 
 @Service
@@ -41,9 +41,9 @@ public class RespondentDataRepository {
     this.cloudDataStore = cloudDataStore;
   }
 
-  public List<CollectionCase> readLatestCollectionCaseByUprn(final String uprn)
+  public List<CaseUpdate> readLatestCollectionCaseByUprn(final String uprn)
       throws CTPException {
-    return cloudDataStore.search(CollectionCase.class, caseSchema, SEARCH_BY_UPRN_PATH, uprn);
+    return cloudDataStore.search(CaseUpdate.class, caseSchema, SEARCH_BY_UPRN_PATH, uprn);
   }
 
   public void deleteCasesbyCaseId(final String caseID) throws CTPException {

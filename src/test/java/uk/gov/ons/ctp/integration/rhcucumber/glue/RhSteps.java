@@ -61,6 +61,7 @@ public class RhSteps extends StepsBase {
   }
 
   private void setupTest(Country country) {
+
     this.country = country;
     pages.getStartPage(country);
   }
@@ -514,7 +515,7 @@ public class RhSteps extends StepsBase {
       Country country, String uacEventType) throws Exception {
     setupTest(country);
     prepareCaseAndUacEvents();
-    sendInboundCaseAndUacEvents(EventType.valueOf(uacEventType));
+    sendInboundSurveyCaseAndUacEvents(EventType.valueOf(uacEventType));
     verifyUacProcessed();
   }
 
@@ -527,21 +528,25 @@ public class RhSteps extends StepsBase {
     } else {
       prepareCaseAndUacEvents();
     }
-    sendInboundCaseAndUacEvents(EventType.UAC_UPDATE);
+    sendInboundSurveyCaseAndUacEvents(EventType.UAC_UPDATE);
     verifyUacProcessed();
   }
 
   private void prepareCaseAndUacEvents() {
+    context.surveyUpdatePayload = ExampleData.createSuveyUpdate();
     context.caseCreatedPayload = ExampleData.createCollectionCase(context.caseKey);
     constructUacUpdatedEvent();
   }
 
   private void prepareWelshCaseAndUacEvents() {
+    context.surveyUpdatePayload = ExampleData.createSuveyUpdate();
     context.caseCreatedPayload = ExampleData.createWelshCollectionCase(context.caseKey);
     constructUacUpdatedEvent();
   }
 
-  private void sendInboundCaseAndUacEvents(EventType eventType) throws Exception {
+  private void sendInboundSurveyCaseAndUacEvents(EventType eventType) throws Exception {
+    pubSub.sendEvent(EventType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
+    Thread.sleep(10000);
     pubSub.sendEvent(
         EventType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);

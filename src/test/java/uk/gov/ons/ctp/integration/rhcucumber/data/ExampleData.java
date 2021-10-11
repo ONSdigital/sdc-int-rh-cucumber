@@ -1,9 +1,9 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
-import java.util.Date;
-import uk.gov.ons.ctp.common.event.model.Address;
-import uk.gov.ons.ctp.common.event.model.CollectionCase;
-import uk.gov.ons.ctp.common.event.model.Contact;
+import uk.gov.ons.ctp.common.event.model.CaseUpdate;
+import uk.gov.ons.ctp.common.event.model.Sample;
+import uk.gov.ons.ctp.common.event.model.SampleSensitive;
+import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
 
 public class ExampleData {
@@ -13,72 +13,58 @@ public class ExampleData {
 
   // --- model fixtures below ...
 
-  public static Address createNimrodAddress() {
-    Address address = new Address();
-    address.setAddressLine1("England House");
-    address.setAddressLine2("England Street");
-    address.setAddressLine3("Smithfield");
-    address.setTownName("Exeter");
-    address.setPostcode("EX1 2TD");
-    address.setRegion("E");
-    address.setLatitude("51.4934");
-    address.setLongitude("0.0098");
-    address.setUprn("10023122451");
-    address.setAddressType("HI");
-    address.setEstabType("E1");
-    return address;
+  public static Sample createSample() {
+    Sample sample = new Sample();
+    sample.setAddressLine1("England House");
+    sample.setAddressLine2("England Street");
+    sample.setAddressLine3("Smithfield");
+    sample.setTownName("Exeter");
+    sample.setPostcode("EX1 2TD");
+    sample.setRegion("E");
+    sample.setUprn("10023122451");
+    return sample;
   }
 
-  public static Address createNimrodAddressWales() {
-    Address address = new Address();
-    address.setAddressLine1("Wales House");
-    address.setAddressLine2("Wales Street");
-    address.setAddressLine3("Smithfield");
-    address.setTownName("Bangor");
-    address.setPostcode("LL1 2TD");
-    address.setRegion("W");
-    address.setLatitude("51.4934");
-    address.setLongitude("0.0098");
-    address.setUprn("10023122451");
-    address.setAddressType("HI");
-    address.setEstabType("E1");
-    return address;
+  public static Sample createSampleWales() {
+    Sample sample = new Sample();
+    sample.setAddressLine1("Wales House");
+    sample.setAddressLine2("Wales Street");
+    sample.setAddressLine3("Smithfield");
+    sample.setTownName("Bangor");
+    sample.setPostcode("LL1 2TD");
+    sample.setRegion("W");
+    sample.setUprn("10023122451");
+    return sample;
   }
 
-  public static Contact createLadySallyContact() {
-    Contact contact = new Contact();
-    contact.setTitle("Lady");
-    contact.setForename("Sally");
-    contact.setSurname("Scatterbrain");
-    contact.setTelNo(VALID_MOBILE_NO);
-    return contact;
+  public static SampleSensitive createSampleSensitive() {
+    SampleSensitive sampleSensitive = new SampleSensitive();
+    sampleSensitive.setPhoneNumber(VALID_MOBILE_NO);
+    return sampleSensitive;
   }
 
-  public static CollectionCase createCollectionCase(Address addr, Contact contact, String id) {
-    CollectionCase cc = new CollectionCase();
-    cc.setAddress(addr);
-    cc.setContact(contact);
-    cc.setId(id);
-    cc.setCaseRef("ella3");
-    cc.setSurvey("CENSUS");
+  public static CaseUpdate createCollectionCase(Sample sample, SampleSensitive sampleSensitive, String id) {
+    CaseUpdate cc = new CaseUpdate();
+    cc.setCaseId(id);
+    cc.setRefusalReceived("CENSUS");
     cc.setCollectionExerciseId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
-    cc.setActionableFrom("2018-08-12T20:17:46.384Z");
-    cc.setCaseType("HH");
-    cc.setCreatedDateTime(new Date());
-    cc.setAddressInvalid(false);
+    cc.setInvalid(false);
+    cc.setSample(sample);
+    cc.setSampleSensitive(sampleSensitive);
+    cc.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     return cc;
   }
 
-  public static CollectionCase createCollectionCase(String id) {
-    Address address = createNimrodAddress();
-    Contact contact = createLadySallyContact();
-    return createCollectionCase(address, contact, id);
+  public static CaseUpdate createCollectionCase(String id) {
+    Sample sample = createSample();
+    SampleSensitive sampleSensitive = createSampleSensitive();
+    return createCollectionCase(sample, sampleSensitive, id);
   }
 
-  public static CollectionCase createWelshCollectionCase(String id) {
-    Address address = createNimrodAddressWales();
-    Contact contact = createLadySallyContact();
-    return createCollectionCase(address, contact, id);
+  public static CaseUpdate createWelshCollectionCase(String id) {
+    Sample sample = createSampleWales();
+    SampleSensitive sampleSensitive = createSampleSensitive();
+    return createCollectionCase(sample, sampleSensitive, id);
   }
 
   public static UAC createUac(String uacHash, String caseId) {
@@ -88,5 +74,12 @@ public class ExampleData {
     uac.setQuestionnaireId("3110000009");
     uac.setCaseId(caseId);
     return uac;
+  }
+
+  public static SurveyUpdate createSuveyUpdate() {
+    SurveyUpdate surveyUpdate = new SurveyUpdate();
+    surveyUpdate.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    surveyUpdate.setName("LMS");
+    return surveyUpdate;
   }
 }
