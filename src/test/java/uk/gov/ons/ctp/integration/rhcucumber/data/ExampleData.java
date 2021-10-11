@@ -1,8 +1,8 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
-import uk.gov.ons.ctp.common.event.model.Sample;
-import uk.gov.ons.ctp.common.event.model.SampleSensitive;
+import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
+import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
 
@@ -13,8 +13,8 @@ public class ExampleData {
 
   // --- model fixtures below ...
 
-  public static Sample createSample() {
-    Sample sample = new Sample();
+  public static CaseUpdateSample createSample() {
+    CaseUpdateSample sample = new CaseUpdateSample();
     sample.setAddressLine1("England House");
     sample.setAddressLine2("England Street");
     sample.setAddressLine3("Smithfield");
@@ -25,8 +25,8 @@ public class ExampleData {
     return sample;
   }
 
-  public static Sample createSampleWales() {
-    Sample sample = new Sample();
+  public static CaseUpdateSample createSampleWales() {
+    CaseUpdateSample sample = new CaseUpdateSample();
     sample.setAddressLine1("Wales House");
     sample.setAddressLine2("Wales Street");
     sample.setAddressLine3("Smithfield");
@@ -37,13 +37,13 @@ public class ExampleData {
     return sample;
   }
 
-  public static SampleSensitive createSampleSensitive() {
-    SampleSensitive sampleSensitive = new SampleSensitive();
+  public static CaseUpdateSampleSensitive createSampleSensitive() {
+    CaseUpdateSampleSensitive sampleSensitive = new CaseUpdateSampleSensitive();
     sampleSensitive.setPhoneNumber(VALID_MOBILE_NO);
     return sampleSensitive;
   }
 
-  public static CaseUpdate createCollectionCase(Sample sample, SampleSensitive sampleSensitive, String id) {
+  public static CaseUpdate createCollectionCase(CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
     cc.setRefusalReceived("CENSUS");
@@ -56,14 +56,14 @@ public class ExampleData {
   }
 
   public static CaseUpdate createCollectionCase(String id) {
-    Sample sample = createSample();
-    SampleSensitive sampleSensitive = createSampleSensitive();
+    CaseUpdateSample sample = createSample();
+    CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
     return createCollectionCase(sample, sampleSensitive, id);
   }
 
   public static CaseUpdate createWelshCollectionCase(String id) {
-    Sample sample = createSampleWales();
-    SampleSensitive sampleSensitive = createSampleSensitive();
+    CaseUpdateSample sample = createSampleWales();
+    CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
     return createCollectionCase(sample, sampleSensitive, id);
   }
 
