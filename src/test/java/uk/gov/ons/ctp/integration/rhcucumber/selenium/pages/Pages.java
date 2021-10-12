@@ -3,6 +3,8 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pages;
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
 import javax.annotation.PostConstruct;
+
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +13,21 @@ import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConsentToSIS2Survey;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildConfirmationPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildStartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildDOB;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildSchool;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentMobile;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterSIS2StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
@@ -27,6 +40,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
+@Slf4j
 public class Pages {
 
   @Value("${rhui.baseurl}")
@@ -44,6 +58,17 @@ public class Pages {
   private SelectYourAddress selectYourAddress = null;
   private SentAccessCode sentAccessCode = null;
   private PleaseSupplyYourAddress pleaseSupplyYourAddress;
+  private RegisterSIS2StartPage registerSIS2StartPage = null;
+  private SISPage sisPage = null;
+  private RegisterAChildStartPage registerAChildStartPage = null;
+  private RegisterParentName registerParentName = null;
+  private RegisterParentMobile registerParentMobile = null;
+  private ConsentToSIS2Survey consentToSIS2Survey = null;
+  private RegisterChildName registerChildName = null;
+  private RegisterChildSchool registerChildSchool = null;
+  private RegisterChildDOB registerChildDOB = null;
+  private ReviewChildDetail reviewChildDetail = null;
+  private RegisterAChildConfirmationPage registerAChildConfirmationPage = null;
 
   @PostConstruct
   private void setupWebDriver() {
@@ -176,6 +201,122 @@ public class Pages {
     HouseholdInterstitial householdInterstitial = new HouseholdInterstitial(webDriver, country);
     pageTracker.verifyCurrentPage(PageId.HOUSEHOLD_INTERSTITIAL, country);
     return householdInterstitial;
+  }
+
+  public RegisterSIS2StartPage getRegisterSis2StartPage(final Country country) {
+    registerSIS2StartPage = new RegisterSIS2StartPage(webDriver, envBaseUrl, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_SIS2, country);
+    return registerSIS2StartPage;
+  }
+
+  public RegisterSIS2StartPage getRegisterSis2StartPage() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_SIS2, registerSIS2StartPage.getCountry());
+    return registerSIS2StartPage;
+  }
+
+  public SISPage getSisPage(final Country country) {
+    sisPage = new SISPage(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.HOW_TO_TAKE_PART_SIS, country);
+    return sisPage;
+  }
+
+  public SISPage getSisPage() {
+    pageTracker.verifyCurrentPage(PageId.HOW_TO_TAKE_PART_SIS, sisPage.getCountry());
+    return sisPage;
+  }
+
+  public RegisterAChildStartPage getRegisterAChildStartPage(final Country country) {
+    registerAChildStartPage = new RegisterAChildStartPage(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_A_CHILD, country);
+    return registerAChildStartPage;
+  }
+
+  public RegisterAChildStartPage getRegisterAChildStartPage() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_A_CHILD, registerAChildStartPage.getCountry());
+    return registerAChildStartPage;
+  }
+
+  public RegisterParentName getRegisterParentName(final Country country) {
+    registerParentName = new RegisterParentName(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_PARENT_NAME, country);
+    return registerParentName;
+  }
+
+  public RegisterParentName getRegisterParentName() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_PARENT_NAME, registerParentName.getCountry());
+    return registerParentName;
+  }
+
+  public RegisterParentMobile getRegisterParentMobile(final Country country) {
+    registerParentMobile = new RegisterParentMobile(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_PARENT_MOBILE, country);
+    return registerParentMobile;
+  }
+
+  public RegisterParentMobile getRegisterParentMobile() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_PARENT_MOBILE, registerParentMobile.getCountry());
+    return registerParentMobile;
+  }
+
+  public ConsentToSIS2Survey getConsentToSIS2Survey(final Country country) {
+    consentToSIS2Survey = new ConsentToSIS2Survey(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_CONSENT, country);
+    return consentToSIS2Survey;
+  }
+
+  public ConsentToSIS2Survey getConsentToSIS2Survey() {
+    pageTracker.verifyCurrentPage(PageId.CONFIRM_CONSENT, consentToSIS2Survey.getCountry());
+    return consentToSIS2Survey;
+  }
+
+  public RegisterChildName getRegisterChildName(final Country country) {
+    registerChildName = new RegisterChildName(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_NAME, country);
+    return registerChildName;
+  }
+
+  public RegisterChildName getRegisterChildName() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_NAME, registerChildName.getCountry());
+    return registerChildName;
+  }
+
+  public RegisterChildSchool getRegisterChildSchool(final Country country) {
+    registerChildSchool = new RegisterChildSchool(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_SCHOOL, country);
+    return registerChildSchool;
+  }
+
+  public RegisterChildSchool getRegisterChildSchool() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_SCHOOL, registerChildSchool.getCountry());
+    return registerChildSchool;
+  }
+
+  public RegisterChildDOB getRegisterChildDOB(final Country country) {
+    registerChildDOB = new RegisterChildDOB(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_DOB, country);
+    return registerChildDOB;
+  }
+
+  public RegisterChildDOB getRegisterChildDOB() {
+    pageTracker.verifyCurrentPage(PageId.REGISTER_CHILD_DOB, registerChildSchool.getCountry());
+    return registerChildDOB;
+  }
+
+  public ReviewChildDetail getReviewChildDetail(final Country country) {
+    reviewChildDetail = new ReviewChildDetail(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REVIEW_CHILD_DETAIL, country);
+    return reviewChildDetail;
+  }
+
+  public ReviewChildDetail getReviewChildDetail() {
+    pageTracker.verifyCurrentPage(PageId.REVIEW_CHILD_DETAIL, reviewChildDetail.getCountry());
+    return reviewChildDetail;
+  }
+
+  public RegisterAChildConfirmationPage getRegisterAChildConfirmationPage(final Country country) {
+    registerAChildConfirmationPage = new RegisterAChildConfirmationPage(webDriver, country);
+    pageTracker.verifyCurrentPage(PageId.REGISTRATION_OF_CHILD_CONFIRMATION, country);
+    return registerAChildConfirmationPage;
   }
 
   public WebDriver getWebDriver() {

@@ -1,9 +1,16 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+
 import uk.gov.ons.ctp.common.event.model.Address;
 import uk.gov.ons.ctp.common.event.model.CollectionCase;
 import uk.gov.ons.ctp.common.event.model.Contact;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.UAC;
 
 public class ExampleData {
@@ -88,5 +95,20 @@ public class ExampleData {
     uac.setQuestionnaireId("3110000009");
     uac.setCaseId(caseId);
     return uac;
+  }
+
+  public static NewCaseSampleSensitive constructFamilyInformation() {
+    NewCaseSampleSensitive newCaseSampleSensitive = new NewCaseSampleSensitive();
+    newCaseSampleSensitive.setFirstName("Mike");
+    newCaseSampleSensitive.setLastName("Bloggs");
+    newCaseSampleSensitive.setChildFirstName("newCaseSampleSensitive");
+    newCaseSampleSensitive.setChildMiddleNames("Mary");
+    newCaseSampleSensitive.setChildLastName("Bloggs");
+    newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");
+    newCaseSampleSensitive.setParentMobileNumber("07312345678");
+    newCaseSampleSensitive.setChildDob(LocalDate.parse("2010-12-31"));
+    newCaseSampleSensitive.setChildEmailAddress("Jane.M.Bloggs@email.com");
+    newCaseSampleSensitive.setChildMobileNumber("07387654321");
+    return newCaseSampleSensitive;
   }
 }

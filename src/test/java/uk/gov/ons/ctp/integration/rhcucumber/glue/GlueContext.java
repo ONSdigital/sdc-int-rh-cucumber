@@ -26,6 +26,17 @@ public class GlueContext {
   String uac;
   String uacKey;
   String errorMessageContainingCallToEQ;
+  String parentFirstName;
+  String parentMiddleName;
+  String parentLastName;
+  String childFirstName;
+  String childMiddleName;
+  String childLastName;
+  String childDob;
+  String parentMobile;
+  String parentEmail;
+  String childMobile;
+  String childEmail;
   CollectionCase caseCreatedPayload;
   UAC uacPayload;
   String fulfilmentRequestedCode;
