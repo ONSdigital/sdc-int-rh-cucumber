@@ -45,7 +45,7 @@ public abstract class StepsBase {
   PubSubHelper pubSub;
 
   public void setupForAll() throws Exception {
-//    dataRepo.deleteCollections();
+    dataRepo.deleteCollections();
     pubSub = PubSubHelper.instance(pubsubProjectId, false, useEmulatorPubSub, emulatorPubSubHost);
     driver = pages.getWebDriver();
   }
