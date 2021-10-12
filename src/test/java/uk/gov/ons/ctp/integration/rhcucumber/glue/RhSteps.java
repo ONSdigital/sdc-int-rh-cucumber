@@ -728,26 +728,6 @@ public class RhSteps extends StepsBase {
     pages.getRegisterParentName().enterLastName(newCaseSampleSensitive.getLastName());
   }
 
-  @And("I then click the “Continue” button")
-  public void iClickTheNameContinueButton() {
-    switch (currentPage) {
-      case "RegisterParentName":
-        pages.getRegisterParentName().clickContinueButton();
-        break;
-      case "RegisterParentMobile":
-        pages.getIsThisMobileNumCorrect().clickContinueButton();
-        break;
-      case "RegisterChildSchool":
-        pages.getRegisterChildSchool().clickContinueButton();
-        break;
-      case "RegisterChildDOB":
-        pages.getRegisterChildDOB().clickContinueButton();
-        break;
-      default:
-        log.info("Continue unavailable for process");
-    }
-  }
-
   @Then("I am presented with a page to enter my mobile number")
   public void iAmPresentedWithAPageToEnterMyMobileNumber() {
     currentPage = "RegisterParentMobile";
