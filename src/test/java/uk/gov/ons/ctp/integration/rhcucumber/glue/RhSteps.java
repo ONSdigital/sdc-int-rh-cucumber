@@ -27,6 +27,8 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConsentToSIS2Survey;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildConfirmationPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildStartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildDOB;
@@ -34,11 +36,9 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildNa
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildSchool;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
@@ -84,10 +84,14 @@ public class RhSteps extends StepsBase {
 
   public void setUpFamilyInformation() {
     this.newCaseSampleSensitive = ExampleData.constructFamilyInformation();
-    this.childsFullName = newCaseSampleSensitive.getChildFirstName() + " "
-        + newCaseSampleSensitive.getChildMiddleNames() + " "
-        + newCaseSampleSensitive.getChildLastName();
+    this.childsFullName =
+        newCaseSampleSensitive.getChildFirstName()
+            + " "
+            + newCaseSampleSensitive.getChildMiddleNames()
+            + " "
+            + newCaseSampleSensitive.getChildLastName();
   }
+
   @After("@TearDown")
   public void deleteDriver() {
     super.closeDriver();
@@ -230,20 +234,20 @@ public class RhSteps extends StepsBase {
       }
     } else {
       switch (currentPage) {
-      case "RegisterParentName":
-        pages.getRegisterParentName().clickContinueButton();
-        break;
-      case "RegisterParentMobile":
-        pages.getIsThisMobileNumCorrect().clickContinueButton();
-        break;
-      case "RegisterChildSchool":
-        pages.getRegisterChildSchool().clickContinueButton();
-        break;
-      case "RegisterChildDOB":
-        pages.getRegisterChildDOB().clickContinueButton();
-        break;
-      default:
-        log.info("Continue unavailable for process");
+        case "RegisterParentName":
+          pages.getRegisterParentName().clickContinueButton();
+          break;
+        case "RegisterParentMobile":
+          pages.getIsThisMobileNumCorrect().clickContinueButton();
+          break;
+        case "RegisterChildSchool":
+          pages.getRegisterChildSchool().clickContinueButton();
+          break;
+        case "RegisterChildDOB":
+          pages.getRegisterChildDOB().clickContinueButton();
+          break;
+        default:
+          log.info("Continue unavailable for process");
       }
     }
   }
@@ -686,14 +690,13 @@ public class RhSteps extends StepsBase {
   @And("I click on \"COVID-19 Schools Infection Survey\" link")
   public void clickCovid19SchoolsInfectSurveyLink() {
     pages.getRegisterSis2StartPage().clickLoadSISLink();
-
   }
 
   @Then("I am presented with a page on how to take part")
   public void verifyHowToTakePartPage() {
     SISPage sisPage = pages.getSisPage(country);
     verifyCorrectOnsLogoUsed(sisPage.getOnsLogo(), country);
-    assertEquals("COVID-19 Schools Infection Survey (SIS)",  pages.getSisPage().getSis2TitleText());
+    assertEquals("COVID-19 Schools Infection Survey (SIS)", pages.getSisPage().getSis2TitleText());
   }
 
   @And("I click on \"Register for the survey\" button")
@@ -705,7 +708,8 @@ public class RhSteps extends StepsBase {
   public void iAmPresentedWithAPageToRegisterTheChild() {
     RegisterAChildStartPage registerAChildStartPage = pages.getRegisterAChildStartPage(country);
     verifyCorrectOnsLogoUsed(registerAChildStartPage.getOnsLogo(), country);
-    assertEquals("Register a child", pages.getRegisterAChildStartPage().getRegisterAChildStartPageTitle());
+    assertEquals(
+        "Register a child", pages.getRegisterAChildStartPage().getRegisterAChildStartPageTitle());
   }
 
   @And("I click on \"Register now\" button")
@@ -718,7 +722,9 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterParentName";
     RegisterParentName registerParentName = pages.getRegisterParentName(country);
     verifyCorrectOnsLogoUsed(registerParentName.getOnsLogo(), country);
-    assertEquals("What is the parent/guardian's name?", pages.getRegisterParentName().getRegisterParentNameTitleText());
+    assertEquals(
+        "What is the parent/guardian's name?",
+        pages.getRegisterParentName().getRegisterParentNameTitleText());
   }
 
   @And("I enter my first, middle and last name")
@@ -733,12 +739,16 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterParentMobile";
     RegisterParentMobile registerParentMobile = pages.getRegisterParentMobile(country);
     verifyCorrectOnsLogoUsed(registerParentMobile.getOnsLogo(), country);
-    assertEquals("What is your mobile number?", pages.getRegisterParentMobile().getRegisterParentMobileTitle());
+    assertEquals(
+        "What is your mobile number?",
+        pages.getRegisterParentMobile().getRegisterParentMobileTitle());
   }
 
   @And("I enter a valid mobile number and click “Continue”")
   public void iEnterAValidMobileNumber() {
-    pages.getRegisterParentMobile().addTextToMobileNumBox(newCaseSampleSensitive.getParentMobileNumber());
+    pages
+        .getRegisterParentMobile()
+        .addTextToMobileNumBox(newCaseSampleSensitive.getParentMobileNumber());
     pages.getRegisterParentMobile().clickContinueButton();
   }
 
@@ -766,7 +776,8 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildName";
     RegisterChildName registerChildName = pages.getRegisterChildName(country);
     verifyCorrectOnsLogoUsed(registerChildName.getOnsLogo(), country);
-    assertEquals("Who would you like to register?", registerChildName.getRegisterChildNameTitleText());
+    assertEquals(
+        "Who would you like to register?", registerChildName.getRegisterChildNameTitleText());
   }
 
   @And("I enter my childs first, middle and last name")
@@ -790,7 +801,8 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildSchool";
     RegisterChildSchool registerChildSchool = pages.getRegisterChildSchool(country);
     verifyCorrectOnsLogoUsed(registerChildSchool.getOnsLogo(), country);
-    String schoolsTitle = String.format(registerChildSchool.getRegisterSchoolNameTitle(), childsFullName);
+    String schoolsTitle =
+        String.format(registerChildSchool.getRegisterSchoolNameTitle(), childsFullName);
     assertEquals(schoolsTitle, registerChildSchool.getRegisterSchoolNameTitle());
   }
 
@@ -804,15 +816,22 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildDOB";
     RegisterChildDOB registerChildDOB = pages.getRegisterChildDOB(country);
     verifyCorrectOnsLogoUsed(registerChildDOB.getOnsLogo(), country);
-    String childsDOBTitle = String.format(registerChildDOB.getRegisterChildDOBTitle(), childsFullName);
+    String childsDOBTitle =
+        String.format(registerChildDOB.getRegisterChildDOBTitle(), childsFullName);
     assertEquals(childsDOBTitle, registerChildDOB.getRegisterChildDOBTitle());
   }
 
   @And("I enter my childs date of birth")
   public void iEnterMyChildsDateOfBirth() {
-    pages.getRegisterChildDOB().enterDOBDay(String.valueOf(newCaseSampleSensitive.getChildDob().getDayOfMonth()));
-    pages.getRegisterChildDOB().enterDOBMonth(String.valueOf(newCaseSampleSensitive.getChildDob().getMonthValue()));
-    pages.getRegisterChildDOB().enterDOBYear(String.valueOf(newCaseSampleSensitive.getChildDob().getYear()));
+    pages
+        .getRegisterChildDOB()
+        .enterDOBDay(String.valueOf(newCaseSampleSensitive.getChildDob().getDayOfMonth()));
+    pages
+        .getRegisterChildDOB()
+        .enterDOBMonth(String.valueOf(newCaseSampleSensitive.getChildDob().getMonthValue()));
+    pages
+        .getRegisterChildDOB()
+        .enterDOBYear(String.valueOf(newCaseSampleSensitive.getChildDob().getYear()));
   }
 
   @Then("I am presented with a page to review my childs details")
@@ -825,8 +844,11 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page to confirm child registration")
   public void iAmPresentedWithAPageToConfirmChildRegistration() {
-    RegisterAChildConfirmationPage registerAChildConfirmationPage = pages.getRegisterAChildConfirmationPage(country);
+    RegisterAChildConfirmationPage registerAChildConfirmationPage =
+        pages.getRegisterAChildConfirmationPage(country);
     verifyCorrectOnsLogoUsed(registerAChildConfirmationPage.getOnsLogo(), country);
-    assertEquals("Your children have been registered for the survey", registerAChildConfirmationPage.getConfirmationOfChildRegistrationPageTitle());
+    assertEquals(
+        "Your children have been registered for the survey",
+        registerAChildConfirmationPage.getConfirmationOfChildRegistrationPageTitle());
   }
 }

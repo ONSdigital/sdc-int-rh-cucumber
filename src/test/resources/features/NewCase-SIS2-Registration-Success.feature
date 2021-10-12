@@ -7,9 +7,9 @@
 Feature:  NewCase-SIS2-Registration-Success
 
   ##SETUP calls the following steps...
-  ## Given RM constructs a case_created event and a uac_updated event
-  ## When RM sends the case_created and uac <eventType> events to RH via RabbitMQ
-  ## Then a valid uac exists in Firestore ready for use by a respondent
+  ## Given A parent is invited and wats to take part in the SIS2 survey
+  ## When the parent logs onto the given url for the survey
+  ## Then the parent successfully registers them and their childs details
   @NewCase-SIS2-Registration-Success-TestT155 @Setup @TearDown
   Scenario: [SOCINT-154, SOCINT-155] Registration of new case - Access School Infection Questionnaire
     Given I am on the take part in a survey page

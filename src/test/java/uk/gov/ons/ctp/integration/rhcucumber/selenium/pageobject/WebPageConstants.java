@@ -30,7 +30,8 @@ public class WebPageConstants {
   static final String XPATH_TEXTBOX_ENTER_UAC = "//form//main//input[@id='uac']";
   public static final String XPATH_CONTINUE_BUTTON = "//form//main//button[@type='submit']";
   static final String XPATH_BUTTON_REQUEST_A_NEW_CODE = "//main//a[@role='button']";
-  static final String XPATH_LINK_CHANGE_LANGUAGE = "//header//li[@class='ons-language-links__item']/a";
+  static final String XPATH_LINK_CHANGE_LANGUAGE =
+      "//header//li[@class='ons-language-links__item']/a";
 
   // For the Address Confirmation page
   static final String XPATH_EM_ADDRESS = "//form//p[@class='rh-address-display']";
@@ -67,7 +68,8 @@ public class WebPageConstants {
 
   // For Register SIS2 New Case Page
   static final String XPATH_LINK_SIS2_SURVEY = "//main//h2[@class='ons-u-fs-m']/a";
-  static final String XPATH_BUTTON_REGISTER_SIS2_SURVEY = "//main//nav//ul//li[@class='ons-content-pagination__item']/a";
+  static final String XPATH_BUTTON_REGISTER_SIS2_SURVEY =
+      "//main//nav//ul//li[@class='ons-content-pagination__item']/a";
   static final String XPATH_REGISTER_NOW_BUTTON = "//form//main//button[@type='input']";
   static final String XPATH_TEXTBOX_MIDDLENAME = "//main//input[@id='name_middle_names']";
   static final String XPATH_DISPLAYED_MOBILE_NUMBER = "//form//p[@class='js-mobile-no']";
@@ -76,6 +78,4 @@ public class WebPageConstants {
   static final String XPATH_CHILD_DOB_DAY = "//main//input[@id='date-day']";
   static final String XPATH_CHILD_DOB_MONTH = "//main//input[@id='date-month']";
   static final String XPATH_CHILD_DOB_YEAR = "//main//input[@id='date-year']";
-
-
 }

@@ -31,7 +31,7 @@ public class PageTracker {
     HOUSEHOLD_INTERSTITIAL("TODO", "TODO"),
     PAGE_NOT_FOUND("Page not found", "Heb ddod o hyd i'r dudalen"),
     SOCIAL_QUESTIONNAIRE("TODO", "TODO"),
-    REGISTER_SIS2("Take part in a survey","NA"),
+    REGISTER_SIS2("Take part in a survey", "NA"),
     HOW_TO_TAKE_PART_SIS("COVID-19 Schools Infection Survey (SIS)", "NA"),
     REGISTER_A_CHILD("Register a child", "NA"),
     REGISTER_PARENT_NAME("What is the parent/guardian's name?", "NA"),
@@ -42,9 +42,6 @@ public class PageTracker {
     REGISTER_CHILD_DOB("Enter date of birth - ONS Surveys", "NA"),
     REVIEW_CHILD_DETAIL("Child summary - ONS Surveys", "NA"),
     REGISTRATION_OF_CHILD_CONFIRMATION("Registration complete - ONS Surveys", "NA");
-
-
-
 
     private String identiferEnglish;
     private String identiferWelsh;
@@ -82,13 +79,11 @@ public class PageTracker {
   public void verifyCurrentPage(PageId expectedPage, Country expectedCountry) {
     String pageContent = getPageContent();
     Country actualCountry = null;
-    if (pageContent.contains("Crown copyright") || pageContent.contains("Contact us"))  {
+    if (pageContent.contains("Crown copyright") || pageContent.contains("Contact us")) {
       actualCountry = Country.ENG;
     } else if (pageContent.contains("Hawlfraint y Goron")) {
       actualCountry = Country.WALES;
     }
-
-
 
     // Identify current page based on its content
     PageId actualPage = null;

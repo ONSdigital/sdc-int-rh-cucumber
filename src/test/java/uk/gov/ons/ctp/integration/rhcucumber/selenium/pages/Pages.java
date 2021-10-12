@@ -3,7 +3,6 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pages;
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
 import javax.annotation.PostConstruct;
-
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,9 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConsentToSIS2Survey;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildConfirmationPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildStartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildDOB;
@@ -22,13 +24,10 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildNa
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildSchool;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentName;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.NewHouseholdAccessCode;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterSIS2StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;

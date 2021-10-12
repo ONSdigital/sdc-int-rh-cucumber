@@ -31,5 +31,4 @@ public class RegisterAChildConfirmationPage extends PageObjectBase {
     waitForElement(confirmationOfChildRegistration, "confirmationOfChildRegistration");
     return confirmationOfChildRegistration.getText();
   }
-
 }
