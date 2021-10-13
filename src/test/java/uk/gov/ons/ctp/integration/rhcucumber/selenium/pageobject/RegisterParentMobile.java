@@ -9,7 +9,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Getter
-@Slf4j
 public class RegisterParentMobile extends PageObjectBase {
 
   private String expectedText;

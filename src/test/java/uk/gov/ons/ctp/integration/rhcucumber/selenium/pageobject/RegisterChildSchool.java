@@ -37,10 +37,6 @@ public class RegisterChildSchool extends PageObjectBase {
     return registerSchoolNameTitle.getText();
   }
 
-  public String getExpectedConfirmText() {
-    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
-  }
-
   public void clickSchoolName() {
     waitForElement(firstNameTextBox, "firstNameTextBox");
     firstNameTextBox.click();

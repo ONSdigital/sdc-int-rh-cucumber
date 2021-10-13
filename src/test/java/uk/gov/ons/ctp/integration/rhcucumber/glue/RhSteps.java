@@ -10,7 +10,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,7 +37,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentM
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentName;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SIS2HowToTakePart;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
@@ -48,7 +47,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourMobil
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourName;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
-@Slf4j
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
@@ -84,12 +82,11 @@ public class RhSteps extends StepsBase {
 
   public void setUpFamilyInformation() {
     this.newCaseSampleSensitive = ExampleData.constructFamilyInformation();
-    this.childsFullName =
-        newCaseSampleSensitive.getChildFirstName()
-            + " "
-            + newCaseSampleSensitive.getChildMiddleNames()
-            + " "
-            + newCaseSampleSensitive.getChildLastName();
+    // There can't be a space between the first and middle name due to a processing issue when the title is retrieved
+    // From the UI
+    this.childsFullName = String.format("%1$s%2$s %3$s", newCaseSampleSensitive.getChildFirstName(),
+        newCaseSampleSensitive.getChildMiddleNames(),
+        newCaseSampleSensitive.getChildLastName());
   }
 
   @After("@TearDown")
@@ -247,7 +244,7 @@ public class RhSteps extends StepsBase {
           pages.getRegisterChildDOB().clickContinueButton();
           break;
         default:
-          log.info("Continue unavailable for process");
+          throw new IllegalStateException(String.format("Failed tto find \"Conitnue\" for page %s", currentPage));
       }
     }
   }
@@ -694,8 +691,8 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page on how to take part")
   public void verifyHowToTakePartPage() {
-    SISPage sisPage = pages.getSisPage(country);
-    verifyCorrectOnsLogoUsed(sisPage.getOnsLogo(), country);
+    SIS2HowToTakePart sis2HowToTakePart = pages.getSisPage(country);
+    verifyCorrectOnsLogoUsed(sis2HowToTakePart.getOnsLogo(), country);
     assertEquals("COVID-19 Schools Infection Survey (SIS)", pages.getSisPage().getSis2TitleText());
   }
 
@@ -802,7 +799,7 @@ public class RhSteps extends StepsBase {
     RegisterChildSchool registerChildSchool = pages.getRegisterChildSchool(country);
     verifyCorrectOnsLogoUsed(registerChildSchool.getOnsLogo(), country);
     String schoolsTitle =
-        String.format(registerChildSchool.getRegisterSchoolNameTitle(), childsFullName);
+        String.format("What school does %s attend?", childsFullName);
     assertEquals(schoolsTitle, registerChildSchool.getRegisterSchoolNameTitle());
   }
 
@@ -817,7 +814,7 @@ public class RhSteps extends StepsBase {
     RegisterChildDOB registerChildDOB = pages.getRegisterChildDOB(country);
     verifyCorrectOnsLogoUsed(registerChildDOB.getOnsLogo(), country);
     String childsDOBTitle =
-        String.format(registerChildDOB.getRegisterChildDOBTitle(), childsFullName);
+        String.format("What is the date of birth of %s?", childsFullName);
     assertEquals(childsDOBTitle, registerChildDOB.getRegisterChildDOBTitle());
   }
 

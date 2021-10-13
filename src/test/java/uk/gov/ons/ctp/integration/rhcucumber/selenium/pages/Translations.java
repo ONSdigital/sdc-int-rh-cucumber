@@ -2,9 +2,7 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pages;
 
 import java.util.ResourceBundle;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Translations {
   @Getter private Country country;
   private ResourceBundle bundle;
@@ -34,14 +32,11 @@ public class Translations {
 
   public Translations(Country country) {
     this.country = country;
-    log.info("Country " + country);
     bundle = ResourceBundle.getBundle("translations", country.getLocale());
-    log.info("Bundle: " + bundle);
   }
 
   public String get(KEYS key) {
     String keyName = key.name();
-    log.info(keyName);
     if (!bundle.containsKey(keyName)) {
       throw new IllegalStateException("No translation value. Country: " + country + " Key:" + key);
     }

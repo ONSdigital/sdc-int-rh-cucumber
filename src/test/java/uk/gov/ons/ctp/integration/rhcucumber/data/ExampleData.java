@@ -96,7 +96,7 @@ public class ExampleData {
     NewCaseSampleSensitive newCaseSampleSensitive = new NewCaseSampleSensitive();
     newCaseSampleSensitive.setFirstName("Mike");
     newCaseSampleSensitive.setLastName("Bloggs");
-    newCaseSampleSensitive.setChildFirstName("newCaseSampleSensitive");
+    newCaseSampleSensitive.setChildFirstName("Jo");
     newCaseSampleSensitive.setChildMiddleNames("Mary");
     newCaseSampleSensitive.setChildLastName("Bloggs");
     newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");

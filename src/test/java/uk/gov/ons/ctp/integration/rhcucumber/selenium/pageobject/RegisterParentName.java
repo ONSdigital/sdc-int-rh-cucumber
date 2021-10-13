@@ -21,9 +21,6 @@ public class RegisterParentName extends PageObjectBase {
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerParentNameTitle;
 
-  @FindBy(xpath = WebPageConstants.XPATH_PARAGRAPH_ADDRESS)
-  private WebElement wholeAddressParagraph;
-
   @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_FIRSTNAME)
   private WebElement firstNameTextBox;
 
@@ -44,10 +41,6 @@ public class RegisterParentName extends PageObjectBase {
   public String getRegisterParentNameTitleText() {
     waitForElement(registerParentNameTitle, "registerParentNameTitle");
     return registerParentNameTitle.getText();
-  }
-
-  public String getExpectedConfirmText() {
-    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
   }
 
   public void clickFirstNameBox() {

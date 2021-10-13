@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @Getter
 public class RegisterChildName extends PageObjectBase {
@@ -20,9 +19,6 @@ public class RegisterChildName extends PageObjectBase {
 
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerChildNameTitle;
-
-  @FindBy(xpath = WebPageConstants.XPATH_PARAGRAPH_ADDRESS)
-  private WebElement wholeAddressParagraph;
 
   @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_FIRSTNAME)
   private WebElement firstNameTextBox;
@@ -44,10 +40,6 @@ public class RegisterChildName extends PageObjectBase {
   public String getRegisterChildNameTitleText() {
     waitForElement(registerChildNameTitle, "registerChildNameTitle");
     return registerChildNameTitle.getText();
-  }
-
-  public String getExpectedConfirmText() {
-    return translate(KEYS.CONFIRM_ADDRESS_CONFIRMATION_TEXT);
   }
 
   public void clickFirstNameBox() {

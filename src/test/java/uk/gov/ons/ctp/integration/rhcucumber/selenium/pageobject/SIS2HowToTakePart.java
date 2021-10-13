@@ -9,10 +9,9 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Getter
-@Slf4j
-public class SISPage extends PageObjectBase {
+public class SIS2HowToTakePart extends PageObjectBase {
 
-  public SISPage(final WebDriver driver, Country country) {
+  public SIS2HowToTakePart(final WebDriver driver, Country country) {
     super(PageId.HOW_TO_TAKE_PART_SIS, driver, country);
   }
 

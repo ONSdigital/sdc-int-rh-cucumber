@@ -3,7 +3,6 @@ package uk.gov.ons.ctp.integration.rhcucumber.selenium.pages;
 import static io.cucumber.spring.CucumberTestContext.SCOPE_CUCUMBER_GLUE;
 
 import javax.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentN
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterSIS2StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SISPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SIS2HowToTakePart;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
@@ -39,7 +38,6 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
 @Component
 @Scope(SCOPE_CUCUMBER_GLUE)
-@Slf4j
 public class Pages {
 
   @Value("${rhui.baseurl}")
@@ -58,7 +56,7 @@ public class Pages {
   private SentAccessCode sentAccessCode = null;
   private PleaseSupplyYourAddress pleaseSupplyYourAddress;
   private RegisterSIS2StartPage registerSIS2StartPage = null;
-  private SISPage sisPage = null;
+  private SIS2HowToTakePart sis2HowToTakePart = null;
   private RegisterAChildStartPage registerAChildStartPage = null;
   private RegisterParentName registerParentName = null;
   private RegisterParentMobile registerParentMobile = null;
@@ -213,15 +211,15 @@ public class Pages {
     return registerSIS2StartPage;
   }
 
-  public SISPage getSisPage(final Country country) {
-    sisPage = new SISPage(webDriver, country);
+  public SIS2HowToTakePart getSisPage(final Country country) {
+    sis2HowToTakePart = new SIS2HowToTakePart(webDriver, country);
     pageTracker.verifyCurrentPage(PageId.HOW_TO_TAKE_PART_SIS, country);
-    return sisPage;
+    return sis2HowToTakePart;
   }
 
-  public SISPage getSisPage() {
-    pageTracker.verifyCurrentPage(PageId.HOW_TO_TAKE_PART_SIS, sisPage.getCountry());
-    return sisPage;
+  public SIS2HowToTakePart getSisPage() {
+    pageTracker.verifyCurrentPage(PageId.HOW_TO_TAKE_PART_SIS, sis2HowToTakePart.getCountry());
+    return sis2HowToTakePart;
   }
 
   public RegisterAChildStartPage getRegisterAChildStartPage(final Country country) {
