@@ -82,11 +82,15 @@ public class RhSteps extends StepsBase {
 
   public void setUpFamilyInformation() {
     this.newCaseSampleSensitive = ExampleData.constructFamilyInformation();
-    // There can't be a space between the first and middle name due to a processing issue when the title is retrieved
+    // There can't be a space between the first and middle name due to a processing issue when the
+    // title is retrieved
     // From the UI
-    this.childsFullName = String.format("%1$s%2$s %3$s", newCaseSampleSensitive.getChildFirstName(),
-        newCaseSampleSensitive.getChildMiddleNames(),
-        newCaseSampleSensitive.getChildLastName());
+    this.childsFullName =
+        String.format(
+            "%1$s%2$s %3$s",
+            newCaseSampleSensitive.getChildFirstName(),
+            newCaseSampleSensitive.getChildMiddleNames(),
+            newCaseSampleSensitive.getChildLastName());
   }
 
   @After("@TearDown")
@@ -244,7 +248,8 @@ public class RhSteps extends StepsBase {
           pages.getRegisterChildDOB().clickContinueButton();
           break;
         default:
-          throw new IllegalStateException(String.format("Failed tto find \"Conitnue\" for page %s", currentPage));
+          throw new IllegalStateException(
+              String.format("Failed tto find \"Conitnue\" for page %s", currentPage));
       }
     }
   }
@@ -798,8 +803,7 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildSchool";
     RegisterChildSchool registerChildSchool = pages.getRegisterChildSchool(country);
     verifyCorrectOnsLogoUsed(registerChildSchool.getOnsLogo(), country);
-    String schoolsTitle =
-        String.format("What school does %s attend?", childsFullName);
+    String schoolsTitle = String.format("What school does %s attend?", childsFullName);
     assertEquals(schoolsTitle, registerChildSchool.getRegisterSchoolNameTitle());
   }
 
@@ -813,8 +817,7 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildDOB";
     RegisterChildDOB registerChildDOB = pages.getRegisterChildDOB(country);
     verifyCorrectOnsLogoUsed(registerChildDOB.getOnsLogo(), country);
-    String childsDOBTitle =
-        String.format("What is the date of birth of %s?", childsFullName);
+    String childsDOBTitle = String.format("What is the date of birth of %s?", childsFullName);
     assertEquals(childsDOBTitle, registerChildDOB.getRegisterChildDOBTitle());
   }
 

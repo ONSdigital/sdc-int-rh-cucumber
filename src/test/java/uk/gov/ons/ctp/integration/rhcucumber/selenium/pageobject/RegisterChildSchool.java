@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Translations.KEYS;
 
 @Getter
 public class RegisterChildSchool extends PageObjectBase {

@@ -1,7 +1,6 @@
 package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
