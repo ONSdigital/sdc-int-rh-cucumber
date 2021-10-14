@@ -41,7 +41,7 @@ public class RespondentDataRepository {
     this.cloudDataStore = cloudDataStore;
   }
 
-  public List<CaseUpdate> readLatestCollectionCaseByUprn(final String uprn)
+  public List<CaseUpdate> readLatestCaseUpdateByUprn(final String uprn)
       throws CTPException {
     return cloudDataStore.search(CaseUpdate.class, caseSchema, SEARCH_BY_UPRN_PATH, uprn);
   }

@@ -534,14 +534,14 @@ public class RhSteps extends StepsBase {
   }
 
   private void prepareCaseAndUacEvents() {
-    context.surveyUpdatePayload = ExampleData.createSuveyUpdate();
-    context.caseCreatedPayload = ExampleData.createCollectionCase(context.caseKey);
+    context.surveyUpdatePayload = ExampleData.createSurveyUpdate();
+    context.caseCreatedPayload = ExampleData.createCaseUpdate(context.caseKey);
     constructUacUpdatedEvent();
   }
 
   private void prepareWelshCaseAndUacEvents() {
-    context.surveyUpdatePayload = ExampleData.createSuveyUpdate();
-    context.caseCreatedPayload = ExampleData.createWelshCollectionCase(context.caseKey);
+    context.surveyUpdatePayload = ExampleData.createSurveyUpdate();
+    context.caseCreatedPayload = ExampleData.createWelshCaseUpdate(context.caseKey);
     constructUacUpdatedEvent();
   }
 

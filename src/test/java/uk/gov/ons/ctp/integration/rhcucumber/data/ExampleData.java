@@ -43,7 +43,7 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CaseUpdate createCollectionCase(CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
+  public static CaseUpdate createCaseUpdate(CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
     cc.setRefusalReceived("CENSUS");
@@ -55,16 +55,16 @@ public class ExampleData {
     return cc;
   }
 
-  public static CaseUpdate createCollectionCase(String id) {
+  public static CaseUpdate createCaseUpdate(String id) {
     CaseUpdateSample sample = createSample();
     CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
-    return createCollectionCase(sample, sampleSensitive, id);
+    return createCaseUpdate(sample, sampleSensitive, id);
   }
 
-  public static CaseUpdate createWelshCollectionCase(String id) {
+  public static CaseUpdate createWelshCaseUpdate(String id) {
     CaseUpdateSample sample = createSampleWales();
     CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
-    return createCollectionCase(sample, sampleSensitive, id);
+    return createCaseUpdate(sample, sampleSensitive, id);
   }
 
   public static UAC createUac(String uacHash, String caseId) {
@@ -76,7 +76,7 @@ public class ExampleData {
     return uac;
   }
 
-  public static SurveyUpdate createSuveyUpdate() {
+  public static SurveyUpdate createSurveyUpdate() {
     SurveyUpdate surveyUpdate = new SurveyUpdate();
     surveyUpdate.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     surveyUpdate.setName("LMS");
