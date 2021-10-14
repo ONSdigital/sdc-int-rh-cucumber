@@ -43,7 +43,8 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CaseUpdate createCaseUpdate(CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
+  public static CaseUpdate createCaseUpdate(
+      CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
     cc.setRefusalReceived("CENSUS");

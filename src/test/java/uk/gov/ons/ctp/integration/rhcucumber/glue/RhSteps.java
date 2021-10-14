@@ -546,7 +546,8 @@ public class RhSteps extends StepsBase {
   }
 
   private void sendInboundSurveyCaseAndUacEvents(TopicType eventType) throws Exception {
-    pubSub.sendEvent(TopicType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
+    pubSub.sendEvent(
+        TopicType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
     pubSub.sendEvent(
         TopicType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
