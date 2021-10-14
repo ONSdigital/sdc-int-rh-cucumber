@@ -21,7 +21,7 @@ public class RegisterChildSchool extends PageObjectBase {
   private WebElement registerSchoolNameTitle;
 
   @FindBy(xpath = WebPageConstants.XPATH_CHILD_SCHOOL_NAME)
-  private WebElement firstNameTextBox;
+  private WebElement schoolNameTextBox;
 
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
@@ -37,13 +37,13 @@ public class RegisterChildSchool extends PageObjectBase {
   }
 
   public void clickSchoolName() {
-    waitForElement(firstNameTextBox, "firstNameTextBox");
-    firstNameTextBox.click();
+    waitForElement(schoolNameTextBox, "schoolNameTextBox");
+    schoolNameTextBox.click();
   }
 
   private void addTextToSchoolName(String txtToAdd) {
-    waitForElement(firstNameTextBox, "firstNameTextBox");
-    firstNameTextBox.sendKeys(txtToAdd);
+    waitForElement(schoolNameTextBox, "schoolNameTextBox");
+    schoolNameTextBox.sendKeys(txtToAdd);
   }
 
   public void enterSchoolName(String firstName) {

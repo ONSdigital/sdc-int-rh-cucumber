@@ -29,7 +29,7 @@ public class SIS2HowToTakePart extends PageObjectBase {
   }
 
   public void clickRegisterForSurveyButton() {
-    waitForElement(registerForSurvey, "loadSIS2Survey");
+    waitForElement(registerForSurvey, "registerForSurvey");
     registerForSurvey.click();
   }
 }

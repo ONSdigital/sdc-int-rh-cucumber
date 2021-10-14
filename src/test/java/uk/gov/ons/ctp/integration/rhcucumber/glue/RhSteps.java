@@ -249,7 +249,7 @@ public class RhSteps extends StepsBase {
           break;
         default:
           throw new IllegalStateException(
-              String.format("Failed tto find \"Conitnue\" for page %s", currentPage));
+              String.format("Failed to find the “Conitnue“ button for page %s", currentPage));
       }
     }
   }
@@ -689,7 +689,7 @@ public class RhSteps extends StepsBase {
     pages.getRegisterSis2StartPage(country);
   }
 
-  @And("I click on \"COVID-19 Schools Infection Survey\" link")
+  @And("I click on “COVID-19 Schools Infection Survey“ link")
   public void clickCovid19SchoolsInfectSurveyLink() {
     pages.getRegisterSis2StartPage().clickLoadSISLink();
   }
@@ -701,7 +701,7 @@ public class RhSteps extends StepsBase {
     assertEquals("COVID-19 Schools Infection Survey (SIS)", pages.getSisPage().getSis2TitleText());
   }
 
-  @And("I click on \"Register for the survey\" button")
+  @And("I click on “Register for the survey“ button")
   public void clickRegisterForTheSurveyButton() {
     pages.getSisPage().clickRegisterForSurveyButton();
   }
@@ -714,7 +714,7 @@ public class RhSteps extends StepsBase {
         "Register a child", pages.getRegisterAChildStartPage().getRegisterAChildStartPageTitle());
   }
 
-  @And("I click on \"Register now\" button")
+  @And("I click on “Register now“ button")
   public void iClickOnButton() {
     pages.getRegisterAChildStartPage().clickRegisterNow();
   }
@@ -754,7 +754,7 @@ public class RhSteps extends StepsBase {
     pages.getRegisterParentMobile().clickContinueButton();
   }
 
-  @Given("The number is correct and I select the \"Yes, my mobile number is correct\" button")
+  @Given("The number is correct and I select the “Yes, my mobile number is correct“ button")
   public void theNumberIsCorrectISelectTheButton() {
     String expectedMobileNumber = pages.getIsThisMobileNumCorrect().displayedMobileNumber();
     assertEquals(newCaseSampleSensitive.getParentMobileNumber(), expectedMobileNumber);
@@ -768,7 +768,7 @@ public class RhSteps extends StepsBase {
     assertEquals("Confirm consent", consentToSIS2Survey.getConsentGivenToSis2SurveyTitleText());
   }
 
-  @And("I click on the \"I accept\" option")
+  @And("I click on the “I accept“ option")
   public void iClickOnTheOption() {
     pages.getConsentToSIS2Survey().clickAcceptButton();
   }
@@ -789,7 +789,7 @@ public class RhSteps extends StepsBase {
     pages.getRegisterChildName().enterLastName(newCaseSampleSensitive.getLastName());
   }
 
-  @And("I then click the \"Save and continue\" button")
+  @And("I then click the “Save and continue“ button")
   public void iThenClickTheButton() {
     if (currentPage.equals("RegisterChildName")) {
       pages.getRegisterChildName().clickSaveAndContinueButton();
