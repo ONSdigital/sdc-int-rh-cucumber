@@ -515,8 +515,8 @@ public class RhSteps extends StepsBase {
   public void setupAValidUacExistsInFirestoreAndThereIsAnAssociatedCaseInFirestore(
       Country country, String uacEventType) throws Exception {
     setupTest(country);
-    prepareCaseAndUacEvents();
-    sendInboundSurveyCaseAndUacEvents(TopicType.valueOf(uacEventType));
+    prepareInitialRequiredEvents();
+    sendRequiredInboundEvents(TopicType.valueOf(uacEventType));
     verifyUacProcessed();
   }
 
@@ -525,29 +525,33 @@ public class RhSteps extends StepsBase {
       Country country) throws Exception {
     setupTest(country);
     if (country == Country.WALES) {
-      prepareWelshCaseAndUacEvents();
+      prepareWelshInitialRequiredEvents();
     } else {
-      prepareCaseAndUacEvents();
+      prepareInitialRequiredEvents();
     }
-    sendInboundSurveyCaseAndUacEvents(TopicType.UAC_UPDATE);
+    sendRequiredInboundEvents(TopicType.UAC_UPDATE);
     verifyUacProcessed();
   }
 
-  private void prepareCaseAndUacEvents() {
+  private void prepareInitialRequiredEvents() {
+    context.collectionExercise = ExampleData.createCollectionExercise();
     context.surveyUpdatePayload = ExampleData.createSurveyUpdate();
     context.caseCreatedPayload = ExampleData.createCaseUpdate(context.caseKey);
     constructUacUpdatedEvent();
   }
 
-  private void prepareWelshCaseAndUacEvents() {
+  private void prepareWelshInitialRequiredEvents() {
+    context.collectionExercise = ExampleData.createCollectionExercise();
     context.surveyUpdatePayload = ExampleData.createSurveyUpdate();
     context.caseCreatedPayload = ExampleData.createWelshCaseUpdate(context.caseKey);
     constructUacUpdatedEvent();
   }
 
-  private void sendInboundSurveyCaseAndUacEvents(TopicType eventType) throws Exception {
+  private void sendRequiredInboundEvents(TopicType eventType) throws Exception {
     pubSub.sendEvent(
         TopicType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
+    pubSub.sendEvent(
+        TopicType.COLLECTION_EXERCISE_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.collectionExercise);
     pubSub.sendEvent(
         TopicType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
@@ -561,7 +565,7 @@ public class RhSteps extends StepsBase {
   @And("the respondentAuthenticatedHeader contains the correct values")
   public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
     assertEquals(EventTopic.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getTopic());
-    assertEquals(Source.RESPONDENT_HOME, context.respondentAuthenticatedHeader.getSource());
+    assertEquals(Source.RESPONDENT_HOME.name(), context.respondentAuthenticatedHeader.getSource());
     assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
     assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
     assertNotNull(context.respondentAuthenticatedHeader.getMessageId());
@@ -572,7 +576,7 @@ public class RhSteps extends StepsBase {
   @And("the surveyLaunchedHeader contains the correct values")
   public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
     assertEquals(EventTopic.SURVEY_LAUNCH, context.surveyLaunchedHeader.getTopic());
-    assertEquals(Source.RESPONDENT_HOME, context.surveyLaunchedHeader.getSource());
+    assertEquals(Source.RESPONDENT_HOME.name(), context.surveyLaunchedHeader.getSource());
     assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
     assertNotNull(context.surveyLaunchedHeader.getDateTime());
     assertNotNull(context.surveyLaunchedHeader.getMessageId());
@@ -637,5 +641,6 @@ public class RhSteps extends StepsBase {
     ConfirmAddress confirmAddressPage = pages.getConfirmAddress(country);
     confirmAddressPage.clickOptionYes();
     confirmAddressPage.clickContinueButton();
+
   }
 }

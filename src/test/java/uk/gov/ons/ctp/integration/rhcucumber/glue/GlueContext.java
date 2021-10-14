@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
+import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.Header;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
@@ -29,6 +30,7 @@ public class GlueContext {
   String errorMessageContainingCallToEQ;
   CaseUpdate caseCreatedPayload;
   SurveyUpdate surveyUpdatePayload;
+  CollectionExercise collectionExercise;
   UAC uacPayload;
   String fulfilmentRequestedCode;
   Header respondentAuthenticatedHeader;
