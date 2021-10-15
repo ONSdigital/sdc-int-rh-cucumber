@@ -12,7 +12,7 @@ import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchResponse;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
-import uk.gov.ons.ctp.common.event.model.UAC;
+import uk.gov.ons.ctp.common.event.model.UacUpdate;
 import uk.gov.ons.ctp.common.event.model.UacAuthenticatePayload;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 
@@ -29,7 +29,7 @@ public class GlueContext {
   String errorMessageContainingCallToEQ;
   CaseUpdate caseCreatedPayload;
   SurveyUpdate surveyUpdatePayload;
-  UAC uacPayload;
+  UacUpdate uacPayload;
   String fulfilmentRequestedCode;
   Header respondentAuthenticatedHeader;
   UacAuthenticatePayload respondentAuthenticatedPayload;

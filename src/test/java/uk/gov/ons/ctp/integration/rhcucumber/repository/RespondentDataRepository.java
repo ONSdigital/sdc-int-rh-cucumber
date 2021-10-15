@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.ons.ctp.common.cloud.TestCloudDataStore;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
-import uk.gov.ons.ctp.common.event.model.UAC;
+import uk.gov.ons.ctp.common.event.model.UacUpdate;
 
 @Service
 public class RespondentDataRepository {
@@ -55,8 +55,8 @@ public class RespondentDataRepository {
     cloudDataStore.deleteCollection(uacSchema);
   }
 
-  public Optional<UAC> readUAC(final String universalAccessCodeHash) throws CTPException {
-    return cloudDataStore.retrieveObject(UAC.class, uacSchema, universalAccessCodeHash);
+  public Optional<UacUpdate> readUAC(final String universalAccessCodeHash) throws CTPException {
+    return cloudDataStore.retrieveObject(UacUpdate.class, uacSchema, universalAccessCodeHash);
   }
 
   public boolean waitForObject(String collection, String key, long timeoutMillis)

@@ -4,7 +4,7 @@ import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
-import uk.gov.ons.ctp.common.event.model.UAC;
+import uk.gov.ons.ctp.common.event.model.UacUpdate;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
@@ -67,12 +67,14 @@ public class ExampleData {
     return createCollectionCase(sample, sampleSensitive, id);
   }
 
-  public static UAC createUac(String uacHash, String caseId) {
-    UAC uac = new UAC();
-    uac.setUacHash(uacHash);
-    uac.setActive("true");
-    uac.setQuestionnaireId("3110000009");
+  public static UacUpdate createUac(String uacHash, String caseId) {
+    UacUpdate uac = new UacUpdate();
     uac.setCaseId(caseId);
+    uac.setActive("true");
+    uac.setUacHash(uacHash);
+    uac.setQid("3110000009");
+    uac.setReceiptReceived(false);
+    uac.setEqLaunched(false);
     return uac;
   }
 
