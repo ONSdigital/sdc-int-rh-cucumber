@@ -61,6 +61,6 @@ To help with debugging you can trigger a file saving of the page content on each
 
 If Docker is running an old version of rh-ui or another service then you can add '--force-recreate' to the docker-compose command: 
 
-    $ docker-compose -f <service.yml> --force-recreate up -d  
+    $ docker-compose -f <service.yml> up --force-recreate -d  
     
 There are other solutions, but this one came from https://vsupalov.com/docker-compose-runs-old-containers/
