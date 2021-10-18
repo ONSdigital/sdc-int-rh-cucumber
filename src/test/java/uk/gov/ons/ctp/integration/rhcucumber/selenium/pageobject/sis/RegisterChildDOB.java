@@ -1,9 +1,11 @@
-package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PageObjectBase;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.SISWebPageConstants;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
@@ -14,22 +16,22 @@ public class RegisterChildDOB extends PageObjectBase {
     super(PageId.REGISTER_CHILD_DOB, driver, country);
   }
 
-  @FindBy(xpath = WebPageConstants.XPATH_LOGO)
+  @FindBy(xpath = SISWebPageConstants.XPATH_LOGO)
   private WebElement onsLogo;
 
-  @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
+  @FindBy(xpath = SISWebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerChildDOBTitle;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CHILD_DOB_DAY)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CHILD_DOB_DAY)
   private WebElement dayDateBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CHILD_DOB_MONTH)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CHILD_DOB_MONTH)
   private WebElement monthDateBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CHILD_DOB_YEAR)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CHILD_DOB_YEAR)
   private WebElement yearDateBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
   public WebElement getOnsLogo() {

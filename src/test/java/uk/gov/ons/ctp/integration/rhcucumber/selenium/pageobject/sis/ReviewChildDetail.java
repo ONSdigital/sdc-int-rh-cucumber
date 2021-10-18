@@ -1,9 +1,11 @@
-package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PageObjectBase;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WebPageConstants;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 

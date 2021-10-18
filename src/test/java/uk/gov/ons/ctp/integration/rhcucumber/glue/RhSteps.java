@@ -19,25 +19,24 @@ import uk.gov.ons.ctp.common.domain.Channel;
 import uk.gov.ons.ctp.common.domain.Source;
 import uk.gov.ons.ctp.common.event.EventTopic;
 import uk.gov.ons.ctp.common.event.TopicType;
-import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConfirmAddressForNewUac;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ConsentToSIS2Survey;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.ConsentToSIS2Survey;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.HouseholdInterstitial;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.IsThisMobileNumCorrect;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PleaseSupplyYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildConfirmationPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterAChildStartPage;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildDOB;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildName;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterChildSchool;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentMobile;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterParentName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterAChildConfirmationPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterAChildStartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildDOB;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildSchool;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterParentMobile;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterParentName;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.RegisterYourAddress;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.ReviewChildDetail;
-import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SIS2HowToTakePart;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.ReviewChildDetail;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.SIS2HowToTakePart;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectDeliveryMethodTextOrPost;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SelectYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SentAccessCode;
@@ -50,9 +49,7 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
-  private NewCaseSampleSensitive newCaseSampleSensitive;
-  private String currentPage = null;
-  private String childsFullName = null;
+  private String currentPage;
 
   @Before("@Setup")
   public void setupNoCountry() throws Exception {
@@ -81,16 +78,15 @@ public class RhSteps extends StepsBase {
   }
 
   public void setUpFamilyInformation() {
-    this.newCaseSampleSensitive = ExampleData.constructFamilyInformation();
-    // There can't be a space between the first and middle name due to a processing issue when the
-    // title is retrieved
-    // From the UI
-    this.childsFullName =
-        String.format(
-            "%1$s %2$s %3$s",
-            newCaseSampleSensitive.getChildFirstName(),
-            newCaseSampleSensitive.getChildMiddleNames(),
-            newCaseSampleSensitive.getChildLastName());
+    context.familyInformation = ExampleData.constructFamilyInformation();
+  }
+
+  private String childsFullName() {
+     return String.format(
+        "%1$s %2$s %3$s",
+        context.familyInformation.getChildFirstName(),
+        context.familyInformation.getChildMiddleNames(),
+        context.familyInformation.getChildLastName());
   }
 
   @After("@TearDown")
@@ -187,7 +183,7 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page to confirm my address")
   public void verifyConfirmMyAddress() {
-    currentPage = "ConfirmAddress";
+    currentPage = "ConfirmSocialSurveyAddress";
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     verifyCorrectOnsLogoUsed(confirmAddress.getOnsLogo(), country);
 
@@ -225,7 +221,8 @@ public class RhSteps extends StepsBase {
 
   @Given("I click the “Continue” button")
   public void clickContinueAfterConfirmAddress() {
-    if (currentPage.equals("ConfirmAddress")) {
+    //  Social Survey
+    if (currentPage.equals("ConfirmSocialSurveyAddress")) {
       wait.forLoading(1);
       try {
         pages.getConfirmAddress(country).clickContinueButton();
@@ -233,6 +230,7 @@ public class RhSteps extends StepsBase {
         // tolerate no EQ deployment for testing
         context.errorMessageContainingCallToEQ = e.getMessage();
       }
+    //  SIS2
     } else {
       switch (currentPage) {
         case "RegisterParentName":
@@ -683,7 +681,7 @@ public class RhSteps extends StepsBase {
   }
 
   @Given("I am on the take part in a survey page")
-  public void setupCorrectCountry() {
+  public void iAmOnTheTakePartInASurveyPage() {
     setUpFamilyInformation();
     this.country = Country.ENG;
     pages.getRegisterSis2StartPage(country);
@@ -715,7 +713,7 @@ public class RhSteps extends StepsBase {
   }
 
   @And("I click on “Register now“ button")
-  public void iClickOnButton() {
+  public void iClickOnRegisterNowButton() {
     pages.getRegisterAChildStartPage().clickRegisterNow();
   }
 
@@ -731,9 +729,9 @@ public class RhSteps extends StepsBase {
 
   @And("I enter my first, middle and last name")
   public void iEnterMyFirstMiddleAndLastName() {
-    pages.getRegisterParentName().enterFirstName(newCaseSampleSensitive.getFirstName());
+    pages.getRegisterParentName().enterFirstName(context.familyInformation.getFirstName());
     pages.getRegisterParentName().enterMiddleName("Joe");
-    pages.getRegisterParentName().enterLastName(newCaseSampleSensitive.getLastName());
+    pages.getRegisterParentName().enterLastName(context.familyInformation.getLastName());
   }
 
   @Then("I am presented with a page to enter my mobile number")
@@ -750,14 +748,14 @@ public class RhSteps extends StepsBase {
   public void iEnterAValidMobileNumber() {
     pages
         .getRegisterParentMobile()
-        .addTextToMobileNumBox(newCaseSampleSensitive.getParentMobileNumber());
+        .addTextToMobileNumBox(context.familyInformation.getParentMobileNumber());
     pages.getRegisterParentMobile().clickContinueButton();
   }
 
   @Given("The number is correct and I select the “Yes, my mobile number is correct“ button")
   public void theNumberIsCorrectISelectTheButton() {
     String expectedMobileNumber = pages.getIsThisMobileNumCorrect().displayedMobileNumber();
-    assertEquals(newCaseSampleSensitive.getParentMobileNumber(), expectedMobileNumber);
+    assertEquals(context.familyInformation.getParentMobileNumber(), expectedMobileNumber);
     pages.getIsThisMobileNumCorrect().clickOptionYes();
   }
 
@@ -769,7 +767,7 @@ public class RhSteps extends StepsBase {
   }
 
   @And("I click on the “I accept“ option")
-  public void iClickOnTheOption() {
+  public void iClickOnTheAcceptOptionToGiveConsent() {
     pages.getConsentToSIS2Survey().clickAcceptButton();
   }
 
@@ -784,13 +782,13 @@ public class RhSteps extends StepsBase {
 
   @And("I enter my childs first, middle and last name")
   public void iEnterMyChildsFirstMiddleAndLastName() {
-    pages.getRegisterChildName().enterFirstName(newCaseSampleSensitive.getChildFirstName());
-    pages.getRegisterChildName().enterMiddleName(newCaseSampleSensitive.getChildMiddleNames());
-    pages.getRegisterChildName().enterLastName(newCaseSampleSensitive.getLastName());
+    pages.getRegisterChildName().enterFirstName(context.familyInformation.getChildFirstName());
+    pages.getRegisterChildName().enterMiddleName(context.familyInformation.getChildMiddleNames());
+    pages.getRegisterChildName().enterLastName(context.familyInformation.getLastName());
   }
 
   @And("I then click the “Save and continue“ button")
-  public void iThenClickTheButton() {
+  public void iClickTheSaveAndContinueButton() {
     if (currentPage.equals("RegisterChildName")) {
       pages.getRegisterChildName().clickSaveAndContinueButton();
     } else {
@@ -803,7 +801,7 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildSchool";
     RegisterChildSchool registerChildSchool = pages.getRegisterChildSchool(country);
     verifyCorrectOnsLogoUsed(registerChildSchool.getOnsLogo(), country);
-    String schoolsTitle = String.format("What school does %s attend?", childsFullName);
+    String schoolsTitle = String.format("What school does %s attend?", childsFullName());
     assertEquals(schoolsTitle, registerChildSchool.getRegisterSchoolNameTitle());
   }
 
@@ -817,7 +815,7 @@ public class RhSteps extends StepsBase {
     currentPage = "RegisterChildDOB";
     RegisterChildDOB registerChildDOB = pages.getRegisterChildDOB(country);
     verifyCorrectOnsLogoUsed(registerChildDOB.getOnsLogo(), country);
-    String childsDOBTitle = String.format("What is the date of birth of %s?", childsFullName);
+    String childsDOBTitle = String.format("What is the date of birth of %s?", childsFullName());
     assertEquals(childsDOBTitle, registerChildDOB.getRegisterChildDOBTitle());
   }
 
@@ -825,13 +823,13 @@ public class RhSteps extends StepsBase {
   public void iEnterMyChildsDateOfBirth() {
     pages
         .getRegisterChildDOB()
-        .enterDOBDay(String.valueOf(newCaseSampleSensitive.getChildDob().getDayOfMonth()));
+        .enterDOBDay(String.valueOf(context.familyInformation.getChildDob().getDayOfMonth()));
     pages
         .getRegisterChildDOB()
-        .enterDOBMonth(String.valueOf(newCaseSampleSensitive.getChildDob().getMonthValue()));
+        .enterDOBMonth(String.valueOf(context.familyInformation.getChildDob().getMonthValue()));
     pages
         .getRegisterChildDOB()
-        .enterDOBYear(String.valueOf(newCaseSampleSensitive.getChildDob().getYear()));
+        .enterDOBYear(String.valueOf(context.familyInformation.getChildDob().getYear()));
   }
 
   @Then("I am presented with a page to review my childs details")

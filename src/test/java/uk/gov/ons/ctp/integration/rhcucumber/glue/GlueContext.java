@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CollectionCase;
 import uk.gov.ons.ctp.common.event.model.Header;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchResponse;
@@ -26,17 +27,6 @@ public class GlueContext {
   String uac;
   String uacKey;
   String errorMessageContainingCallToEQ;
-  String parentFirstName;
-  String parentMiddleName;
-  String parentLastName;
-  String childFirstName;
-  String childMiddleName;
-  String childLastName;
-  String childDob;
-  String parentMobile;
-  String parentEmail;
-  String childMobile;
-  String childEmail;
   CollectionCase caseCreatedPayload;
   UAC uacPayload;
   String fulfilmentRequestedCode;
@@ -46,5 +36,6 @@ public class GlueContext {
   Header surveyLaunchedHeader;
   SurveyLaunchPayload surveyLaunchedPayload;
   SurveyLaunchResponse surveyLaunchedResponse;
+  NewCaseSampleSensitive familyInformation;
   boolean eqExists;
 }

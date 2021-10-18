@@ -64,7 +64,7 @@ public class WebPageConstants {
   static final String XPATH_RADIO_POST_ACCESS_CODE_NO = "//fieldset//input[@id='no']";
 
   // For Register Your Address Page
-  static final String XPATH_P_WITH_PHONE_NUMBER = "//p[2]";
+  static final String XPATH_PHONE_NUMBER = "//p[2]";
 
   // For Register SIS2 New Case Page
   static final String XPATH_LINK_SIS2_SURVEY = "//main//h2[@class='ons-u-fs-m']/a";
@@ -73,9 +73,4 @@ public class WebPageConstants {
   static final String XPATH_REGISTER_NOW_BUTTON = "//form//main//button[@type='input']";
   static final String XPATH_TEXTBOX_MIDDLENAME = "//main//input[@id='name_middle_names']";
   static final String XPATH_DISPLAYED_MOBILE_NUMBER = "//form//p[@class='js-mobile-no']";
-  static final String XPATH_ACCEPT_BUTTON = "//form//main//button[@name='button-accept']";
-  static final String XPATH_CHILD_SCHOOL_NAME = "//main//input[@id='school-name']";
-  static final String XPATH_CHILD_DOB_DAY = "//main//input[@id='date-day']";
-  static final String XPATH_CHILD_DOB_MONTH = "//main//input[@id='date-month']";
-  static final String XPATH_CHILD_DOB_YEAR = "//main//input[@id='date-year']";
 }

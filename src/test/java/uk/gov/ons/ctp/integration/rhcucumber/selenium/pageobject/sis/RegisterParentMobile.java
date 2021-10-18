@@ -1,9 +1,11 @@
-package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PageObjectBase;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.SISWebPageConstants;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
@@ -17,19 +19,19 @@ public class RegisterParentMobile extends PageObjectBase {
     super(PageId.REGISTER_PARENT_MOBILE, driver, country);
   }
 
-  @FindBy(xpath = WebPageConstants.XPATH_LOGO)
+  @FindBy(xpath = SISWebPageConstants.XPATH_LOGO)
   private WebElement onsLogo;
 
-  @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
+  @FindBy(xpath = SISWebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerParentMobileTitle;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_MOBILE_PHONE_NUMBER)
+  @FindBy(xpath = SISWebPageConstants.XPATH_MOBILE_PHONE_NUMBER)
   private WebElement mobileTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
-  @FindBy(xpath = WebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
+  @FindBy(xpath = SISWebPageConstants.XPATH_HIGHLIGHTED_ERROR_NO1)
   private WebElement invalidMobileNumError;
 
   public String getRegisterParentMobileTitle() {

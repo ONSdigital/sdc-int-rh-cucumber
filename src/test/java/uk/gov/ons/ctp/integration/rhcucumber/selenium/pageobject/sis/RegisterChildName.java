@@ -1,9 +1,11 @@
-package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.PageObjectBase;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.SISWebPageConstants;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.PageTracker.PageId;
 
@@ -14,22 +16,22 @@ public class RegisterChildName extends PageObjectBase {
     super(PageId.REGISTER_PARENT_NAME, driver, country);
   }
 
-  @FindBy(xpath = WebPageConstants.XPATH_LOGO)
+  @FindBy(xpath = SISWebPageConstants.XPATH_LOGO)
   private WebElement onsLogo;
 
-  @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
+  @FindBy(xpath = SISWebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerChildNameTitle;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_FIRSTNAME)
+  @FindBy(xpath = SISWebPageConstants.XPATH_TEXTBOX_FIRSTNAME)
   private WebElement firstNameTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_MIDDLENAME)
+  @FindBy(xpath = SISWebPageConstants.XPATH_TEXTBOX_MIDDLENAME)
   private WebElement middleNameTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_TEXTBOX_LASTNAME)
+  @FindBy(xpath = SISWebPageConstants.XPATH_TEXTBOX_LASTNAME)
   private WebElement lastNameTextBox;
 
-  @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
+  @FindBy(xpath = SISWebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement saveAndContinueButton;
 
   public WebElement getOnsLogo() {
