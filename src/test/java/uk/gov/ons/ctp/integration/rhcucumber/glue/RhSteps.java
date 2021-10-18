@@ -87,7 +87,7 @@ public class RhSteps extends StepsBase {
     // From the UI
     this.childsFullName =
         String.format(
-            "%1$s%2$s %3$s",
+            "%1$s %2$s %3$s",
             newCaseSampleSensitive.getChildFirstName(),
             newCaseSampleSensitive.getChildMiddleNames(),
             newCaseSampleSensitive.getChildLastName());
@@ -848,7 +848,7 @@ public class RhSteps extends StepsBase {
         pages.getRegisterAChildConfirmationPage(country);
     verifyCorrectOnsLogoUsed(registerAChildConfirmationPage.getOnsLogo(), country);
     assertEquals(
-        "Your children have been registered for the survey",
+        "Your child has been registered for the survey",
         registerAChildConfirmationPage.getConfirmationOfChildRegistrationPageTitle());
   }
 }

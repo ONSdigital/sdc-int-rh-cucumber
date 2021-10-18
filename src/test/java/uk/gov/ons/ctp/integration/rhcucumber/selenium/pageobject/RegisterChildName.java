@@ -59,12 +59,12 @@ public class RegisterChildName extends PageObjectBase {
 
   public void clickMiddleNameBox() {
     waitForElement(middleNameTextBox, "middleNameTextBox");
-    firstNameTextBox.click();
+    middleNameTextBox.click();
   }
 
   private void addTextToMiddleName(String txtToAdd) {
     waitForElement(middleNameTextBox, "middleNameTextBox");
-    firstNameTextBox.sendKeys(txtToAdd);
+    middleNameTextBox.sendKeys(txtToAdd);
   }
 
   public void enterMiddleName(String middleName) {
