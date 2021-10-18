@@ -5,6 +5,7 @@ import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UacUpdate;
+import uk.gov.ons.ctp.common.event.model.WaveMetadata;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
@@ -74,7 +75,9 @@ public class ExampleData {
     uac.setUacHash(uacHash);
     uac.setQid("3110000009");
     uac.setReceiptReceived(false);
+    uac.setMetadata(new WaveMetadata(94));
     uac.setEqLaunched(false);
+    
     return uac;
   }
 

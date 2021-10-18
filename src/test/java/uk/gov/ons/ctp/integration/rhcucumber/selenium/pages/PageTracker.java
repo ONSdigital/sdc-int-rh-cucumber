@@ -30,7 +30,8 @@ public class PageTracker {
     REGISTER_YOUR_ADDRESS("TODO", "TODO"),
     HOUSEHOLD_INTERSTITIAL("TODO", "TODO"),
     PAGE_NOT_FOUND("Page not found", "Heb ddod o hyd i'r dudalen"),
-    SOCIAL_QUESTIONNAIRE("TODO", "TODO");
+    SOCIAL_QUESTIONNAIRE("TODO", "TODO"),
+    ERROR_PAGE("Error - ONS Surveys", "Gwall - ONS Surveys");
 
     private String identiferEnglish;
     private String identiferWelsh;
