@@ -11,7 +11,8 @@ import uk.gov.ons.ctp.integration.rhcucumber.GlueConst;
     features = {
       GlueConst.FEATURES_PATH + "Request-UAC.feature",
       GlueConst.FEATURES_PATH + "UAC-Authentication-Success.feature",
-      GlueConst.FEATURES_PATH + "UAC-Authentication-Failure.feature"
+      GlueConst.FEATURES_PATH + "UAC-Authentication-Failure.feature",
+      GlueConst.FEATURES_PATH + "NewCase-SIS2-Registration-Success.feature"
     },
     tags = GlueConst.COMMON_TAGS,
     glue = {GlueConst.GLUE_PKG})

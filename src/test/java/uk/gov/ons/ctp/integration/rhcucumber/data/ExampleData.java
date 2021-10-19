@@ -1,16 +1,16 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
-
-import java.time.Instant;
-import java.time.temporal.TemporalAmount;
-import java.util.Date;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
@@ -49,7 +49,7 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CollectionExerciseMetadata createCollectionExerciseMetaData()  {
+  public static CollectionExerciseMetadata createCollectionExerciseMetaData() {
     CollectionExerciseMetadata collectionExerciseMetadata = new CollectionExerciseMetadata();
     collectionExerciseMetadata.setCohorts(1);
     collectionExerciseMetadata.setCohortSchedule(1);
@@ -109,5 +109,20 @@ public class ExampleData {
     collectionExercise.setReference("MVP012021");
     collectionExercise.setMetadata(createCollectionExerciseMetaData());
     return collectionExercise;
+  }
+
+  public static NewCaseSampleSensitive constructFamilyInformation() {
+    NewCaseSampleSensitive newCaseSampleSensitive = new NewCaseSampleSensitive();
+    newCaseSampleSensitive.setFirstName("Mike");
+    newCaseSampleSensitive.setLastName("Bloggs");
+    newCaseSampleSensitive.setChildFirstName("Jo");
+    newCaseSampleSensitive.setChildMiddleNames("Mary");
+    newCaseSampleSensitive.setChildLastName("Bloggs");
+    newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");
+    newCaseSampleSensitive.setParentMobileNumber("07312345678");
+    newCaseSampleSensitive.setChildDob(LocalDate.parse("2010-12-31"));
+    newCaseSampleSensitive.setChildEmailAddress("Jane.M.Bloggs@email.com");
+    newCaseSampleSensitive.setChildMobileNumber("07387654321");
+    return newCaseSampleSensitive;
   }
 }

@@ -28,7 +28,7 @@ public class RegisterYourAddress extends PageObjectBase {
   @FindBy(xpath = WebPageConstants.XPATH_PAGE_CONTENT_TITLE)
   private WebElement registerYourAddressTitle;
 
-  @FindBy(xpath = WebPageConstants.XPATH_P_WITH_PHONE_NUMBER)
+  @FindBy(xpath = WebPageConstants.XPATH_PHONE_NUMBER)
   private WebElement pWithPhoneNumer;
 
   public String getTitleText() {
