@@ -112,7 +112,7 @@ public class ExampleData {
         + "          }\n"
         + "        ]\n"
         + "      }]");
-    surveyUpdate.setMetadata("\"metadata\": {\n"
+    surveyUpdate.setMetadata("{\n"
         + "        \"ex_e4\": true\n"
         + "      }");
     return surveyUpdate;
