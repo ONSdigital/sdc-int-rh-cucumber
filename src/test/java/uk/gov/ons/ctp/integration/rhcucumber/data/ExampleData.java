@@ -1,5 +1,6 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
+import io.vavr.API;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
@@ -11,6 +12,7 @@ import uk.gov.ons.ctp.common.event.model.UAC;
 import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Date;
+import java.util.Map;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
@@ -96,6 +98,21 @@ public class ExampleData {
     SurveyUpdate surveyUpdate = new SurveyUpdate();
     surveyUpdate.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     surveyUpdate.setName("LMS");
+    surveyUpdate.setSampleDefinitionUrl("test/social.json");
+    surveyUpdate.setSampleDefinition("[\n"
+        + "      {\n"
+        + "        \"columnName\": \"addressLine1\",\n"
+        + "        \"rules\": [\n"
+        + "          {\n"
+        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.MandatoryRule\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.LengthRule\",\n"
+        + "            \"maxLength\": 60\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }]");
+    surveyUpdate.setMetadata(Map.of("ex_e4","true"));
     return surveyUpdate;
   }
 
