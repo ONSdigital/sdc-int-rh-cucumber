@@ -1,10 +1,8 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
-import uk.gov.ons.ctp.common.event.model.Address;
-import uk.gov.ons.ctp.common.event.model.CollectionCase;
-import uk.gov.ons.ctp.common.event.model.Contact;
 import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
@@ -14,9 +12,6 @@ import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
 
-import java.time.Instant;
-import java.time.temporal.TemporalAmount;
-import java.util.Date;
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
