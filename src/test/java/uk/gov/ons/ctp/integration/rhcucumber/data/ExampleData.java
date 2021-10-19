@@ -3,15 +3,14 @@ package uk.gov.ons.ctp.integration.rhcucumber.data;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
-import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UAC;
-
 
 public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
@@ -50,7 +49,7 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CollectionExerciseMetadata createCollectionExerciseMetaData()  {
+  public static CollectionExerciseMetadata createCollectionExerciseMetaData() {
     CollectionExerciseMetadata collectionExerciseMetadata = new CollectionExerciseMetadata();
     collectionExerciseMetadata.setCohorts(1);
     collectionExerciseMetadata.setCohortSchedule(1);
