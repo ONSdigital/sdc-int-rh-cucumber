@@ -51,7 +51,7 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CollectionExerciseMetadata createCollectionExerciseMetaData()  {
+  public static CollectionExerciseMetadata createCollectionExerciseMetaData() {
     CollectionExerciseMetadata collectionExerciseMetadata = new CollectionExerciseMetadata();
     collectionExerciseMetadata.setCohorts(1);
     collectionExerciseMetadata.setCohortSchedule(1);
@@ -112,7 +112,9 @@ public class ExampleData {
         + "          }\n"
         + "        ]\n"
         + "      }]");
-    surveyUpdate.setMetadata(Map.of("ex_e4","true"));
+    surveyUpdate.setMetadata("\"metadata\": {\n"
+        + "        \"ex_e4\": true\n"
+        + "      }");
     return surveyUpdate;
   }
 
