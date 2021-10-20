@@ -64,3 +64,4 @@ If Docker is running an old version of rh-ui or another service then you can add
     $ docker-compose -f <service.yml> up --force-recreate -d  
     
 There are other solutions, but this one came from https://vsupalov.com/docker-compose-runs-old-containers/
+
