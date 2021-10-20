@@ -20,7 +20,7 @@ public class PageTracker {
         "What is your address?",
         "What is your address?"), // TODO: Wales translation, when RHUI ready
     SELECT_DELIVERY_METHOD_TEXT_OR_POST("TODO", "TODO"),
-    IS_THIS_MOBILE_NUM_CORRECT("TODO", "TODO"),
+    IS_THIS_MOBILE_NUM_CORRECT("Is this mobile number correct?", "TODO"),
     PLEASE_SUPPLY_YOUR_ADDRESS("TODO", "TODO"),
     SELECT_YOUR_ADDRESS("TODO", "TODO"),
     SENT_ACCESS_CODE("TODO", "TODO"),
@@ -31,6 +31,17 @@ public class PageTracker {
     HOUSEHOLD_INTERSTITIAL("TODO", "TODO"),
     PAGE_NOT_FOUND("Page not found", "Heb ddod o hyd i'r dudalen"),
     SOCIAL_QUESTIONNAIRE("TODO", "TODO"),
+    REGISTER_SIS2("Take part in a survey", "NA"),
+    HOW_TO_TAKE_PART_SIS("COVID-19 Schools Infection Survey (SIS)", "NA"),
+    REGISTER_A_CHILD("Register a child", "NA"),
+    REGISTER_PARENT_NAME("What is the parent/guardian's name?", "NA"),
+    REGISTER_PARENT_MOBILE("What is your mobile number?", "TODO"),
+    CONFIRM_CONSENT("Confirm consent", "TODO"),
+    REGISTER_CHILD_NAME("Who would you like to register?", "NA"),
+    REGISTER_CHILD_SCHOOL("Select school - ONS Surveys", "NA"),
+    REGISTER_CHILD_DOB("Enter date of birth - ONS Surveys", "NA"),
+    REVIEW_CHILD_DETAIL("Child summary - ONS Surveys", "NA"),
+    REGISTRATION_OF_CHILD_CONFIRMATION("Registration complete - ONS Surveys", "NA"),
     ERROR_PAGE("Error - ONS Surveys", "Gwall - ONS Surveys");
 
     private String identiferEnglish;
@@ -63,15 +74,13 @@ public class PageTracker {
    * <p>If 'dumpPageContent' property is set to 'true' then the page content is written to a temp
    * file.
    *
-   * @param expectedPage is the Page that the ucumber test code thinks we should be on.
+   * @param expectedPage is the Page that the cucumber test code thinks we should be on.
    * @param expectedCountry is the Country that the Cucumber test code is using.
    */
   public void verifyCurrentPage(PageId expectedPage, Country expectedCountry) {
     String pageContent = getPageContent();
-
-    // Identify pages country
     Country actualCountry = null;
-    if (pageContent.contains("Crown copyright")) {
+    if (pageContent.contains("Crown copyright") || pageContent.contains("Contact us")) {
       actualCountry = Country.ENG;
     } else if (pageContent.contains("Hawlfraint y Goron")) {
       actualCountry = Country.WALES;
@@ -136,6 +145,7 @@ public class PageTracker {
 
   private String getPageContent() {
     final Document doc = Jsoup.parse(webDriver.getPageSource());
+
     return doc.html();
   }
 

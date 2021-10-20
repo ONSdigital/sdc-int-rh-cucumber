@@ -1,8 +1,14 @@
 package uk.gov.ons.ctp.integration.rhcucumber.data;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
+import uk.gov.ons.ctp.common.event.model.CollectionExercise;
+import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
 import uk.gov.ons.ctp.common.event.model.UacUpdate;
 import uk.gov.ons.ctp.common.event.model.WaveMetadata;
@@ -44,7 +50,17 @@ public class ExampleData {
     return sampleSensitive;
   }
 
-  public static CaseUpdate createCollectionCase(CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
+  public static CollectionExerciseMetadata createCollectionExerciseMetaData() {
+    CollectionExerciseMetadata collectionExerciseMetadata = new CollectionExerciseMetadata();
+    collectionExerciseMetadata.setCohorts(1);
+    collectionExerciseMetadata.setCohortSchedule(1);
+    collectionExerciseMetadata.setNumberOfWaves(1);
+    collectionExerciseMetadata.setWaveLength(1);
+    return collectionExerciseMetadata;
+  }
+
+  public static CaseUpdate createCaseUpdate(
+      CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
     cc.setRefusalReceived("CENSUS");
@@ -56,16 +72,16 @@ public class ExampleData {
     return cc;
   }
 
-  public static CaseUpdate createCollectionCase(String id) {
+  public static CaseUpdate createCaseUpdate(String id) {
     CaseUpdateSample sample = createSample();
     CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
-    return createCollectionCase(sample, sampleSensitive, id);
+    return createCaseUpdate(sample, sampleSensitive, id);
   }
 
-  public static CaseUpdate createWelshCollectionCase(String id) {
+  public static CaseUpdate createWelshCaseUpdate(String id) {
     CaseUpdateSample sample = createSampleWales();
     CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
-    return createCollectionCase(sample, sampleSensitive, id);
+    return createCaseUpdate(sample, sampleSensitive, id);
   }
 
   public static UacUpdate createUac(String uacHash, String caseId) {
@@ -81,10 +97,54 @@ public class ExampleData {
     return uac;
   }
 
-  public static SurveyUpdate createSuveyUpdate() {
+  public static SurveyUpdate createSurveyUpdate() {
     SurveyUpdate surveyUpdate = new SurveyUpdate();
     surveyUpdate.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     surveyUpdate.setName("LMS");
+    surveyUpdate.setSampleDefinitionUrl("test/social.json");
+    surveyUpdate.setSampleDefinition("[\n"
+        + "      {\n"
+        + "        \"columnName\": \"addressLine1\",\n"
+        + "        \"rules\": [\n"
+        + "          {\n"
+        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.MandatoryRule\"\n"
+        + "          },\n"
+        + "          {\n"
+        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.LengthRule\",\n"
+        + "            \"maxLength\": 60\n"
+        + "          }\n"
+        + "        ]\n"
+        + "      }]");
+    surveyUpdate.setMetadata("{\n"
+        + "        \"ex_e4\": true\n"
+        + "      }");
     return surveyUpdate;
+  }
+
+  public static CollectionExercise createCollectionExercise() {
+    CollectionExercise collectionExercise = new CollectionExercise();
+    collectionExercise.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    collectionExercise.setCollectionExerciseId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    collectionExercise.setName("Dummy");
+    collectionExercise.setStartDate(Date.from(Instant.parse("2021-09-17T23:59:59.999Z")));
+    collectionExercise.setEndDate(Date.from(Instant.parse("2021-09-27T23:59:59.999Z")));
+    collectionExercise.setReference("MVP012021");
+    collectionExercise.setMetadata(createCollectionExerciseMetaData());
+    return collectionExercise;
+  }
+
+  public static NewCaseSampleSensitive constructFamilyInformation() {
+    NewCaseSampleSensitive newCaseSampleSensitive = new NewCaseSampleSensitive();
+    newCaseSampleSensitive.setFirstName("Mike");
+    newCaseSampleSensitive.setLastName("Bloggs");
+    newCaseSampleSensitive.setChildFirstName("Jo");
+    newCaseSampleSensitive.setChildMiddleNames("Mary");
+    newCaseSampleSensitive.setChildLastName("Bloggs");
+    newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");
+    newCaseSampleSensitive.setParentMobileNumber("07312345678");
+    newCaseSampleSensitive.setChildDob(LocalDate.parse("2010-12-31"));
+    newCaseSampleSensitive.setChildEmailAddress("Jane.M.Bloggs@email.com");
+    newCaseSampleSensitive.setChildMobileNumber("07387654321");
+    return newCaseSampleSensitive;
   }
 }

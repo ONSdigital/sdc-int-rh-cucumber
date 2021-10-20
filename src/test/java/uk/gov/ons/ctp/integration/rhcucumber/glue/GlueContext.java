@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
+import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.Header;
+import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchResponse;
@@ -29,6 +31,7 @@ public class GlueContext {
   String errorMessageContainingCallToEQ;
   CaseUpdate caseCreatedPayload;
   SurveyUpdate surveyUpdatePayload;
+  CollectionExercise collectionExercise;
   UacUpdate uacPayload;
   String fulfilmentRequestedCode;
   Header respondentAuthenticatedHeader;
@@ -37,5 +40,6 @@ public class GlueContext {
   Header surveyLaunchedHeader;
   SurveyLaunchPayload surveyLaunchedPayload;
   SurveyLaunchResponse surveyLaunchedResponse;
+  NewCaseSampleSensitive familyInformation;
   boolean eqExists;
 }
