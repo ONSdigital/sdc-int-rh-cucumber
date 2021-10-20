@@ -34,11 +34,22 @@ import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.StartPage;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourAddress;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourMobile;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.WhatIsYourName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.ConsentToSIS2Survey;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterAChildConfirmationPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterAChildStartPage;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildDOB;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterChildSchool;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterParentMobile;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.RegisterParentName;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.ReviewChildDetail;
+import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.sis.SIS2HowToTakePart;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
 public class RhSteps extends StepsBase {
   private Wait wait;
   private Country country;
+  private String currentPage;
 
   @Before("@Setup")
   public void setupNoCountry() throws Exception {
@@ -65,6 +76,18 @@ public class RhSteps extends StepsBase {
 
     this.country = country;
     pages.getStartPage(country);
+  }
+
+  public void setUpFamilyInformation() {
+    context.familyInformation = ExampleData.constructFamilyInformation();
+  }
+
+  private String childsFullName() {
+    return String.format(
+        "%1$s %2$s %3$s",
+        context.familyInformation.getChildFirstName(),
+        context.familyInformation.getChildMiddleNames(),
+        context.familyInformation.getChildLastName());
   }
 
   @After("@TearDown")
@@ -161,6 +184,7 @@ public class RhSteps extends StepsBase {
 
   @Then("I am presented with a page to confirm my address")
   public void verifyConfirmMyAddress() {
+    currentPage = "ConfirmSocialSurveyAddress";
     ConfirmAddress confirmAddress = pages.getConfirmAddress(country);
     verifyCorrectOnsLogoUsed(confirmAddress.getOnsLogo(), country);
 
@@ -198,12 +222,34 @@ public class RhSteps extends StepsBase {
 
   @Given("I click the “Continue” button")
   public void clickContinueAfterConfirmAddress() {
-    wait.forLoading(1);
-    try {
-      pages.getConfirmAddress(country).clickContinueButton();
-    } catch (WebDriverException e) {
-      // tolerate no EQ deployment for testing
-      context.errorMessageContainingCallToEQ = e.getMessage();
+    //  Social Survey
+    if (currentPage.equals("ConfirmSocialSurveyAddress")) {
+      wait.forLoading(1);
+      try {
+        pages.getConfirmAddress(country).clickContinueButton();
+      } catch (WebDriverException e) {
+        // tolerate no EQ deployment for testing
+        context.errorMessageContainingCallToEQ = e.getMessage();
+      }
+      //  SIS2
+    } else {
+      switch (currentPage) {
+        case "RegisterParentName":
+          pages.getRegisterParentName().clickContinueButton();
+          break;
+        case "RegisterParentMobile":
+          pages.getIsThisMobileNumCorrect().clickContinueButton();
+          break;
+        case "RegisterChildSchool":
+          pages.getRegisterChildSchool().clickContinueButton();
+          break;
+        case "RegisterChildDOB":
+          pages.getRegisterChildDOB().clickContinueButton();
+          break;
+        default:
+          throw new IllegalStateException(
+              String.format("Failed to find the “Conitnue“ button for page %s", currentPage));
+      }
     }
   }
 
@@ -551,7 +597,10 @@ public class RhSteps extends StepsBase {
     pubSub.sendEvent(
         TopicType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
     pubSub.sendEvent(
-        TopicType.COLLECTION_EXERCISE_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.collectionExercise);
+        TopicType.COLLECTION_EXERCISE_UPDATE,
+        Source.SAMPLE_LOADER,
+        Channel.RM,
+        context.collectionExercise);
     pubSub.sendEvent(
         TopicType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
@@ -641,6 +690,175 @@ public class RhSteps extends StepsBase {
     ConfirmAddress confirmAddressPage = pages.getConfirmAddress(country);
     confirmAddressPage.clickOptionYes();
     confirmAddressPage.clickContinueButton();
+  }
 
+  @Given("I am on the take part in a survey page")
+  public void iAmOnTheTakePartInASurveyPage() {
+    setUpFamilyInformation();
+    this.country = Country.ENG;
+    pages.getRegisterSis2StartPage(country);
+  }
+
+  @And("I click on “COVID-19 Schools Infection Survey“ link")
+  public void clickCovid19SchoolsInfectSurveyLink() {
+    pages.getRegisterSis2StartPage().clickLoadSISLink();
+  }
+
+  @Then("I am presented with a page on how to take part")
+  public void verifyHowToTakePartPage() {
+    SIS2HowToTakePart sis2HowToTakePart = pages.getSisPage(country);
+    verifyCorrectOnsLogoUsed(sis2HowToTakePart.getOnsLogo(), country);
+    assertEquals("COVID-19 Schools Infection Survey (SIS)", pages.getSisPage().getSis2TitleText());
+  }
+
+  @And("I click on “Register for the survey“ button")
+  public void clickRegisterForTheSurveyButton() {
+    pages.getSisPage().clickRegisterForSurveyButton();
+  }
+
+  @Then("I am presented with a page to register the child")
+  public void iAmPresentedWithAPageToRegisterTheChild() {
+    RegisterAChildStartPage registerAChildStartPage = pages.getRegisterAChildStartPage(country);
+    verifyCorrectOnsLogoUsed(registerAChildStartPage.getOnsLogo(), country);
+    assertEquals(
+        "Register a child", pages.getRegisterAChildStartPage().getRegisterAChildStartPageTitle());
+  }
+
+  @And("I click on “Register now“ button")
+  public void iClickOnRegisterNowButton() {
+    pages.getRegisterAChildStartPage().clickRegisterNow();
+  }
+
+  @Then("I am presented with a page to add my name")
+  public void iAmPresentedWithAPageToAddMyName() {
+    currentPage = "RegisterParentName";
+    RegisterParentName registerParentName = pages.getRegisterParentName(country);
+    verifyCorrectOnsLogoUsed(registerParentName.getOnsLogo(), country);
+    assertEquals(
+        "What is the parent/guardian's name?",
+        pages.getRegisterParentName().getRegisterParentNameTitleText());
+  }
+
+  @And("I enter my first, middle and last name")
+  public void iEnterMyFirstMiddleAndLastName() {
+    pages.getRegisterParentName().enterFirstName(context.familyInformation.getFirstName());
+    pages.getRegisterParentName().enterMiddleName("Joe");
+    pages.getRegisterParentName().enterLastName(context.familyInformation.getLastName());
+  }
+
+  @Then("I am presented with a page to enter my mobile number")
+  public void iAmPresentedWithAPageToEnterMyMobileNumber() {
+    currentPage = "RegisterParentMobile";
+    RegisterParentMobile registerParentMobile = pages.getRegisterParentMobile(country);
+    verifyCorrectOnsLogoUsed(registerParentMobile.getOnsLogo(), country);
+    assertEquals(
+        "What is your mobile number?",
+        pages.getRegisterParentMobile().getRegisterParentMobileTitle());
+  }
+
+  @And("I enter a valid mobile number and click “Continue”")
+  public void iEnterAValidMobileNumber() {
+    pages
+        .getRegisterParentMobile()
+        .addTextToMobileNumBox(context.familyInformation.getParentMobileNumber());
+    pages.getRegisterParentMobile().clickContinueButton();
+  }
+
+  @Given("The number is correct and I select the “Yes, my mobile number is correct“ button")
+  public void theNumberIsCorrectISelectTheButton() {
+    String expectedMobileNumber = pages.getIsThisMobileNumCorrect().displayedMobileNumber();
+    assertEquals(context.familyInformation.getParentMobileNumber(), expectedMobileNumber);
+    pages.getIsThisMobileNumCorrect().clickOptionYes();
+  }
+
+  @Then("I am presented with a page to confirm my consent")
+  public void iAmPresentedWithAPageToConfirmMyConsent() {
+    ConsentToSIS2Survey consentToSIS2Survey = pages.getConsentToSIS2Survey(country);
+    verifyCorrectOnsLogoUsed(consentToSIS2Survey.getOnsLogo(), country);
+    assertEquals("Confirm consent", consentToSIS2Survey.getConsentGivenToSis2SurveyTitleText());
+  }
+
+  @And("I click on the “I accept“ option")
+  public void iClickOnTheAcceptOptionToGiveConsent() {
+    pages.getConsentToSIS2Survey().clickAcceptButton();
+  }
+
+  @Then("I am presented with a page to add my childs name")
+  public void iAmPresentedWithAPageToAddMyChildsFirstMiddleAndLastName() {
+    currentPage = "RegisterChildName";
+    RegisterChildName registerChildName = pages.getRegisterChildName(country);
+    verifyCorrectOnsLogoUsed(registerChildName.getOnsLogo(), country);
+    assertEquals(
+        "Who would you like to register?", registerChildName.getRegisterChildNameTitleText());
+  }
+
+  @And("I enter my childs first, middle and last name")
+  public void iEnterMyChildsFirstMiddleAndLastName() {
+    pages.getRegisterChildName().enterFirstName(context.familyInformation.getChildFirstName());
+    pages.getRegisterChildName().enterMiddleName(context.familyInformation.getChildMiddleNames());
+    pages.getRegisterChildName().enterLastName(context.familyInformation.getLastName());
+  }
+
+  @And("I then click the “Save and continue“ button")
+  public void iClickTheSaveAndContinueButton() {
+    if (currentPage.equals("RegisterChildName")) {
+      pages.getRegisterChildName().clickSaveAndContinueButton();
+    } else {
+      pages.getReviewChildDetail().clickSaveAndContinueButton();
+    }
+  }
+
+  @Then("I am presented with a page to add my childs school")
+  public void iAmPresentedWithAPageToAddMyChildsSchool() {
+    currentPage = "RegisterChildSchool";
+    RegisterChildSchool registerChildSchool = pages.getRegisterChildSchool(country);
+    verifyCorrectOnsLogoUsed(registerChildSchool.getOnsLogo(), country);
+    String schoolsTitle = String.format("What school does %s attend?", childsFullName());
+    assertEquals(schoolsTitle, registerChildSchool.getRegisterSchoolNameTitle());
+  }
+
+  @And("I enter my childs school name {string}")
+  public void iEnterMyChildsSchoolName(String schoolName) {
+    pages.getRegisterChildSchool().enterSchoolName(schoolName);
+  }
+
+  @Then("I am presented with a page to add my childs date of birth")
+  public void iAmPresentedWithAPageToAddMyChildsDateOfBirth() {
+    currentPage = "RegisterChildDOB";
+    RegisterChildDOB registerChildDOB = pages.getRegisterChildDOB(country);
+    verifyCorrectOnsLogoUsed(registerChildDOB.getOnsLogo(), country);
+    String childsDOBTitle = String.format("What is the date of birth of %s?", childsFullName());
+    assertEquals(childsDOBTitle, registerChildDOB.getRegisterChildDOBTitle());
+  }
+
+  @And("I enter my childs date of birth")
+  public void iEnterMyChildsDateOfBirth() {
+    pages
+        .getRegisterChildDOB()
+        .enterDOBDay(String.valueOf(context.familyInformation.getChildDob().getDayOfMonth()));
+    pages
+        .getRegisterChildDOB()
+        .enterDOBMonth(String.valueOf(context.familyInformation.getChildDob().getMonthValue()));
+    pages
+        .getRegisterChildDOB()
+        .enterDOBYear(String.valueOf(context.familyInformation.getChildDob().getYear()));
+  }
+
+  @Then("I am presented with a page to review my childs details")
+  public void iAmPresentedWithAPageToReviewMyChildsDetails() {
+    currentPage = "ReviewChildDetail";
+    ReviewChildDetail reviewChildDetail = pages.getReviewChildDetail(country);
+    verifyCorrectOnsLogoUsed(reviewChildDetail.getOnsLogo(), country);
+    assertEquals("Check answers", reviewChildDetail.getReviewChildDetailTitleText());
+  }
+
+  @Then("I am presented with a page to confirm child registration")
+  public void iAmPresentedWithAPageToConfirmChildRegistration() {
+    RegisterAChildConfirmationPage registerAChildConfirmationPage =
+        pages.getRegisterAChildConfirmationPage(country);
+    verifyCorrectOnsLogoUsed(registerAChildConfirmationPage.getOnsLogo(), country);
+    assertEquals(
+        "Your child has been registered for the survey",
+        registerAChildConfirmationPage.getConfirmationOfChildRegistrationPageTitle());
   }
 }

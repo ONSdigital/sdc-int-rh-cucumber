@@ -34,6 +34,9 @@ public class IsThisMobileNumCorrect extends PageObjectBase {
   @FindBy(xpath = WebPageConstants.XPATH_CONTINUE_BUTTON)
   private WebElement continueButton;
 
+  @FindBy(xpath = WebPageConstants.XPATH_DISPLAYED_MOBILE_NUMBER)
+  private WebElement displayedMobileNumber;
+
   public String getIsMobileCorrectTitleText() {
     waitForElement(isMobileCorrectTitle, classPrefix + "isMobileCorrectTitle");
     return isMobileCorrectTitle.getText();
@@ -52,5 +55,9 @@ public class IsThisMobileNumCorrect extends PageObjectBase {
   public void clickOptionNo() {
     waitForElement(optionNo, "optionNo");
     optionNo.click();
+  }
+
+  public String displayedMobileNumber() {
+    return displayedMobileNumber.getText();
   }
 }
