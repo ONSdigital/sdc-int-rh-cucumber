@@ -41,7 +41,8 @@ public class PageTracker {
     REGISTER_CHILD_SCHOOL("Select school - ONS Surveys", "NA"),
     REGISTER_CHILD_DOB("Enter date of birth - ONS Surveys", "NA"),
     REVIEW_CHILD_DETAIL("Child summary - ONS Surveys", "NA"),
-    REGISTRATION_OF_CHILD_CONFIRMATION("Registration complete - ONS Surveys", "NA");
+    REGISTRATION_OF_CHILD_CONFIRMATION("Registration complete - ONS Surveys", "NA"),
+    ERROR_PAGE("Error - ONS Surveys", "Gwall - ONS Surveys");
 
     private String identiferEnglish;
     private String identiferWelsh;
