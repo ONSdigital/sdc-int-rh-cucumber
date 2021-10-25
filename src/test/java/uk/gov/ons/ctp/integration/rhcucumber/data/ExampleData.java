@@ -69,6 +69,9 @@ public class ExampleData {
     cc.setSample(sample);
     cc.setSampleSensitive(sampleSensitive);
     cc.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    cc.setCaseRef("10000000017");
+    cc.setCreatedAt(Date.from(Instant.parse("2021-01-01T01:02:03.456Z")));
+    cc.setLastUpdatedAt(Date.from(Instant.parse("2021-10-10T00:00:00.000Z")));
     return cc;
   }
 
