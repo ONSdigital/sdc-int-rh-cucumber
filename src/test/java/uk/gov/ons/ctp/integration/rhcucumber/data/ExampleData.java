@@ -143,11 +143,9 @@ public class ExampleData {
     newCaseSampleSensitive.setChildFirstName("Jo");
     newCaseSampleSensitive.setChildMiddleNames("Mary");
     newCaseSampleSensitive.setChildLastName("Bloggs");
-    newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");
-    newCaseSampleSensitive.setParentMobileNumber("07312345678");
     newCaseSampleSensitive.setChildDob(LocalDate.parse("2010-12-31"));
-    newCaseSampleSensitive.setChildEmailAddress("Jane.M.Bloggs@email.com");
-    newCaseSampleSensitive.setChildMobileNumber("07387654321");
+    newCaseSampleSensitive.setEmailAddress("Jane.M.Bloggs@email.com");
+    newCaseSampleSensitive.setMobileNumber("07387654321");
     return newCaseSampleSensitive;
   }
 }

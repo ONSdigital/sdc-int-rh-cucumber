@@ -26,7 +26,7 @@ If you are running locally you can run a test script to verify that they are run
 
 To run a single test use its tag, for example for the T65 test:
 
-    $ ./run.sh -Dcucumber.filter.tags="@RequestUAC-TestT65
+    $ ./run.sh -Dcucumber.filter.tags="@RequestUAC-TestT65"
 
 ## Running services and tests in local Docker
 
