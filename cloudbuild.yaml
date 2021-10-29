@@ -32,8 +32,10 @@ steps:
     - 'pipefail'
     - '-c'
     - |-
+      ls -al
       rm -rf .m2
       rm m2.tar.gz
+      ls -al
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'europe-west2-docker.pkg.dev/ons-ci-int/int-docker-snapshot/rh-cucumber:$BRANCH_NAME-$SHORT_SHA', '-f', 'cloudbuild.docker', '.' ]
