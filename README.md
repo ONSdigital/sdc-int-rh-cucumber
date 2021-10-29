@@ -1,6 +1,5 @@
 # ONS SDC Integrations Team RespondentHome Cucumber
 
-
 ## Prerequisites
 
 To run the RH Cucumber tests the following services will need to be running:
