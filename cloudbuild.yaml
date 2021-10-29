@@ -29,7 +29,7 @@ steps:
     args: ['cp', 'm2.tar.gz', 'gs://ons-ci-int-cloudbuild-maven-cache/m2.tar.gz']
 
   - name: 'bash'
-    args: ['ls'. '-al']
+    args: ['ls', '-al']
 
 timeout: '2400s'
 images: [ 'europe-west2-docker.pkg.dev/ons-ci-int/int-docker-snapshot/rh-cucumber:$BRANCH_NAME-$SHORT_SHA' ]
