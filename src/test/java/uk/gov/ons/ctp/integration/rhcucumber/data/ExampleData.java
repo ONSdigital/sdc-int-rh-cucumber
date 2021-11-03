@@ -29,6 +29,15 @@ public class ExampleData {
     sample.setPostcode("EX1 2TD");
     sample.setRegion("E");
     sample.setUprn("10023122451");
+
+    sample.setGor9d("E12000009");
+    sample.setLaCode("EX");
+    sample.setUprnLatitude("50.72116");
+    sample.setUprnLongitude("-3.53363");
+
+    sample.setQuestionnaire("12345");
+    sample.setSampleUnitRef("REF-4321");
+    sample.setCohort(23);
     return sample;
   }
 
@@ -41,6 +50,15 @@ public class ExampleData {
     sample.setPostcode("LL1 2TD");
     sample.setRegion("W");
     sample.setUprn("10023122451");
+
+    sample.setGor9d("W99999999");
+    sample.setLaCode("BA");
+    sample.setUprnLatitude("53.22896");
+    sample.setUprnLongitude("-4.12912");
+
+    sample.setQuestionnaire("12345");
+    sample.setSampleUnitRef("REF-4321");
+    sample.setCohort(23);
     return sample;
   }
 
