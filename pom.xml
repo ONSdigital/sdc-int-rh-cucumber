@@ -11,7 +11,7 @@
   <parent>
     <groupId>ons.sdc.int.common</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.42</version>
+    <version>1.0.45</version>
   </parent>
 
   <properties>
@@ -39,7 +39,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
+      <groupId>com.google.cloud</groupId>
       <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
     </dependency>
 
