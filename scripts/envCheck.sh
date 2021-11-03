@@ -13,7 +13,7 @@ pubsub_emulator_port="9808"
 redis_port="6379"
 rh_service_port="8071"
 rhui_port="9092"
-ccui_port="5000"
+default_flask_port="5000"
 
 error_found=0
 
@@ -31,8 +31,6 @@ function verify_service_not_running {
   then 
     echo "$service_name: UNEXPECTEDLY RUNNING Response=$status  Expected:$expected_status"
     error_found=1
-  else 
-    echo "$service_name: ok - not running as expected"
   fi
 }
 
@@ -70,13 +68,13 @@ function verify_redis_running {
 
 
 # Check to see that the required services appear to be running
-verify_service_running "Mock Envoy     " "http://localhost:$mock_envoy_port/info" "200" 
-verify_service_running "Mock AI        " "http://localhost:$mock_ai_port/info" "200" 
-verify_service_running "PubSub emulator" "http://localhost:$pubsub_emulator_port" "200"
+verify_service_running     "Mock Envoy     " "http://localhost:$mock_envoy_port/info" "200" 
+verify_service_running     "Mock AI        " "http://localhost:$mock_ai_port/info" "200" 
+verify_service_running     "PubSub emulator" "http://localhost:$pubsub_emulator_port" "200"
 verify_redis_running "localhost" "$redis_port"
-verify_service_running "RH Service     " "http://localhost:$rh_service_port/info" "200"
-verify_service_running "RH UI          " "http://localhost:$rhui_port/info" "200"
-verify_service_not_running "CC UI          " "http://localhost:$ccui_port/info" "000"
+verify_service_running     "RH Service     " "http://localhost:$rh_service_port/info" "200"
+verify_service_running     "RH UI          " "http://localhost:$rhui_port/info" "200"
+verify_service_not_running "Flask app      " "http://localhost:$default_flask_port" "000"
 
 
 # Complain if any services not running
