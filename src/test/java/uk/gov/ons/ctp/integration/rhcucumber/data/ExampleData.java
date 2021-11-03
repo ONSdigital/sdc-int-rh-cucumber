@@ -96,7 +96,7 @@ public class ExampleData {
     uac.setReceiptReceived(false);
     uac.setMetadata(new WaveMetadata(94));
     uac.setEqLaunched(false);
-    
+
     return uac;
   }
 
@@ -105,22 +105,21 @@ public class ExampleData {
     surveyUpdate.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     surveyUpdate.setName("LMS");
     surveyUpdate.setSampleDefinitionUrl("test/social.json");
-    surveyUpdate.setSampleDefinition("[\n"
-        + "      {\n"
-        + "        \"columnName\": \"addressLine1\",\n"
-        + "        \"rules\": [\n"
-        + "          {\n"
-        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.MandatoryRule\"\n"
-        + "          },\n"
-        + "          {\n"
-        + "            \"className\": \"uk.gov.ons.ssdc.common.validation.LengthRule\",\n"
-        + "            \"maxLength\": 60\n"
-        + "          }\n"
-        + "        ]\n"
-        + "      }]");
-    surveyUpdate.setMetadata("{\n"
-        + "        \"ex_e4\": true\n"
-        + "      }");
+    surveyUpdate.setSampleDefinition(
+        "[\n"
+            + "      {\n"
+            + "        \"columnName\": \"addressLine1\",\n"
+            + "        \"rules\": [\n"
+            + "          {\n"
+            + "            \"className\": \"uk.gov.ons.ssdc.common.validation.MandatoryRule\"\n"
+            + "          },\n"
+            + "          {\n"
+            + "            \"className\": \"uk.gov.ons.ssdc.common.validation.LengthRule\",\n"
+            + "            \"maxLength\": 60\n"
+            + "          }\n"
+            + "        ]\n"
+            + "      }]");
+    surveyUpdate.setMetadata("{\n" + "        \"ex_e4\": true\n" + "      }");
     return surveyUpdate;
   }
 
@@ -143,11 +142,9 @@ public class ExampleData {
     newCaseSampleSensitive.setChildFirstName("Jo");
     newCaseSampleSensitive.setChildMiddleNames("Mary");
     newCaseSampleSensitive.setChildLastName("Bloggs");
-    newCaseSampleSensitive.setParentEmailAddress("Mike.J.Bloggs@email.com");
-    newCaseSampleSensitive.setParentMobileNumber("07312345678");
     newCaseSampleSensitive.setChildDob(LocalDate.parse("2010-12-31"));
-    newCaseSampleSensitive.setChildEmailAddress("Jane.M.Bloggs@email.com");
-    newCaseSampleSensitive.setChildMobileNumber("07387654321");
+    newCaseSampleSensitive.setEmailAddress("Jane.M.Bloggs@email.com");
+    newCaseSampleSensitive.setMobileNumber("07387654321");
     return newCaseSampleSensitive;
   }
 }

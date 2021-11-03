@@ -760,14 +760,14 @@ public class RhSteps extends StepsBase {
   public void iEnterAValidMobileNumber() {
     pages
         .getRegisterParentMobile()
-        .addTextToMobileNumBox(context.familyInformation.getParentMobileNumber());
+        .addTextToMobileNumBox(context.familyInformation.getMobileNumber());
     pages.getRegisterParentMobile().clickContinueButton();
   }
 
   @Given("The number is correct and I select the “Yes, my mobile number is correct“ button")
   public void theNumberIsCorrectISelectTheButton() {
     String expectedMobileNumber = pages.getIsThisMobileNumCorrect().displayedMobileNumber();
-    assertEquals(context.familyInformation.getParentMobileNumber(), expectedMobileNumber);
+    assertEquals(context.familyInformation.getMobileNumber(), expectedMobileNumber);
     pages.getIsThisMobileNumCorrect().clickOptionYes();
   }
 
