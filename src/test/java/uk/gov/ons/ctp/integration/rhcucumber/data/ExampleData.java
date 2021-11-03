@@ -81,7 +81,7 @@ public class ExampleData {
       CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
-    cc.setRefusalReceived("CENSUS");
+    cc.setRefusalReceived("HARD_REFUSAL");
     cc.setCollectionExerciseId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
     cc.setInvalid(false);
     cc.setSample(sample);
