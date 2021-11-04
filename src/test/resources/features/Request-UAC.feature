@@ -19,7 +19,7 @@ Feature: Request-UAC
     Given I am a respondent and I am on the RH Start Page <country>
     When I click on request a new access code
     Then I am presented with a page to enter my postcode on
-    
+
     # WRITEME - RHUI not ready yet.
     # And I enter the invalid UK postcode "aaaaa" into the postcode textbox
     # And select Continue
@@ -40,7 +40,7 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    When I select the address <street> and click continue
+    When I select the first address and click continue
     Then I am presented with a page displaying the expected address
 
     Examples:
@@ -59,7 +59,7 @@ Feature: Request-UAC
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
     Then I select the first address and click continue
-    Given I am presented with a page displaying the address <address>
+    Given I am presented with a page displaying the expected address
     When I select the ‘No, I need to change the address’ option and click continue
     Then I am presented with a page to enter my postcode on
 
@@ -82,8 +82,8 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    Then I select the address <street> and click continue
-    Given I am presented with a page displaying the address <address>
+    Then I select the first address and click continue
+    Given I am presented with a page displaying the expected address
     When I select the ‘YES, This address is correct’ option and click continue
     And the respondent sees the Household Interstitial page and clicks continue
     Then I am presented with a page asking text or post
@@ -116,8 +116,8 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    Then I select the address <street> and click continue
-    Given I am presented with a page displaying the address <address>
+    Then I select the first address and click continue
+    Given I am presented with a page displaying the expected address
     When I select the ‘YES, This address is correct’ option and click continue
     And the respondent sees the Household Interstitial page and clicks continue
     Then I am presented with a page asking text or post
@@ -148,8 +148,8 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    Then I select the address <street> and click continue
-    Given I am presented with a page displaying the address <address>
+    Then I select the first address and click continue
+    Given I am presented with a page displaying the expected address
     And I select the ‘YES, This address is correct’ option and click continue
     And the respondent sees the Household Interstitial page and clicks continue
     Then I am presented with a page asking text or post
@@ -178,8 +178,8 @@ Feature: Request-UAC
     And select Continue
     Then I am presented with a page to select an address from
     Given a number of addresses is displayed
-    Then I select the address <street> and click continue
-    Given I am presented with a page displaying the address <address>
+    Then I select the first address and click continue
+    Given I am presented with a page displaying the expected address
     When I select the ‘YES, This address is correct’ option and click continue
     And the respondent sees the Household Interstitial page and clicks continue
     Then I am presented with a page asking text or post

@@ -9,16 +9,30 @@
 
 mock_envoy_port="8181" 
 mock_ai_port="8162"
-pubsub_emulator_port="8085"
+pubsub_emulator_port="9808"
 redis_port="6379"
 rh_service_port="8071"
 rhui_port="9092"
+default_flask_port="5000"
 
 error_found=0
 
 RED='\033[0;31m'
 NO_COLOUR='\033[0m'
 
+function verify_service_not_running {
+  service_name=$1
+  url=$2
+  expected_status=$3
+
+  status=$(curl -s -o /dev/null -w '%{http_code}' $url)
+
+  if [ $status != $expected_status ]
+  then 
+    echo "$service_name: UNEXPECTEDLY RUNNING Response=$status  Expected:$expected_status"
+    error_found=1
+  fi
+}
 
 function verify_service_running {
   service_name=$1
@@ -54,18 +68,19 @@ function verify_redis_running {
 
 
 # Check to see that the required services appear to be running
-verify_service_running "Mock Envoy     " "http://localhost:$mock_envoy_port/info" "200" 
-verify_service_running "Mock AI        " "http://localhost:$mock_ai_port/info" "200" 
-verify_service_running "PubSub emulator" "http://localhost:$pubsub_emulator_port" "200"
+verify_service_running     "Mock Envoy     " "http://localhost:$mock_envoy_port/info" "200" 
+verify_service_running     "Mock AI        " "http://localhost:$mock_ai_port/info" "200" 
+verify_service_running     "PubSub emulator" "http://localhost:$pubsub_emulator_port" "200"
 verify_redis_running "localhost" "$redis_port"
-verify_service_running "RH Service     " "http://localhost:$rh_service_port/info" "200"
-verify_service_running "RH UI          " "http://localhost:$rhui_port/info" "200"
+verify_service_running     "RH Service     " "http://localhost:$rh_service_port/info" "200"
+verify_service_running     "RH UI          " "http://localhost:$rhui_port/info" "200"
+verify_service_not_running "Flask app      " "http://localhost:$default_flask_port" "000"
 
 
 # Complain if any services not running
 if [ $error_found != 0 ]
 then
-  echo -e "${RED}ERROR: At least one service is not running${NO_COLOUR}"
+  echo -e "${RED}ERROR: At least one service is responding incorrectly${NO_COLOUR}"
   exit 1
 fi
 

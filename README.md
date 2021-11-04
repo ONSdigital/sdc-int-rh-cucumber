@@ -26,7 +26,7 @@ If you are running locally you can run a test script to verify that they are run
 
 To run a single test use its tag, for example for the T65 test:
 
-    $ ./run.sh -Dcucumber.filter.tags="@RequestUAC-TestT65
+    $ ./run.sh -Dcucumber.filter.tags="@RequestUAC-TestT65"
 
 ## Running services and tests in local Docker
 
@@ -64,4 +64,4 @@ If Docker is running an old version of rh-ui or another service then you can add
     $ docker-compose -f <service.yml> up --force-recreate -d  
     
 There are other solutions, but this one came from https://vsupalov.com/docker-compose-runs-old-containers/
-
+  
