@@ -48,5 +48,5 @@ cloudStorage:
 pubsub:
   projectid: local
   emulator:
-    host: localhost:9808
+    host: localhost:8085
     use: true
