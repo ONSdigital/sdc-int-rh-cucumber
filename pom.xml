@@ -11,7 +11,7 @@
   <parent>
     <groupId>ons.sdc.int.common</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.45</version>
+    <version>1.0.46</version>
   </parent>
 
   <properties>
@@ -139,6 +139,12 @@
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>test-framework</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ons.sdc.int.common</groupId>
+      <artifactId>util-framework</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <!-- ONS dependencies end -->

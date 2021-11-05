@@ -13,6 +13,7 @@ import uk.gov.ons.ctp.common.event.model.GenericEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
 import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
+import uk.gov.ons.ctp.common.pubsub.SubscriptionSuffix;
 import uk.gov.ons.ctp.common.util.UacUtil;
 import uk.gov.ons.ctp.common.util.WebDriverFactory;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
@@ -101,13 +102,13 @@ public abstract class StepsBase {
   // - event validation helpers ...
 
   void emptyEventQueue(TopicType eventType) throws Exception {
-    pubSub.flushSubscription(eventType);
+    pubSub.flushSubscription(eventType, SubscriptionSuffix.CUC);
   }
 
   void assertNewEventHasFired(TopicType eventType) throws Exception {
 
     final GenericEvent event =
-        (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(event);
     assertNotNull(event.getHeader());
@@ -119,7 +120,7 @@ public abstract class StepsBase {
 
     UacAuthenticateEvent event =
         (UacAuthenticateEvent)
-            pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
+            pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(event);
 
@@ -135,7 +136,7 @@ public abstract class StepsBase {
     TopicType eventType = TopicType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
-        (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -150,7 +151,7 @@ public abstract class StepsBase {
     TopicType eventType = TopicType.FULFILMENT;
 
     FulfilmentEvent fulfilmentRequestedEvent =
-        (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS);
+        (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
