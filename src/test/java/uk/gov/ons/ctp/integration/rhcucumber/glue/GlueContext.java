@@ -14,7 +14,7 @@ import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchPayload;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchResponse;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
-import uk.gov.ons.ctp.common.event.model.UacAuthenticatePayload;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticationPayload;
 import uk.gov.ons.ctp.common.event.model.UacUpdate;
 import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 
@@ -34,8 +34,8 @@ public class GlueContext {
   CollectionExercise collectionExercise;
   UacUpdate uacPayload;
   String fulfilmentRequestedCode;
-  Header respondentAuthenticatedHeader;
-  UacAuthenticatePayload respondentAuthenticatedPayload;
+  Header respondentAuthenticationHeader;
+  UacAuthenticationPayload respondentAuthenticationPayload;
   SurveyLaunchEvent surveyLaunchedEvent;
   Header surveyLaunchedHeader;
   SurveyLaunchPayload surveyLaunchedPayload;

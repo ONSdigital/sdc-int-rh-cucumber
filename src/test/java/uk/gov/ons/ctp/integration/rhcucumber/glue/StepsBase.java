@@ -11,7 +11,7 @@ import uk.gov.ons.ctp.common.event.TopicType;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
 import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
-import uk.gov.ons.ctp.common.event.model.UacAuthenticateEvent;
+import uk.gov.ons.ctp.common.event.model.UacAuthenticationEvent;
 import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
 import uk.gov.ons.ctp.common.pubsub.SubscriptionSuffix;
 import uk.gov.ons.ctp.common.util.UacUtil;
@@ -114,21 +114,21 @@ public abstract class StepsBase {
     assertNotNull(event.getHeader());
   }
 
-  void assertNewRespondantAuthenticatedEventHasFired() throws Exception {
+  void assertNewRespondantAuthenticationEventHasFired() throws Exception {
 
-    TopicType eventType = TopicType.UAC_AUTHENTICATE;
+    TopicType eventType = TopicType.UAC_AUTHENTICATION;
 
-    UacAuthenticateEvent event =
-        (UacAuthenticateEvent)
+    UacAuthenticationEvent event =
+        (UacAuthenticationEvent)
             pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(event);
 
-    context.respondentAuthenticatedHeader = event.getHeader();
-    assertNotNull(context.respondentAuthenticatedHeader);
+    context.respondentAuthenticationHeader = event.getHeader();
+    assertNotNull(context.respondentAuthenticationHeader);
 
-    context.respondentAuthenticatedPayload = event.getPayload();
-    assertNotNull(context.respondentAuthenticatedPayload);
+    context.respondentAuthenticationPayload = event.getPayload();
+    assertNotNull(context.respondentAuthenticationPayload);
   }
 
   void assertNewSurveyLaunchedEventHasFired() throws Exception {
@@ -166,8 +166,8 @@ public abstract class StepsBase {
     switch (eventType) {
       case FULFILMENT:
         return FulfilmentEvent.class;
-      case UAC_AUTHENTICATE:
-        return UacAuthenticateEvent.class;
+      case UAC_AUTHENTICATION:
+        return UacAuthenticationEvent.class;
       case SURVEY_LAUNCH:
         return SurveyLaunchEvent.class;
       default:
