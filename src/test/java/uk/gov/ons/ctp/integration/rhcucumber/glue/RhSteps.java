@@ -276,9 +276,9 @@ public class RhSteps extends StepsBase {
     EqValidator.clickThoughToEq(driver, context);
   }
 
-  @Given("an empty queue exists for sending Respondent Authenticated events")
-  public void emptyEventQueueForRespondentAuthenticated() throws Exception {
-    emptyEventQueue(TopicType.UAC_AUTHENTICATE);
+  @Given("an empty queue exists for sending Respondent Authentication events")
+  public void emptyEventQueueForRespondentAuthentication() throws Exception {
+    emptyEventQueue(TopicType.UAC_AUTHENTICATION);
   }
 
   @Given("an empty queue exists for sending Survey Launched events")
@@ -291,9 +291,9 @@ public class RhSteps extends StepsBase {
     emptyEventQueue(TopicType.FULFILMENT);
   }
 
-  @Then("a Respondent Authenticated event is sent to RM")
-  public void verifyRespondentAuthenticatedEventSent() throws Exception {
-    assertNewRespondantAuthenticatedEventHasFired();
+  @Then("a Respondent Authentication event is sent to RM")
+  public void verifyRespondentAuthenticationEventSent() throws Exception {
+    assertNewRespondantAuthenticationEventHasFired();
   }
 
   @Then("a Survey Launched event is sent to RM")
@@ -611,15 +611,15 @@ public class RhSteps extends StepsBase {
     assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
   }
 
-  @And("the respondentAuthenticatedHeader contains the correct values")
-  public void theRespondentAuthenticatedHeaderContainsTheCorrectValues() {
-    assertEquals(EventTopic.UAC_AUTHENTICATE, context.respondentAuthenticatedHeader.getTopic());
-    assertEquals(Source.RESPONDENT_HOME.name(), context.respondentAuthenticatedHeader.getSource());
-    assertEquals(Channel.RH, context.respondentAuthenticatedHeader.getChannel());
-    assertNotNull(context.respondentAuthenticatedHeader.getDateTime());
-    assertNotNull(context.respondentAuthenticatedHeader.getMessageId());
-    assertNotNull(context.respondentAuthenticatedPayload.getResponse());
-    assertNotNull(context.respondentAuthenticatedPayload.getResponse().getQuestionnaireId());
+  @And("the respondentAuthenticationHeader contains the correct values")
+  public void theRespondentAuthenticationHeaderContainsTheCorrectValues() {
+    assertEquals(EventTopic.UAC_AUTHENTICATION, context.respondentAuthenticationHeader.getTopic());
+    assertEquals(Source.RESPONDENT_HOME.name(), context.respondentAuthenticationHeader.getSource());
+    assertEquals(Channel.RH, context.respondentAuthenticationHeader.getChannel());
+    assertNotNull(context.respondentAuthenticationHeader.getDateTime());
+    assertNotNull(context.respondentAuthenticationHeader.getMessageId());
+    assertNotNull(context.respondentAuthenticationPayload.getResponse());
+    assertNotNull(context.respondentAuthenticationPayload.getResponse().getQuestionnaireId());
   }
 
   @And("the surveyLaunchedHeader contains the correct values")

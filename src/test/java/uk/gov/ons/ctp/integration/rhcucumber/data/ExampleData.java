@@ -108,7 +108,7 @@ public class ExampleData {
   public static UacUpdate createUac(String uacHash, String caseId) {
     UacUpdate uac = new UacUpdate();
     uac.setCaseId(caseId);
-    uac.setActive("true");
+    uac.setActive(true);
     uac.setUacHash(uacHash);
     uac.setQid("3110000009");
     uac.setReceiptReceived(false);
