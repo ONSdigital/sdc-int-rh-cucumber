@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.JweDecryptor;
@@ -41,9 +42,12 @@ public final class EqValidator {
           "region_code",
           "response_id",
           "ru_ref",
-          "survey",
+          "survey_url",
           "tx_id",
-          "user_id");
+          "user_id",
+          "schema_name",
+          "period_str",
+          "case_ref");
 
   static void clickThoughToEq(WebDriver driver, GlueContext context) {
     if (context.errorMessageContainingCallToEQ == null) {
@@ -105,13 +109,15 @@ public final class EqValidator {
         "England House, England Street",
         result1.get("display_address").trim());
     assertEquals("Must have the correct channel", "rh", result1.get("channel"));
-    assertEquals("Must have the correct eq id", "CENSUS", result1.get("eq_id").toUpperCase());
-    assertEquals("Must have the correct UPRN value", "10023122451", result1.get("ru_ref"));
+    assertEquals("Must have the correct eq id", "9999", result1.get("eq_id").toUpperCase());
     assertEquals("Must have the correct language_code value", "en", result1.get("language_code"));
     assertEquals(
         "Must have the correct collection_exercise_sid value",
         "4a6c6e0a-6384-4da8-8c3c-7c56a801f792",
         result1.get("collection_exercise_sid"));
-    assertEquals("Must have the correct survey value", "CENSUS", result1.get("survey"));
+    assertEquals("Must have the correct survey url",
+        "https://raw.githubusercontent.com/ONSdigital/eq-questionnaire-runner/"
+            + "social-demo/test_schemas/en/zzz_9999.json",
+        result1.get("survey_url"));
   }
 }
