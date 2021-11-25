@@ -108,7 +108,9 @@ public abstract class StepsBase {
   void assertNewEventHasFired(TopicType eventType) throws Exception {
 
     final GenericEvent event =
-        (GenericEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
+        (GenericEvent)
+            pubSub.getMessage(
+                eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(event);
     assertNotNull(event.getHeader());
@@ -120,7 +122,8 @@ public abstract class StepsBase {
 
     UacAuthenticationEvent event =
         (UacAuthenticationEvent)
-            pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
+            pubSub.getMessage(
+                eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(event);
 
@@ -136,7 +139,9 @@ public abstract class StepsBase {
     TopicType eventType = TopicType.SURVEY_LAUNCH;
 
     context.surveyLaunchedEvent =
-        (SurveyLaunchEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
+        (SurveyLaunchEvent)
+            pubSub.getMessage(
+                eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     assertNotNull(context.surveyLaunchedEvent);
 
@@ -151,7 +156,9 @@ public abstract class StepsBase {
     TopicType eventType = TopicType.FULFILMENT;
 
     FulfilmentEvent fulfilmentRequestedEvent =
-        (FulfilmentEvent) pubSub.getMessage(eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
+        (FulfilmentEvent)
+            pubSub.getMessage(
+                eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
     context.fulfilmentRequestedCode =
         fulfilmentRequestedEvent.getPayload().getFulfilmentRequest().getFulfilmentCode();
