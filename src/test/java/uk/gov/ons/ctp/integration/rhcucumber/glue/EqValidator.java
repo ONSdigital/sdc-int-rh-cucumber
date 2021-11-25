@@ -43,7 +43,6 @@ public final class EqValidator {
           "ru_ref",
           "survey_url",
           "tx_id",
-          "user_id",
           "schema_name",
           "period_str",
           "case_ref");
