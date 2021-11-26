@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.event.TopicType;
+import uk.gov.ons.ctp.common.event.model.EqLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.FulfilmentEvent;
 import uk.gov.ons.ctp.common.event.model.GenericEvent;
-import uk.gov.ons.ctp.common.event.model.SurveyLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.UacAuthenticationEvent;
 import uk.gov.ons.ctp.common.pubsub.PubSubHelper;
 import uk.gov.ons.ctp.common.pubsub.SubscriptionSuffix;
@@ -134,22 +134,22 @@ public abstract class StepsBase {
     assertNotNull(context.respondentAuthenticationPayload);
   }
 
-  void assertNewSurveyLaunchedEventHasFired() throws Exception {
+  void assertNewEqLaunchedEventHasFired() throws Exception {
 
-    TopicType eventType = TopicType.SURVEY_LAUNCH;
+    TopicType eventType = TopicType.EQ_LAUNCH;
 
-    context.surveyLaunchedEvent =
-        (SurveyLaunchEvent)
+    context.eqLaunchedEvent =
+        (EqLaunchEvent)
             pubSub.getMessage(
                 eventType, eventClass(eventType), PUBSUB_TIMEOUT_MS, SubscriptionSuffix.CUC);
 
-    assertNotNull(context.surveyLaunchedEvent);
+    assertNotNull(context.eqLaunchedEvent);
 
-    context.surveyLaunchedHeader = context.surveyLaunchedEvent.getHeader();
-    assertNotNull(context.surveyLaunchedHeader);
+    context.eqLaunchedHeader = context.eqLaunchedEvent.getHeader();
+    assertNotNull(context.eqLaunchedHeader);
 
-    context.surveyLaunchedPayload = context.surveyLaunchedEvent.getPayload();
-    assertNotNull(context.surveyLaunchedPayload);
+    context.eqLaunchedPayload = context.eqLaunchedEvent.getPayload();
+    assertNotNull(context.eqLaunchedPayload);
   }
 
   void assertNewFulfilmentEventHasFired() throws Exception {
@@ -175,8 +175,8 @@ public abstract class StepsBase {
         return FulfilmentEvent.class;
       case UAC_AUTHENTICATION:
         return UacAuthenticationEvent.class;
-      case SURVEY_LAUNCH:
-        return SurveyLaunchEvent.class;
+      case EQ_LAUNCH:
+        return EqLaunchEvent.class;
       default:
         throw new IllegalArgumentException("Cannot create event for event type: " + eventType);
     }
