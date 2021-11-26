@@ -108,6 +108,9 @@ public class ExampleData {
   public static UacUpdate createUac(String uacHash, String caseId) {
     UacUpdate uac = new UacUpdate();
     uac.setCaseId(caseId);
+    uac.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    uac.setCollectionExerciseId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    uac.setCollectionInstrumentUrl("url");
     uac.setActive(true);
     uac.setUacHash(uacHash);
     uac.setQid("3110000009");
