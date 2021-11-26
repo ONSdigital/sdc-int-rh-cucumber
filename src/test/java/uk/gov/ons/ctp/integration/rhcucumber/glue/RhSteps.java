@@ -281,9 +281,9 @@ public class RhSteps extends StepsBase {
     emptyEventQueue(TopicType.UAC_AUTHENTICATION);
   }
 
-  @Given("an empty queue exists for sending Survey Launched events")
-  public void emptyEventQueuForSurveyLaunched() throws Exception {
-    emptyEventQueue(TopicType.SURVEY_LAUNCH);
+  @Given("an empty queue exists for sending EQ Launched events")
+  public void emptyEventQueuForEqLaunched() throws Exception {
+    emptyEventQueue(TopicType.EQ_LAUNCH);
   }
 
   @Given("an empty queue exists for sending Fulfilment Requested events")
@@ -296,9 +296,9 @@ public class RhSteps extends StepsBase {
     assertNewRespondantAuthenticationEventHasFired();
   }
 
-  @Then("a Survey Launched event is sent to RM")
-  public void verifySurveyLaunchedEventSent() throws Exception {
-    assertNewSurveyLaunchedEventHasFired();
+  @Then("an EQ Launched event is sent to RM")
+  public void verifyEqLaunchedEventSent() throws Exception {
+    assertNewEqLaunchedEventHasFired();
   }
 
   @Then("a FulfilmentRequested event is sent to RM")
@@ -622,20 +622,20 @@ public class RhSteps extends StepsBase {
     assertNotNull(context.respondentAuthenticationPayload.getResponse().getQuestionnaireId());
   }
 
-  @And("the surveyLaunchedHeader contains the correct values")
-  public void theSurveyLaunchedHeaderContainsTheCorrectValues() {
-    assertEquals(EventTopic.SURVEY_LAUNCH, context.surveyLaunchedHeader.getTopic());
-    assertEquals(Source.RESPONDENT_HOME.name(), context.surveyLaunchedHeader.getSource());
-    assertEquals(Channel.RH, context.surveyLaunchedHeader.getChannel());
-    assertNotNull(context.surveyLaunchedHeader.getDateTime());
-    assertNotNull(context.surveyLaunchedHeader.getMessageId());
-    surveyLaunchedPayloadHasResponse();
-    assertNotNull(context.surveyLaunchedResponse.getQuestionnaireId());
+  @And("the eqLaunchedHeader contains the correct values")
+  public void theEqLaunchedHeaderContainsTheCorrectValues() {
+    assertEquals(EventTopic.EQ_LAUNCH, context.eqLaunchedHeader.getTopic());
+    assertEquals(Source.RESPONDENT_HOME.name(), context.eqLaunchedHeader.getSource());
+    assertEquals(Channel.RH, context.eqLaunchedHeader.getChannel());
+    assertNotNull(context.eqLaunchedHeader.getDateTime());
+    assertNotNull(context.eqLaunchedHeader.getMessageId());
+    eqLaunchedPayloadHasResponse();
+    assertNotNull(context.eqLaunchedResponse.getQuestionnaireId());
   }
 
-  private void surveyLaunchedPayloadHasResponse() {
-    context.surveyLaunchedResponse = context.surveyLaunchedPayload.getResponse();
-    assertNotNull(context.surveyLaunchedResponse);
+  private void eqLaunchedPayloadHasResponse() {
+    context.eqLaunchedResponse = context.eqLaunchedPayload.getResponse();
+    assertNotNull(context.eqLaunchedResponse);
   }
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")
