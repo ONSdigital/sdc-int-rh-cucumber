@@ -41,6 +41,7 @@ public final class EqValidator {
           "region_code",
           "response_id",
           "ru_ref",
+          "user_id",
           "survey_url",
           "tx_id",
           "schema_name",
