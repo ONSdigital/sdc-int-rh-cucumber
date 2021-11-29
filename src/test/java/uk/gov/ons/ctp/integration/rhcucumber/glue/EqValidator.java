@@ -41,11 +41,14 @@ public final class EqValidator {
           "region_code",
           "response_id",
           "ru_ref",
+          "user_id",
           "survey_url",
           "tx_id",
           "schema_name",
           "period_str",
-          "case_ref");
+          "case_ref",
+          //  ru_name is a temp harcoded value for a show and tell. It will likely be removed or reference another field
+          "ru_name");
 
   static void clickThoughToEq(WebDriver driver, GlueContext context) {
     if (context.errorMessageContainingCallToEQ == null) {
