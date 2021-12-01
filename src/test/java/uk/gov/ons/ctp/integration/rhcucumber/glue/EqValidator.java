@@ -16,6 +16,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.JweDecryptor;
 import uk.gov.ons.ctp.integration.eqlaunch.crypto.KeyStore;
+import uk.gov.ons.ctp.integration.rhcucumber.data.ExampleData;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pageobject.SocialQuestionnaire;
 import uk.gov.ons.ctp.integration.rhcucumber.selenium.pages.Country;
 
@@ -47,7 +48,8 @@ public final class EqValidator {
           "schema_name",
           "period_str",
           "case_ref",
-          //  ru_name is a temp harcoded value for a show and tell. It will likely be removed or reference another field
+          //  ru_name is a temp harcoded value for a show and tell. It will likely be removed or
+          // reference another field
           "ru_name");
 
   static void clickThoughToEq(WebDriver driver, GlueContext context) {
@@ -117,9 +119,6 @@ public final class EqValidator {
         "4a6c6e0a-6384-4da8-8c3c-7c56a801f792",
         result1.get("collection_exercise_sid"));
     assertEquals(
-        "Must have the correct survey url",
-        "https://raw.githubusercontent.com/ONSdigital/eq-questionnaire-runner/"
-            + "social-demo/test_schemas/en/zzz_9999.json",
-        result1.get("survey_url"));
+        "Must have the correct survey url", ExampleData.SURVEY_URL, result1.get("survey_url"));
   }
 }
