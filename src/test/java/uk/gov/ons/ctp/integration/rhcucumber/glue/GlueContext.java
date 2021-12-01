@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CollectionExercise;
+import uk.gov.ons.ctp.common.event.model.EqLaunch;
 import uk.gov.ons.ctp.common.event.model.EqLaunchEvent;
 import uk.gov.ons.ctp.common.event.model.EqLaunchPayload;
-import uk.gov.ons.ctp.common.event.model.EqLaunchResponse;
 import uk.gov.ons.ctp.common.event.model.Header;
 import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.SurveyUpdate;
@@ -35,11 +35,11 @@ public class GlueContext {
   UacUpdate uacPayload;
   String fulfilmentRequestedCode;
   Header respondentAuthenticationHeader;
-  UacAuthenticationPayload respondentAuthenticationPayload;
+  UacAuthenticationPayload uacAuthenticationPayload;
   EqLaunchEvent eqLaunchedEvent;
   Header eqLaunchedHeader;
   EqLaunchPayload eqLaunchedPayload;
-  EqLaunchResponse eqLaunchedResponse;
+  EqLaunch eqLaunched;
   NewCaseSampleSensitive familyInformation;
   boolean eqExists;
 }

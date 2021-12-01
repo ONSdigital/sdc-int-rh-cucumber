@@ -47,7 +47,8 @@ public final class EqValidator {
           "schema_name",
           "period_str",
           "case_ref",
-          //  ru_name is a temp harcoded value for a show and tell. It will likely be removed or reference another field
+          //  ru_name is a temp harcoded value for a show and tell. It will likely be removed or
+          // reference another field
           "ru_name");
 
   static void clickThoughToEq(WebDriver driver, GlueContext context) {

@@ -618,8 +618,8 @@ public class RhSteps extends StepsBase {
     assertEquals(Channel.RH, context.respondentAuthenticationHeader.getChannel());
     assertNotNull(context.respondentAuthenticationHeader.getDateTime());
     assertNotNull(context.respondentAuthenticationHeader.getMessageId());
-    assertNotNull(context.respondentAuthenticationPayload.getResponse());
-    assertNotNull(context.respondentAuthenticationPayload.getResponse().getQuestionnaireId());
+    assertNotNull(context.uacAuthenticationPayload.getUacAuthentication());
+    assertNotNull(context.uacAuthenticationPayload.getUacAuthentication().getQid());
   }
 
   @And("the eqLaunchedHeader contains the correct values")
@@ -630,12 +630,12 @@ public class RhSteps extends StepsBase {
     assertNotNull(context.eqLaunchedHeader.getDateTime());
     assertNotNull(context.eqLaunchedHeader.getMessageId());
     eqLaunchedPayloadHasResponse();
-    assertNotNull(context.eqLaunchedResponse.getQuestionnaireId());
+    assertNotNull(context.eqLaunched.getQid());
   }
 
   private void eqLaunchedPayloadHasResponse() {
-    context.eqLaunchedResponse = context.eqLaunchedPayload.getResponse();
-    assertNotNull(context.eqLaunchedResponse);
+    context.eqLaunched = context.eqLaunchedPayload.getEqLaunch();
+    assertNotNull(context.eqLaunched);
   }
 
   @Given("the respondent selects continue on the confirm your mobile page {string} {}")
