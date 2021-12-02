@@ -130,8 +130,8 @@ public abstract class StepsBase {
     context.respondentAuthenticationHeader = event.getHeader();
     assertNotNull(context.respondentAuthenticationHeader);
 
-    context.respondentAuthenticationPayload = event.getPayload();
-    assertNotNull(context.respondentAuthenticationPayload);
+    context.uacAuthenticationPayload = event.getPayload();
+    assertNotNull(context.uacAuthenticationPayload);
   }
 
   void assertNewEqLaunchedEventHasFired() throws Exception {
