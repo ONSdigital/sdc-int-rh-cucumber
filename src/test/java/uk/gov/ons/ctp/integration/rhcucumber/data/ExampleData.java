@@ -17,6 +17,9 @@ public class ExampleData {
   public static final String DEFAULT_CASE_ID = "c45de4dc-3c3b-11e9-b210-d663bd873d13";
   public static final String VALID_MOBILE_NO = "07700 900345";
   public static final String INVALID_MOBILE_NO = "1234567";
+  public static final String SURVEY_URL =
+      "https://raw.githubusercontent.com/ONSdigital/eq-questionnaire-runner/"
+          + "social-demo/test_schemas/en/zzz_9999.json";
 
   // --- model fixtures below ...
 
@@ -108,6 +111,9 @@ public class ExampleData {
   public static UacUpdate createUac(String uacHash, String caseId) {
     UacUpdate uac = new UacUpdate();
     uac.setCaseId(caseId);
+    uac.setSurveyId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    uac.setCollectionExerciseId("4a6c6e0a-6384-4da8-8c3c-7c56a801f792");
+    uac.setCollectionInstrumentUrl(SURVEY_URL);
     uac.setActive(true);
     uac.setUacHash(uacHash);
     uac.setQid("3110000009");
