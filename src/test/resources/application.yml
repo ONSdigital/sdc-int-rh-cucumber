@@ -50,3 +50,11 @@ pubsub:
   emulator:
     host: localhost:9808
     use: true
+
+spring:
+  cloud:
+    gcp:
+      firestore:
+        project-id: ${GOOGLE_CLOUD_PROJECT}
+
+    

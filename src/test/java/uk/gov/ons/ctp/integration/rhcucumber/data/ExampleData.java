@@ -3,6 +3,8 @@ package uk.gov.ons.ctp.integration.rhcucumber.data;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
 import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
@@ -143,7 +145,9 @@ public class ExampleData {
             + "          }\n"
             + "        ]\n"
             + "      }]");
-    surveyUpdate.setMetadata("{\n" + "        \"ex_e4\": true\n" + "      }");
+    Map<String, Object> meta = new HashMap<>();
+    meta.put("ex_e4", true);
+    surveyUpdate.setMetadata(meta);
     return surveyUpdate;
   }
 
