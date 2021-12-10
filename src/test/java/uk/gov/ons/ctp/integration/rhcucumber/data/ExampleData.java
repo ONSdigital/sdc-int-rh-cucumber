@@ -3,9 +3,10 @@ package uk.gov.ons.ctp.integration.rhcucumber.data;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
-import uk.gov.ons.ctp.common.event.model.CaseUpdateSample;
-import uk.gov.ons.ctp.common.event.model.CaseUpdateSampleSensitive;
 import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
 import uk.gov.ons.ctp.common.event.model.NewCaseSampleSensitive;
@@ -23,51 +24,51 @@ public class ExampleData {
 
   // --- model fixtures below ...
 
-  public static CaseUpdateSample createSample() {
-    CaseUpdateSample sample = new CaseUpdateSample();
-    sample.setAddressLine1("England House");
-    sample.setAddressLine2("England Street");
-    sample.setAddressLine3("Smithfield");
-    sample.setTownName("Exeter");
-    sample.setPostcode("EX1 2TD");
-    sample.setRegion("E");
-    sample.setUprn("10023122451");
+  public static Map<String, String> createSample() {
+    Map<String, String> sample = new LinkedHashMap<>();
+    sample.put("AddressLine1", "England House");
+    sample.put("AddressLine2", "England Street");
+    sample.put("AddressLine3", "Smithfield");
+    sample.put("TownName", "Exeter");
+    sample.put("Postcode", "EX1 2TD");
+    sample.put("Region", "E");
+    sample.put("Uprn", "10023122451");
 
-    sample.setGor9d("E12000009");
-    sample.setLaCode("EX");
-    sample.setUprnLatitude("50.72116");
-    sample.setUprnLongitude("-3.53363");
+    sample.put("Gor9d", "E12000009");
+    sample.put("LaCode", "EX");
+    sample.put("UprnLatitude", "50.72116");
+    sample.put("UprnLongitude", "-3.53363");
 
-    sample.setQuestionnaire("12345");
-    sample.setSampleUnitRef("REF-4321");
-    sample.setCohort("CC3");
+    sample.put("Questionnaire", "12345");
+    sample.put("SampleUnitRef", "REF-4321");
+    sample.put("Cohort", "CC3");
     return sample;
   }
 
-  public static CaseUpdateSample createSampleWales() {
-    CaseUpdateSample sample = new CaseUpdateSample();
-    sample.setAddressLine1("Wales House");
-    sample.setAddressLine2("Wales Street");
-    sample.setAddressLine3("Smithfield");
-    sample.setTownName("Bangor");
-    sample.setPostcode("LL1 2TD");
-    sample.setRegion("W");
-    sample.setUprn("10023122451");
+  public static Map<String, String> createSampleWales() {
+    Map<String, String> sample = new LinkedHashMap<>();
+    sample.put("AddressLine1", "Wales House");
+    sample.put("AddressLine2", "Wales Street");
+    sample.put("AddressLine3", "Smithfield");
+    sample.put("TownName", "Bangor");
+    sample.put("Postcode", "LL1 2TD");
+    sample.put("Region", "W");
+    sample.put("Uprn", "10023122451");
 
-    sample.setGor9d("W99999999");
-    sample.setLaCode("BA");
-    sample.setUprnLatitude("53.22896");
-    sample.setUprnLongitude("-4.12912");
+    sample.put("Gor9d", "W99999999");
+    sample.put("LaCode", "BA");
+    sample.put("UprnLatitude", "53.22896");
+    sample.put("UprnLongitude", "-4.12912");
 
-    sample.setQuestionnaire("12345");
-    sample.setSampleUnitRef("REF-4321");
-    sample.setCohort("CC3");
+    sample.put("Questionnaire", "12345");
+    sample.put("SampleUnitRef", "REF-4321");
+    sample.put("Cohort", "CC3");
     return sample;
   }
 
-  public static CaseUpdateSampleSensitive createSampleSensitive() {
-    CaseUpdateSampleSensitive sampleSensitive = new CaseUpdateSampleSensitive();
-    sampleSensitive.setPhoneNumber(VALID_MOBILE_NO);
+  public static Map<String, String> createSampleSensitive() {
+    Map<String, String> sampleSensitive = new LinkedHashMap<>();
+    sampleSensitive.put("phoneNumber", VALID_MOBILE_NO);
     return sampleSensitive;
   }
 
@@ -81,7 +82,7 @@ public class ExampleData {
   }
 
   public static CaseUpdate createCaseUpdate(
-      CaseUpdateSample sample, CaseUpdateSampleSensitive sampleSensitive, String id) {
+      Map<String, String> sample, Map<String, String> sampleSensitive, String id) {
     CaseUpdate cc = new CaseUpdate();
     cc.setCaseId(id);
     cc.setRefusalReceived("HARD_REFUSAL");
@@ -97,14 +98,14 @@ public class ExampleData {
   }
 
   public static CaseUpdate createCaseUpdate(String id) {
-    CaseUpdateSample sample = createSample();
-    CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
+    Map<String, String> sample = createSample();
+    Map<String, String> sampleSensitive = createSampleSensitive();
     return createCaseUpdate(sample, sampleSensitive, id);
   }
 
   public static CaseUpdate createWelshCaseUpdate(String id) {
-    CaseUpdateSample sample = createSampleWales();
-    CaseUpdateSampleSensitive sampleSensitive = createSampleSensitive();
+    Map<String, String> sample = createSampleWales();
+    Map<String, String> sampleSensitive = createSampleSensitive();
     return createCaseUpdate(sample, sampleSensitive, id);
   }
 
