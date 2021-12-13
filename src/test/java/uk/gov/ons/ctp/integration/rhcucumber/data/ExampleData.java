@@ -3,6 +3,7 @@ package uk.gov.ons.ctp.integration.rhcucumber.data;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,43 +27,43 @@ public class ExampleData {
 
   public static Map<String, String> createSample() {
     Map<String, String> sample = new LinkedHashMap<>();
-    sample.put("AddressLine1", "England House");
-    sample.put("AddressLine2", "England Street");
-    sample.put("AddressLine3", "Smithfield");
-    sample.put("TownName", "Exeter");
-    sample.put("Postcode", "EX1 2TD");
-    sample.put("Region", "E");
-    sample.put("Uprn", "10023122451");
+    sample.put("addressLine1", "England House");
+    sample.put("addressLine2", "England Street");
+    sample.put("addressLine3", "Smithfield");
+    sample.put("townName", "Exeter");
+    sample.put("postcode", "EX1 2TD");
+    sample.put("region", "E");
+    sample.put("uprn", "10023122451");
 
-    sample.put("Gor9d", "E12000009");
-    sample.put("LaCode", "EX");
-    sample.put("UprnLatitude", "50.72116");
-    sample.put("UprnLongitude", "-3.53363");
+    sample.put("gor9d", "E12000009");
+    sample.put("laCode", "EX");
+    sample.put("uprnLatitude", "50.72116");
+    sample.put("uprnLongitude", "-3.53363");
 
-    sample.put("Questionnaire", "12345");
-    sample.put("SampleUnitRef", "REF-4321");
-    sample.put("Cohort", "CC3");
+    sample.put("questionnaire", "12345");
+    sample.put("sampleUnitRef", "REF-4321");
+    sample.put("cohort", "CC3");
     return sample;
   }
 
   public static Map<String, String> createSampleWales() {
     Map<String, String> sample = new LinkedHashMap<>();
-    sample.put("AddressLine1", "Wales House");
-    sample.put("AddressLine2", "Wales Street");
-    sample.put("AddressLine3", "Smithfield");
-    sample.put("TownName", "Bangor");
-    sample.put("Postcode", "LL1 2TD");
-    sample.put("Region", "W");
-    sample.put("Uprn", "10023122451");
+    sample.put("addressLine1", "Wales House");
+    sample.put("addressLine2", "Wales Street");
+    sample.put("addressLine3", "Smithfield");
+    sample.put("townName", "Bangor");
+    sample.put("postcode", "LL1 2TD");
+    sample.put("region", "W");
+    sample.put("uprn", "10023122451");
 
-    sample.put("Gor9d", "W99999999");
-    sample.put("LaCode", "BA");
-    sample.put("UprnLatitude", "53.22896");
-    sample.put("UprnLongitude", "-4.12912");
+    sample.put("gor9d", "W99999999");
+    sample.put("laCode", "BA");
+    sample.put("uprnLatitude", "53.22896");
+    sample.put("uprnLongitude", "-4.12912");
 
-    sample.put("Questionnaire", "12345");
-    sample.put("SampleUnitRef", "REF-4321");
-    sample.put("Cohort", "CC3");
+    sample.put("questionnaire", "12345");
+    sample.put("sampleUnitRef", "REF-4321");
+    sample.put("cohort", "CC3");
     return sample;
   }
 
@@ -144,7 +145,10 @@ public class ExampleData {
             + "          }\n"
             + "        ]\n"
             + "      }]");
-    surveyUpdate.setMetadata("{\n" + "        \"ex_e4\": true\n" + "      }");
+    
+    Map<String, Object> metadata = new HashMap<>();
+    metadata.put("ex_e4", Boolean.TRUE);
+    surveyUpdate.setMetadata(metadata);
     return surveyUpdate;
   }
 
