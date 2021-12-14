@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import uk.gov.ons.ctp.common.event.model.CaseUpdate;
 import uk.gov.ons.ctp.common.event.model.CollectionExercise;
 import uk.gov.ons.ctp.common.event.model.CollectionExerciseMetadata;
@@ -146,8 +147,9 @@ public class ExampleData {
             + "      }]");
 
     Map<String, Object> metadata = new HashMap<>();
-    metadata.put("ex_e4", Boolean.TRUE);
+    metadata.put("ex_e4", true);
     surveyUpdate.setMetadata(metadata);
+    
     return surveyUpdate;
   }
 

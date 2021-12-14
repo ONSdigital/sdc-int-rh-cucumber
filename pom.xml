@@ -11,7 +11,7 @@
   <parent>
     <groupId>ons.sdc.int.common</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.70-259-SNAPSHOT</version>
+    <version>1.0.71-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>ons.sdc.int.common</groupId>
       <artifactId>cucumber-common</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.4</version>
       <scope>test</scope>
     </dependency>
 
