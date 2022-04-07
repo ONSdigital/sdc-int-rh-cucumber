@@ -5,14 +5,15 @@
 
 if [[ -z "$GOOGLE_CLOUD_PROJECT" ]]
 then
-	echo "GOOGLE_CLOUD_PROJECT must be set"
-	exit 1
+	echo "Using firestore emulator and dummy local GCP project"
+	export GOOGLE_CLOUD_PROJECT="dummy-local"
+	export FIRESTORE_EMULATOR_HOST=localhost:8542
 fi
 
 if [[ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]]
 then
-	echo "GOOGLE_APPLICATION_CREDENTIALS must be set"
-	exit 1
+	echo "Using local fake service account credentials"
+	export GOOGLE_APPLICATION_CREDENTIALS=./fake-service-account.json
 fi
 
 which unbuffer >/dev/null 2>&1
