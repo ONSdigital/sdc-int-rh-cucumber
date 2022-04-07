@@ -9,6 +9,7 @@ then
 	export GOOGLE_CLOUD_PROJECT="dummy-local"
 	export FIRESTORE_EMULATOR_HOST=localhost:8542
 fi
+echo "Running against GCP project: $GOOGLE_CLOUD_PROJECT"
 
 if [[ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]]
 then
