@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="GOOGLE_CLOUD_PROJECT" value="dummy-local" />
+      <env name="FIRESTORE_EMULATOR_HOST" value="localhost:8542" />
+      <env name="GOOGLE_APPLICATION_CREDENTIALS" value="./fake-service-account.json" />
+    </envs>
+    <option name="GLUE" value="uk.gov.ons.ctp.integration.rhcucumber.glue" />
+    <module name="rh-cucumber" />
+    <shortenClasspath name="NONE" />
+    <option name="VM_PARAMETERS" value="-Dcucumber.filter.tags=&quot;not @ignore&quot; -Dspring.profiles.active=local --add-opens java.base/java.lang=ALL-UNNAMED" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,16 +1,16 @@
 # ONS SDC Integrations Team RespondentHome Cucumber
 
-
 ## Prerequisites
 
 To run the RH Cucumber tests the following services will need to be running:
- - Mock Envoy
- - Mock AI
- - PubSub emulator
- - Redis
- - RH Service
- - RH UI
- 
+
+- Mock Envoy
+- Mock AI
+- PubSub emulator
+- Redis
+- RH Service
+- RH UI
+
 If you are running locally you can run a test script to verify that they are running:
 
     $ ./scripts/envCheck.sh
@@ -20,7 +20,6 @@ If you are running locally you can run a test script to verify that they are run
     Redis          : ok
     RH Service     : ok
     RH UI          : ok
-
 
 ## Single test execution
 
@@ -53,15 +52,29 @@ To run the services and Cucumber tests:
 
 ## Debugging
 
-To help with debugging you can trigger a file saving of the page content on each page transition. 
+### From the IDE
+
+An Intellij [run config template](/.run/Template%20Cucumber%20Java.run.xml) is provided to make it easy to run and debug
+the tests. This is set up to use the fully local/Firestore emulator config by default. If you're using Intellij, it
+should pick up this template automatically and enable you to run or debug the tests without any extra configuration,
+provided RH service and UI are being run locally with default settings.
+
+If you're using non-default settings, for example using a real remote firestore, you will need to edit the run config to
+match, removing the `FIRESTORE_EMULATOR_HOST` environment variable and setting the project and credentials variables to
+match RH Service.
+
+### Command Line
+
+To help with debugging from the command line you can trigger a file saving of the page content on each page transition.
 
     ./run.sh -DdumpPageContent=true
-    
+
 ## Troubleshooting
 
-If Docker is running an old version of rh-ui or another service then you can add '--force-recreate' to the docker-compose command: 
+If Docker is running an old version of rh-ui or another service then you can add '--force-recreate' to the
+docker-compose command:
 
     $ docker-compose -f <service.yml> up --force-recreate -d  
-    
+
 There are other solutions, but this one came from https://vsupalov.com/docker-compose-runs-old-containers/
  
