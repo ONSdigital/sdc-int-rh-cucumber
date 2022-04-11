@@ -27,7 +27,7 @@ Feature:  UAC-Authentication-Success
     And The Token Is Successfully Decrypted
 
     Examples:
-      | eventType     |
+      | eventType    |
       | "UAC_UPDATE" |
 
   ##SETUP calls the following steps...
@@ -60,7 +60,7 @@ Feature:  UAC-Authentication-Success
     And the respondentAuthenticationHeader contains the correct values
 
     Examples:
-      | eventType     |
+      | eventType    |
       | "UAC_UPDATE" |
 
   ##SETUP calls the following steps...
@@ -97,6 +97,6 @@ Feature:  UAC-Authentication-Success
     And the eqLaunchedHeader contains the correct values
 
     Examples:
-      | eventType     |
+      | eventType    |
       | "UAC_UPDATE" |
 

@@ -14,6 +14,7 @@
 
 Feature: Request-UAC
   I would like to request a new Unique Access Code
+
   @RequestUAC-TestT65 @Setup @TearDown
   Scenario Outline: [CR-T65] Check if an error message is displayed when an incorrect postcode is entered
     Given I am a respondent and I am on the RH Start Page <country>
@@ -26,9 +27,9 @@ Feature: Request-UAC
     # Then an invalid postcode error <errorMessage> appears
 
     Examples:
-      | country | errorMessage |
-      | ENG   | "Enter a valid UK postcode" |
-      | WALES | "Rhowch god post dilys yn y Deyrnas Unedig" |
+      | country | errorMessage                                |
+      | ENG     | "Enter a valid UK postcode"                 |
+      | WALES   | "Rhowch god post dilys yn y Deyrnas Unedig" |
 
   @RequestUAC-TestT67 @Setup @TearDown @ignore
   Scenario Outline: [CR-T67] Check if an address is displayed in ‘Is your address correct?’ page
@@ -44,9 +45,9 @@ Feature: Request-UAC
     Then I am presented with a page displaying the expected address
 
     Examples:
-      | country | postcode   | street              |
-      | ENG   | "EX2 6GA"  | 'England House'     |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' |
+      | country | postcode  | street              |
+      | ENG     | "EX2 6GA" | 'England House'     |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace' |
 
   @RequestUAC-TestT70 @Setup @TearDown @ignore
   Scenario Outline: [CR-T70] User selects NO option on ‘Is your address correct?’ page
@@ -64,9 +65,9 @@ Feature: Request-UAC
     Then I am presented with a page to enter my postcode on
 
     Examples:
-      | country | postcode | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode  | address                                                      |
+      | ENG     | "EX2 6GA" | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
 
   ##SETUP calls the following steps...
   ## Given RM constructs a case_created event and a uac_updated event
@@ -97,16 +98,15 @@ Feature: Request-UAC
     And I am also presented with a link to request a new access code
 
     Examples:
-      | country | postcode   | street              | address                                                      | startsurvey         |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' | 'Start survey'        |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            | "Dechrau'r cyfrifiad" |
+      | country | postcode  | street              | address                                                      | startsurvey           |
+      | ENG     | "EX2 6GA" | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' | 'Start survey'        |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            | "Dechrau'r cyfrifiad" |
 
   ##SETUP calls the following steps...
   ## Given RM constructs a case_created event and a uac_updated event
   ## When RM sends the case_created and a uac_updated events to RH via RabbitMQ
   ## Then a valid uac exists in Firestore ready for use by a respondent
-  @ignore
-  @RequestUAC-TestT74 @Setup @TearDown
+  @ignore @RequestUAC-TestT74 @Setup @TearDown
   Scenario Outline: [CR-T74] Respondent selects No option in 'Is your mobile number correct?' page
     Given SETUP-2 - a valid uac exists in Firestore and there is an associated case in Firestore <country>
     Given I am a respondent and I am on the RH Start Page
@@ -129,16 +129,15 @@ Feature: Request-UAC
     Then I am presented with a page asking for my mobile number
 
     Examples:
-      | country | postcode   | street              | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode  | street              | address                                                      |
+      | ENG     | "EX2 6GA" | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
 
   ##SETUP calls the following steps...
   ## Given RM constructs a case_created event and a uac_updated event
   ## When RM sends the case_created and a uac_updated events to RH via RabbitMQ
   ## Then a valid uac exists in Firestore ready for use by a respondent
-  @ignore
-  @RequestUAC-TestT75 @Setup @TearDown
+  @ignore @RequestUAC-TestT75 @Setup @TearDown
   Scenario Outline: [CR-T75] Check if an error message is displayed when an invalid mobile number is entered
     Given SETUP-2 - a valid uac exists in Firestore and there is an associated case in Firestore <country>
     Given I am a respondent and I am on the RH Start Page
@@ -159,9 +158,9 @@ Feature: Request-UAC
     Then an invalid mobile number error message is displayed
 
     Examples:
-      | country | postcode   | street              | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode  | street              | address                                                      |
+      | ENG     | "EX2 6GA" | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
 
   ##SETUP calls the following steps...
   ## Given RM constructs a case_created event and a uac_updated event
@@ -192,9 +191,9 @@ Feature: Request-UAC
     Then a FulfilmentRequested event is sent to RM
 
     Examples:
-      | country | postcode   | street              | address                                                      |
-      | ENG   | "EX2 6GA"  | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
-      | WALES | "CF3 2TW"  | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
+      | country | postcode  | street              | address                                                      |
+      | ENG     | "EX2 6GA" | 'England House'     | 'England House\nEngland Street\nSmithfield\nExeter\nEX1 2TD' |
+      | WALES   | "CF3 2TW" | '1 Pentwyn Terrace' | '1 Pentwyn Terrace\nMarshfield\nCardiff\nCF3 2TW'            |
 
   #"Given Steps"
   #" 1. Address exists in AIMS (UPRN)
@@ -215,9 +214,9 @@ Feature: Request-UAC
     And RHSVC publishes a UAC fulfilment request
 
     Examples:
-      | country | postcode   |
-      | ENG   | "EX2 6GA"  |
-      | WALES | "CF3 2TW"  |
+      | country | postcode  |
+      | ENG     | "EX2 6GA" |
+      | WALES   | "CF3 2TW" |
 
   #"Given Steps"
   #" 1. Address exists in AIMS (UPRN)
@@ -239,9 +238,9 @@ Feature: Request-UAC
     And RHSVC publishes a UAC fulfilment request
 
     Examples:
-      | country | postcode   |
-      | ENG   | "EX2 6GA"  |
-      | WALES | "CF3 2TW"  |
+      | country | postcode  |
+      | ENG     | "EX2 6GA" |
+      | WALES   | "CF3 2TW" |
 
   # Setup Steps
   # 1. The respondent is requesting a household UAC for Wales (in English) via SMS
@@ -263,8 +262,8 @@ Feature: Request-UAC
 
     Examples:
       | country | fulfilmentCode |
-      | ENG   | "UACHHT2"      |
-      | WALES | "UACHHT2W"     |
+      | ENG     | "UACHHT2"      |
+      | WALES   | "UACHHT2W"     |
 
   #  " Setup Steps
   #  " 1. The respondent is requesting a household UAC for Wales (in English) via SMS
@@ -301,5 +300,5 @@ Feature: Request-UAC
 
     Examples:
       | country | postcode   |
-      | ENG   | "EX2 6GA"  |
-      | WALES | "SA38 9NP" |
+      | ENG     | "EX2 6GA"  |
+      | WALES   | "SA38 9NP" |

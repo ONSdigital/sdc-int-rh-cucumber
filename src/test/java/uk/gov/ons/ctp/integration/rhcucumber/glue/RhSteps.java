@@ -596,11 +596,21 @@ public class RhSteps extends StepsBase {
   private void sendRequiredInboundEvents(TopicType eventType) throws Exception {
     pubSub.sendEvent(
         TopicType.SURVEY_UPDATE, Source.SAMPLE_LOADER, Channel.RM, context.surveyUpdatePayload);
+
+    // Hack in some buffer time for the survey to be created
+    // TODO there must be a better way
+    Thread.sleep(1000);
+
     pubSub.sendEvent(
         TopicType.COLLECTION_EXERCISE_UPDATE,
         Source.SAMPLE_LOADER,
         Channel.RM,
         context.collectionExercise);
+
+    // Hack in some buffer time for the collex to be created
+    // TODO there must be a better way
+    Thread.sleep(1000);
+
     pubSub.sendEvent(
         TopicType.CASE_UPDATE, Source.CASE_SERVICE, Channel.RM, context.caseCreatedPayload);
     pubSub.sendEvent(eventType, Source.SAMPLE_LOADER, Channel.RM, context.uacPayload);
@@ -609,7 +619,7 @@ public class RhSteps extends StepsBase {
   private void verifyUacProcessed() throws Exception {
     assertTrue(dataRepo.waitForObject(context.caseCollection, context.caseKey, WAIT_TIMEOUT));
     assertTrue(dataRepo.waitForObject(context.uacCollection, context.uacKey, WAIT_TIMEOUT));
-  }
+   }
 
   @And("the respondentAuthenticationHeader contains the correct values")
   public void theRespondentAuthenticationHeaderContainsTheCorrectValues() {
