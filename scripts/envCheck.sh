@@ -8,8 +8,8 @@
 #
 
 mock_envoy_port="8181" 
-mock_ai_port="8162"
-pubsub_emulator_port="9808"
+mock_ai_port="8163"
+pubsub_emulator_port="8538"
 redis_port="6379"
 rh_service_port="8071"
 rhui_port="9092"
