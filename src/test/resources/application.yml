@@ -46,9 +46,9 @@ cloudStorage:
   uacSchemaName: uac
 
 pubsub:
-  projectid: local
+  projectid: shared-project
   emulator:
-    host: localhost:9808
+    host: localhost:8538
     use: true
 
 spring:
