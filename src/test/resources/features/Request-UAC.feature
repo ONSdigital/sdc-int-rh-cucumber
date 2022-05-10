@@ -12,6 +12,7 @@
 #Scenario: [CR-T389] Request UAC for a address in AIMS but not in RHSVC - Text Message
 #Scenario: [CR-T390] Request UAC for a address in AIMS but not in RHSVC - Postal
 
+@ignore
 Feature: Request-UAC
   I would like to request a new Unique Access Code
 
